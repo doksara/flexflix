@@ -1,0 +1,9 @@
+.HeroWrapper {
+  overflow: hidden;
+  width: 70%;
+}
+
+.HeroWrapper img {
+  height: 100vh;
+  filter: blur(6px);
+}

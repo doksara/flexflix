@@ -1,0 +1,37 @@
+{
+  "tvshows": {
+    "breaking-bad": {
+      "name": "Breaking Bad",
+      "id": "tt0903747",
+      "tags": "Crime, Drama, Thriller",
+      "image": "https://m.media-amazon.com/images/M/MV5BMjhiMzgxZTctNDc1Ni00OTIxLTlhMTYtZTA3ZWFkODRkNmE2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SY1000_CR0,0,718,1000_AL_.jpg",
+      "yearStart": "2008",
+      "yearEnd": "2013",
+      "rating": "9.5",
+      "seasonCount": "5",
+      "episodeCount": "62"
+    },
+    "game-of-thrones": {
+      "name": "Game of Thrones",
+      "id": "tt0944947",
+      "tags": "Action, Adventure, Drama",
+      "image": "https://m.media-amazon.com/images/M/MV5BMjA5NzA5NjMwNl5BMl5BanBnXkFtZTgwNjg2OTk2NzM@._V1_SY1000_CR0,0,674,1000_AL_.jpg",
+      "yearStart": "2011",
+      "yearEnd": "2019",
+      "rating": "9.4",
+      "seasonCount": "8",
+      "episodeCount": "73"
+    },
+    "black-mirror": {
+      "name": "Black Mirror",
+      "id": "tt2085059",
+      "tags": "Drama, Sci-Fi, Thriller",
+      "image": "https://m.media-amazon.com/images/M/MV5BYTM3YWVhMDMtNjczMy00NGEyLWJhZDctYjNhMTRkNDE0ZTI1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
+      "yearStart": "2011",
+      "yearEnd": "-",
+      "rating": "8.8",
+      "seasonCount": "5",
+      "episodeCount": "22"
+    }
+  }
+}

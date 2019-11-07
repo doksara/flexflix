@@ -1,0 +1,27 @@
+.Header {
+  background: #06080e;
+}
+
+.Header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.NavigationContainer {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.Navbar {
+  float: right;
+  opacity: 100%;
+}
+
+.NavigationItems {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  flex-direction: row;
+  height: 100%;
+}

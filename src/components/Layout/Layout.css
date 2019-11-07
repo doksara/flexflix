@@ -1,0 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14pt;
+  font-weight: 400;
+  color: #212121;
+  background: #f0f0f0;
+}
