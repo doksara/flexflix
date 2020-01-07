@@ -1,19 +1,35 @@
-import React from 'react'
-
-import classes from './Button.css';
+import React, { Fragment } from 'react';
+import './Button.scss';
 
 const button = (props) => {
 
-    let buttonClass = [classes.Button];
+    let classes = ['btn'];
+    let buttonJSX = null;
 
-    if (props.type === 'primary') {
-        buttonClass.push(classes.Primary)
+    switch (props.type) {
+        case "submit":
+            buttonJSX =
+                <button
+                    type="submit"
+                    className={classes.join(' ')}>{props.children}
+                </button>
+            break;
+        case "button":
+            buttonJSX =
+                <button
+                    type="button"
+                    className={classes.join(' ')}
+                    onClick={props.clicked}>{props.children}
+                </button>
+            break;
+        default: break;
     }
 
     return (
-        <p className={classes.ButtonWrapper}><button style={{ marginTop: '4px' }} className={buttonClass.join(' ')}>{props.children}</button></p>
-    )
+        <Fragment>
+            {buttonJSX}
+        </Fragment>
+    );
 }
-
 
 export default button;

@@ -1,0 +1,30 @@
+{
+  "name": "flexflix-server",
+  "version": "1.0.0",
+  "description": "none",
+  "main": "app.js",
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doksara/flexflix.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "doxara",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/doksara/flexflix/issues"
+  },
+  "homepage": "https://github.com/doksara/flexflix#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.1",
+    "uuid": "^3.3.3"
+  }
+}

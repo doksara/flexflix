@@ -1,0 +1,28 @@
+$color-background: #fff;
+$color-secondary-text: #a59ea2;
+$color-primary-text: #493b44;
+$color-danger: #b51515;
+$color-warning: #cc6c06;
+$color-info: #007584;
+$color-success: #0e8238;
+$color-primary: #4c223d;
+$color-primary-light: #7d6481;
+
+$color-gradient-top: #0f070c;
+$color-gradient-middle: #4a213b;
+$color-gradient-bottom: #4c223d;
+
+:export {
+  colorBackground: $color-background;
+  colorSecondaryText: $color-secondary-text;
+  colorPrimaryText: $color-primary-text;
+  colorDanger: $color-danger;
+  colorWarning: $color-warning;
+  colorInfo: $color-info;
+  colorSuccess: $color-success;
+  colorPrimary: $color-primary;
+  colorPrimaryLight: $color-primary-light;
+  colorGradientTop: $color-gradient-top;
+  colorGradientMiddle: $color-gradient-middle;
+  colorGradinetBottom: $color-gradient-bottom;
+}

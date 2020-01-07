@@ -1,0 +1,23 @@
+.input {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.input__label {
+  font-weight: 400;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input__text {
+  display: block;
+  width: 100%;
+  padding: 8px 2px;
+  font-family: inherit;
+  text-indent: 1em;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+  border-radius: 4px;
+}

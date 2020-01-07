@@ -1,0 +1,24 @@
+@import '../variables.scss';
+
+.show {
+  height: 300px;
+  overflow: hidden;
+}
+
+.show__name {
+  color: $color-background;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.show__image {
+  height: 240px;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.show__station {
+  color: $color-secondary-text;
+  font-size: 1.2rem;
+  font-weight: 300;
+}
