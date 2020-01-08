@@ -20,7 +20,6 @@ mongoose.connect(mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Default settings
 app.use(bodyParser.json());
-app.use(bodyParser.text({ type: 'text/plain' }));
 app.use(cookieParser());
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -43,14 +42,28 @@ app.get('/api/secret', withAuth, function (req, res) {
     res.send('The password is potato');
 });
 
-app.get('/checkToken', withAuth, function (req, res) {
-    res.sendStatus(200);
+app.post('/api/checkToken', (req, res) => {
+
+    const secret = "tbp-projekt";
+    const token = req.body.token;
+
+    if (!token) {
+        res.status(401).send('Unauthorized: No token provided');
+    } else {
+        jwt.verify(token, secret, function (err, decoded) {
+            if (err) {
+                res.status(401).send('Unauthorized: Invalid token');
+            } else {
+                console.log(decoded);
+                req.username = decoded.username;
+            }
+        });
+    }
 });
 
 app.post('/api/authenticate', (req, res) => {
     let secret = "tbp-projekt";
-    let json = JSON.parse(req.body);
-    let { username, password } = json;
+    let { username, password } = req.body;
 
     User.findOne({ username }, function (err, user) {
         if (err) {
@@ -77,11 +90,13 @@ app.post('/api/authenticate', (req, res) => {
                 const token = jwt.sign(payload, secret, {
                     expiresIn: '1h'
                 });
+                console.log(`Potpisao sam token od ${username} sa ${token}`);
                 res.cookie('token', token, { httpOnly: true })
-                    .status(200)
                     .json({
-                        message: "Successful login"
+                        message: "Loggin successful",
+                        token: token
                     })
+                    .status(200);
             }
         }
     });

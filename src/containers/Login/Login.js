@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import Alert from '../../components/UI/Alert/Alert';
 import './Login.scss';
 
 class LoginForm extends Component {
@@ -8,7 +10,9 @@ class LoginForm extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            loading: false,
+            invalidCredentials: false
         }
     }
 
@@ -24,37 +28,55 @@ class LoginForm extends Component {
         event.preventDefault()
 
         let url = 'http://localhost:5000/api/authenticate';
-        const data = { ...this.state };
+        const data = { username: this.state.username, password: this.state.password };
+
+        this.setState({ loading: true });
 
         fetch(url, {
             method: 'POST',
             body: JSON.stringify(data),
-            mode: 'no-cors',
+            mode: 'cors',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         })
             .then((res) => {
-                console.log(res);
                 if (res.status === 200) {
-                    this.props.history.push('/shows');
+                    res.json().then(data => localStorage.setItem('token', data.token))
+                    this.setState({ loading: false });
+                    this.props.history.push('/discover');
                 } else {
-                    const error = new Error(res.error);
-                    throw error;
+                    this.setState({ loading: false, invalidCredentials: true });
                 }
             }).catch(err => {
                 console.error(err);
-            })
+            });
+    }
+
+    componentWillUnmount() {
+        this.setState({ loading: false });
     }
 
     render() {
 
+        let spinnerJSX = null;
+        let alertJSX = null;
+
+        if (this.state.loading) {
+            spinnerJSX = <Spinner />;
+        }
+
+        if (this.state.invalidCredentials) {
+            alertJSX = <Alert type="danger" message="Neispravno korisničko ime / lozinka!" />
+        }
+
         return (
             <form className="form form--login" onSubmit={this.handleSubmit}>
                 <h1>Login</h1>
+                {spinnerJSX}
                 <Input name="username" type="text" label="Username" changed={this.handleChange} />
                 <Input name="password" type="password" label="Password" changed={this.handleChange} />
+                {alertJSX}
                 <Button type="submit">Prijavi se</Button>
             </form>
         );

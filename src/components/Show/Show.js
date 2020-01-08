@@ -3,10 +3,10 @@ import './Show.scss';
 
 const show = (props) => {
     return (
-        <figure class="show">
-            <img class="show__image" src={require(`../../assets/images/${props.image}`)} />
-            <figcaption class="show__name">{props.title}</figcaption>
-            <span class="show__station">{props.station}</span>
+        <figure className="show">
+            <img className="show__image" src={require(`../../assets/images/${props.image}`)} />
+            <figcaption className="show__name">{props.title}</figcaption>
+            <span className="show__station">{props.station}</span>
         </figure>
     );
 }

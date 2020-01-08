@@ -1,6 +1,7 @@
 .layout {
+  min-height: 100%;
   height: 100vh;
-  background: rgb(15, 7, 12);
+  overflow: auto;
   background: linear-gradient(
     135deg,
     rgba(15, 7, 12, 1) 0%,

@@ -19,7 +19,7 @@ const Shows = props => {
         setIsLoading(false);
       })
       .catch(err => console.log(err));
-  }, [shows]);
+  }, []);
 
   if (isLoading) {
     return <p>I am loading TV shows...</p>;
@@ -28,7 +28,7 @@ const Shows = props => {
   return (
     <div className="shows-container">
       {shows.map(show => {
-        return <Show id={show._id} title={show.title} image={show.image} station={show.tv_station} />
+        return <Show key={show._id} title={show.title} image={show.image} station={show.tv_station} />
       })}
     </div>
   );

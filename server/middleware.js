@@ -1,15 +1,19 @@
 const jwt = require('jsonwebtoken');
-const secret = 'tbp-projekt';
+const secret = "tbp-projekt";
 
 const withAuth = function (req, res, next) {
-    const token = req.cookies.token; if (!token) {
+
+    console.dir(req.body);
+
+    if (!token) {
         res.status(401).send('Unauthorized: No token provided');
     } else {
         jwt.verify(token, secret, function (err, decoded) {
             if (err) {
                 res.status(401).send('Unauthorized: Invalid token');
             } else {
-                req.email = decoded.email;
+                console.log(decoded);
+                req.username = decoded.username;
                 next();
             }
         });

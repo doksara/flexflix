@@ -12,8 +12,8 @@ const App = props => {
     <Layout>
       <Router>
         <Switch>
-          <Route path="/" exact component={Login} />
-          <Route path="/shows" component={withAuth(Shows)} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/discover" component={withAuth(Shows)} />
         </Switch>
       </Router>
     </Layout>

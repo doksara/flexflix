@@ -12,8 +12,22 @@ export default function withAuth(ComponentToProtect) {
         }
 
         componentDidMount() {
-            fetch('/checkToken')
+
+            const url = 'http://localhost:5000/api/checkToken';
+            const body = {
+                token: localStorage.getItem("token")
+            };
+
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(body),
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(res => {
+                    console.log(res);
                     if (res.status === 200) {
                         this.setState({ loading: false });
                     } else {
@@ -29,6 +43,7 @@ export default function withAuth(ComponentToProtect) {
 
         render() {
             const { loading, redirect } = this.state;
+
             if (loading) {
                 return null;
             }

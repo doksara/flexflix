@@ -1,0 +1,35 @@
+@import '../../variables.scss';
+
+.alert--danger {
+  background-color: $color-danger;
+  border: 2px solid darken($color-danger, 30%);
+}
+
+.alert--warning {
+  background-color: $color-warning;
+  border: 2px solid darken($color-warning, 30%);
+}
+
+.alert--info {
+  background-color: $color-info;
+  border: 2px solid darken($color-info, 30%);
+}
+
+.alert--success {
+  background-color: $color-success;
+  border: 2px solid darken($color-success, 30%);
+}
+
+.alert {
+  padding: 8px 24px;
+  cursor: pointer;
+  margin: 8px 0;
+  border-radius: 4px;
+  outline: none;
+
+  & span {
+    font-family: inherit;
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+}
