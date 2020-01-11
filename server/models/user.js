@@ -30,6 +30,15 @@ UserSchema.pre('save', function (next) {
     next();
 });
 
+UserSchema.pre('validate', function (next) {
+    const favorites = document.favorites;
+    const uniqueFavorites = favorites.filter((item, pos) => favorites.indexOf(item) == pos);
+
+    this.favorites = uniqueFavorites;
+
+    next();
+});
+
 UserSchema.methods.isCorrectPassword = function (pw) {
     return hash(pw) == this.password;
 }

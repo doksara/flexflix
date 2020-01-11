@@ -1,0 +1,25 @@
+@import '../../variables.scss';
+
+.sidebar-item {
+  margin-bottom: 6px;
+
+  &__icon {
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  &__text {
+    display: inline-block;
+    font-size: 2rem;
+
+    & a {
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+
+      &:hover {
+        color: $color-warning;
+      }
+    }
+  }
+}

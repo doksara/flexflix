@@ -3,22 +3,31 @@
 .show {
   height: 33vh;
   overflow: hidden;
-}
+  position: relative;
 
-.show__name {
-  color: $color-background;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
+  &__name {
+    color: $color-background;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 
-.show__image {
-  height: 85%;
-  width: 100%;
-  border-radius: 20px;
-}
+  &__image {
+    height: 85%;
+    width: 100%;
+    border-radius: 20px;
+  }
 
-.show__station {
-  color: $color-secondary-text;
-  font-size: 1.2rem;
-  font-weight: 300;
+  &__station {
+    color: $color-secondary-text;
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+
+  &__like {
+    transform: scale(1.2);
+    cursor: pointer;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  }
 }

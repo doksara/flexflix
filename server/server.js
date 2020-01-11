@@ -42,23 +42,8 @@ app.get('/api/secret', withAuth, function (req, res) {
     res.send('The password is potato');
 });
 
-app.post('/api/checkToken', (req, res) => {
-
-    const secret = "tbp-projekt";
-    const token = req.body.token;
-
-    if (!token) {
-        res.status(401).send('Unauthorized: No token provided');
-    } else {
-        jwt.verify(token, secret, function (err, decoded) {
-            if (err) {
-                res.status(401).send('Unauthorized: Invalid token');
-            } else {
-                console.log(decoded);
-                req.username = decoded.username;
-            }
-        });
-    }
+app.post('/api/checkToken', withAuth, function (req, res) {
+    res.sendStatus(200);
 });
 
 app.post('/api/authenticate', (req, res) => {

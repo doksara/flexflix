@@ -1,7 +1,13 @@
 .shows-container {
-  width: 85%;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
   gap: 20px 30px;
+}
+
+.shows-layout {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  grid-template-rows: auto;
 }

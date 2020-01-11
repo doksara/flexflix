@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const secret = "tbp-projekt";
 
 const withAuth = function (req, res, next) {
 
-    console.dir(req.body);
+    const secret = "tbp-projekt";
+    const token = req.body.token;
 
     if (!token) {
         res.status(401).send('Unauthorized: No token provided');
