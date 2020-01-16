@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
-import Shows from './containers/Shows/Shows';
+import Main from './containers/Main/Main';
 import Login from './containers/Login/Login'
 import withAuth from './hoc/withAuth';
 
@@ -10,12 +10,11 @@ import './App.scss';
 const App = props => {
   return (
     <Layout>
-      <Router>
         <Switch>
           <Route path="/login" exact component={Login} />
-          <Route path="/discover" component={withAuth(Shows)} />
+          <Route path="/discover" component={withAuth(Main)} />
+          <Route path="/" component={withAuth(Main)} />
         </Switch>
-      </Router>
     </Layout>
   );
 }

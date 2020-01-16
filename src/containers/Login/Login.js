@@ -42,9 +42,13 @@ class LoginForm extends Component {
         })
             .then((res) => {
                 if (res.status === 200) {
-                    res.json().then(data => localStorage.setItem('token', data.token))
-                    this.setState({ loading: false });
-                    this.props.history.push('/discover');
+                    res.json().then(data => {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', this.state.username);
+                        this.setState({ loading: false });
+                        this.props.history.push('/discover');
+                    })
+
                 } else {
                     this.setState({ loading: false, invalidCredentials: true });
                 }

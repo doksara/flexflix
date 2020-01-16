@@ -10,11 +10,22 @@ router.route('/').get((req, res, next) => {
             .json('Error: ' + err));
 });
 
-router.route('/favorites/:id').get((req, res, next) => {
+router.route('/favorites/:user').get((req, res, next) => {
+    User.findOne({ username: req.params.user })
+        .populate({
+            path: 'favorites',
+            model: 'TvShow'
+        })
+        .exec((err, shows) => {
+            if (err) {
+                console.log(err);
+            } else {
+                const distinct = [...new Set(shows.favorites)];
 
-    const userId = req.params.id;
-
-    Show.find()
+                res.status(200)
+                    .json(distinct);
+            }
+        });
 });
 
 module.exports = router;
