@@ -1,11 +1,9 @@
 .shows-container {
   grid-area: main;
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 20px 30px;
 
-  & .shows-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    gap: 20px 30px;
-  }
 }

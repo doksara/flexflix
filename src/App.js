@@ -17,6 +17,6 @@ const App = props => {
         </Switch>
     </Layout>
   );
-}
+};
 
 export default App;

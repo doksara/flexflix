@@ -1,40 +1,41 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, { useContext, useEffect} from 'react';
+import { observer } from "mobx-react-lite";
+import { Switch, Route } from 'react-router-dom';
 import Show from '../Show/Show';
-import AllShows from './AllShows/AllShows';
-import RecommendedShows from './RecommendedShows/RecommendedShows';
-import FavoriteShows from './FavoriteShows/FavoriteShows';
-import withAuth from '../../hoc/withAuth';
 
 import './ShowList.scss';
+import {RootStoreContext} from "../../store/rootStore";
 
-class ShowList extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            likedShows: []
-        }
-    }
+const ShowList = (props) => {
+    const rootStore = useContext(RootStoreContext);
+    const { getAllShows, getFavoriteShows, getRecommendedShows, fetchAllShows, fetchFavoriteShows } = rootStore.showStore;
 
-    render () {
-        return (
-            <div className="shows-container">
-            {this.props.allShows.map(show => {
-                return <Show key={show._id} title={show.title} image={show.image} station={show.tv_station} />
-            })}
-            </div>
-        );
-    }
-}
+    useEffect(() => {
+        fetchFavoriteShows();
+        fetchAllShows();
+    }, [fetchAllShows, fetchFavoriteShows]);
 
-/*
-<Switch>
-    <Route path="/discover" exact component={withAuth(AllShows)} />
-    <Route path="/recommended" component={withAuth(RecommendedShows)} />
-    <Route path="/favorites" component={withAuth(FavoriteShows)} />
-</Switch>
-*/
+    return (
+        <div className="shows-container">
+            <Switch>
+                <Route path="/discover" exact render={() =>
+                    getAllShows.map(show => {
+                        return <Show key={show._id} id={show._id} title={show.title} image={show.image} station={show.tv_station} isLiked={show.isLiked}/>
+                    })
+                }/>
+                <Route path="/recommended" render={() =>
+                    getRecommendedShows.map(show => {
+                        return <Show key={show._id} id={show._id} title={show.title} image={show.image} station={show.tv_station} isLiked={show.isLiked} {...show}/>
+                    })
+                }/>
+                <Route path="/favorites" render={() =>
+                    getFavoriteShows.map(show => {
+                        return <Show key={show._id} title={show.title} image={show.image} station={show.tv_station} />
+                })
+                }/>
+            </Switch>
+        </div>
+    );
+};
 
-
-
-export default ShowList;
+export default observer(ShowList);
