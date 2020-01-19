@@ -28,6 +28,14 @@ const Show = {
     }
 };
 
+const User = {
+    login: (request) => {
+        return axios.post(`authenticate`, request)
+                    .then(response => response.data);
+    }
+};
+
 export default {
-    Show
+    Show,
+    User
 }

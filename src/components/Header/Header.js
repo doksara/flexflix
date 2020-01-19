@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import { RootStoreContext } from "../../store/rootStore";
 
 import './Header.scss';
 
-const header = (props) => {
+const Header = (props) => {
+    const rootStore = useContext(RootStoreContext);
+    const { logout } = rootStore.userStore;
+
     return (
         <header>
             <div className="navigation-container">
@@ -12,11 +16,12 @@ const header = (props) => {
                         <li><NavLink activeClassName="" to="/discover">Home</NavLink></li>
                         <li><NavLink activeClassName="" to="/about">About</NavLink></li>
                         <li><NavLink activeClassName="" to="https://github.com/doksara/flexflix">Github</NavLink></li>
+                        <li><button onClick={ logout }>Odjava</button></li>
                     </ul>
                 </nav>
             </div>
         </header>
     );
-}
+};
 
-export default header;
+export default Header;

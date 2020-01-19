@@ -20,7 +20,7 @@ const input = (props) => {
                 aria-label={props.label}
                 aria-required="true"
                 value={props.value}
-                onChange={props.changed}
+                onChange={props.onChange}
             />
         </div>
     )

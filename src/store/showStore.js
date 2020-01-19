@@ -1,4 +1,5 @@
 import {action, computed, observable, runInAction} from 'mobx';
+import { sortConnections, filter } from "../utils/utils";
 import agent from './agent';
 
 export default class ShowStore {
@@ -8,17 +9,18 @@ export default class ShowStore {
 
     @observable allShowsRegistry = new Map();
     @observable favoriteShowsRegistry = new Map();
+    @observable filter = '';
+    @observable search = '';
 
     @computed get getAllShows(){
-        return Array.from(this.allShowsRegistry.values());
+        return filter(Array.from(this.allShowsRegistry.values()), this.filter, this.search);
     }
 
     @computed get getRecommendedShows(){
         const tempAll = [...Array.from(this.allShowsRegistry.values())];
         const tempFavorites = [...Array.from(this.favoriteShowsRegistry.values())];
 
-        const newArr = tempAll.reduce((total, item) => {
-
+        return tempAll.reduce((total, item) => {
             let newItem = {
                 ...item,
                 connections: 0,
@@ -34,24 +36,31 @@ export default class ShowStore {
             });
 
             return total.concat(newItem);
-        }, []);
-
-        return newArr.sort((x, y) => {
-            if (x.connections > y.connections){
-                return -1;
-            }
-
-            if (x.connections < y.connections){
-                return 1;
-            }
-
-            return 0;
-        });
+        }, []).sort(sortConnections);
     }
 
     @computed get getFavoriteShows(){
         return Array.from(this.favoriteShowsRegistry.values());
     }
+
+    @computed get searchValue() {
+        return this.search;
+    }
+
+    @action setFilter = (genre) => {
+        this.filter = genre;
+    };
+
+    @action setSearch = (value) => {
+        this.search = value;
+    };
+
+    @action restart = () => {
+        this.allShowsRegistry.clear();
+        this.favoriteShowsRegistry.clear();
+        this.filter = '';
+        this.search = '';
+    };
 
     @action fetchAllShows = async () => {
         try {
@@ -111,6 +120,6 @@ export default class ShowStore {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 }
 

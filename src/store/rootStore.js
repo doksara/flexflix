@@ -1,11 +1,12 @@
-import { configure } from 'mobx';
 import { createContext } from 'react';
 import ShowStore from './showStore';
+import UserStore from './userStore';
+import CommonStore from "./commonStore";
 
 export class RootStore { 
     constructor(){
-        // this.userStore = new UserStore(this);
-        // this.commonStore = new CommonStore(this);
+        this.userStore = new UserStore(this);
+        this.commonStore = new CommonStore(this);
         this.showStore = new ShowStore(this);
     }
 }

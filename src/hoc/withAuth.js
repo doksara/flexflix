@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
 
 export default function withAuth(ComponentToProtect) {
     return class extends Component {
@@ -15,7 +15,7 @@ export default function withAuth(ComponentToProtect) {
 
             const url = 'http://localhost:5000/api/checkToken';
             const body = {
-                token: localStorage.getItem("token")
+                token: localStorage.getItem("jwt")
             };
 
             fetch(url, {
@@ -31,8 +31,7 @@ export default function withAuth(ComponentToProtect) {
                     if (res.status === 200) {
                         this.setState({ loading: false });
                     } else {
-                        const error = new Error(res.error);
-                        throw error;
+                        throw new Error(res.error);
                     }
                 })
                 .catch(err => {

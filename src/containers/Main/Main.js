@@ -13,6 +13,6 @@ const Main = () => {
       <ShowList />
     </div>
   );
-}
+};
 
 export default Main;

@@ -1,9 +1,28 @@
-.shows-container {
-  grid-area: main;
-  width: 100%;
+.show-list {
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-area: main;
+  grid-template-columns: 1fr 2fr;
   grid-template-rows: auto;
-  gap: 20px 30px;
 
+  h1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    color: white;
+    font-size: 4rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .show-container {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    width: 100%;
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 20px 30px;
+  }
 }
