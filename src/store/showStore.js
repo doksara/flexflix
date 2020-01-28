@@ -1,5 +1,5 @@
 import {action, computed, observable, runInAction} from 'mobx';
-import { sortConnections, filter } from "../utils/utils";
+import {sortConnections, filter, isEmpty} from "../utils/utils";
 import agent from './agent';
 
 export default class ShowStore {
@@ -9,6 +9,7 @@ export default class ShowStore {
 
     @observable allShowsRegistry = new Map();
     @observable favoriteShowsRegistry = new Map();
+    @observable selectedShow = '';
     @observable filter = '';
     @observable search = '';
 
@@ -39,6 +40,31 @@ export default class ShowStore {
         }, []).sort(sortConnections);
     }
 
+    @computed get getSimilarShows(){
+        const tempAll = [...Array.from(this.allShowsRegistry.values())];
+
+        if (this.selectedShow !== ''){
+            const currentShow = this.selectedShow;
+
+            return tempAll.reduce((total, item) => {
+                let newItem = {
+                    ...item,
+                    connections: 0,
+                    actors: [...item.actors],
+                    type: [...item.type],
+                    tags: [...item.tags]
+                };
+
+                newItem.connections += newItem.actors.filter(i => currentShow.actors.includes(i)).length;
+                newItem.connections += newItem.type.filter(i => currentShow.type.includes(i)).length;
+                newItem.connections += newItem.tags.filter(i => currentShow.tags.includes(i)).length;
+
+                return total.concat(newItem);
+            }, []).sort(sortConnections).slice(1, 4);
+        }
+        return [];
+    }
+
     @computed get getFavoriteShows(){
         return Array.from(this.favoriteShowsRegistry.values());
     }
@@ -58,6 +84,7 @@ export default class ShowStore {
     @action restart = () => {
         this.allShowsRegistry.clear();
         this.favoriteShowsRegistry.clear();
+        this.selectedShow = '';
         this.filter = '';
         this.search = '';
     };
@@ -119,6 +146,15 @@ export default class ShowStore {
             }
         } catch (error) {
             console.log(error);
+        }
+    };
+
+    @action getShow = async (showId) => {
+        try {
+            this.selectedShow = this.allShowsRegistry.get(showId);
+            if (this.selectedShow) throw new Error("Nepostojeca TV emisija.");
+        } catch (err){
+            console.log(err);
         }
     };
 }

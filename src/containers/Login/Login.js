@@ -11,16 +11,8 @@ const LoginForm = () => {
     const rootStore = useContext(RootStoreContext);
     const { login } = rootStore.userStore;
 
-    let spinnerJSX = null;
-    let alertJSX = null;
-
-    /*if (this.state.loading) {
-        spinnerJSX = <Spinner />;
-    }
-
-    if (this.state.invalidCredentials) {
-        alertJSX = <Alert type="danger" message="Neispravno korisničko ime / lozinka!" />
-    }*/
+    const spinnerJSX = <Spinner />;
+    const alertJSX = <Alert type="danger" message="Neispravno korisničko ime / lozinka!" />
 
     return (
         <Form
@@ -35,22 +27,22 @@ const LoginForm = () => {
             }) => (
             <form className="form form--login" onSubmit={handleSubmit}>
                 <h1>Login</h1>
-                {spinnerJSX}
+                {submitting && spinnerJSX}
                 <Field name="username">
                     {props => (
                         <div>
-                            <Input label="Username" name={props.input.name} value={props.input.value} onChange={props.input.onChange} />
+                            <Input type="text" label="Username" name={props.input.name} value={props.input.value} onChange={props.input.onChange} />
                         </div>
                     )}
                 </Field>
                 <Field name="password">
                     {props => (
                         <div>
-                            <Input label="Password" name={props.input.name} value={props.input.value} onChange={props.input.onChange} />
+                            <Input type="password" label="Password" name={props.input.name} value={props.input.value} onChange={props.input.onChange} />
                         </div>
                     )}
                 </Field>
-                {alertJSX}
+                {submitError && alertJSX}
                 <Button type="submit">Prijavi se</Button>
             </form>
                 )}

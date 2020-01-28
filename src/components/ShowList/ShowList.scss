@@ -4,6 +4,7 @@
   grid-area: main;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: auto;
+  margin-bottom: 25px;
 
   h1 {
     grid-column: 1 / 2;
@@ -23,6 +24,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto;
-    gap: 20px 30px;
+    gap: 20px 20px;
   }
 }

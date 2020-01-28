@@ -32,7 +32,7 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.pre('validate', function (next) {
     const favorites = document.favorites;
-    const uniqueFavorites = favorites.filter((item, pos) => favorites.indexOf(item) == pos);
+    const uniqueFavorites = favorites.filter((item, pos) => favorites.indexOf(item) === pos);
 
     this.favorites = uniqueFavorites;
 
@@ -40,8 +40,8 @@ UserSchema.pre('validate', function (next) {
 });
 
 UserSchema.methods.isCorrectPassword = function (pw) {
-    return hash(pw) == this.password;
-}
+    return hash(pw) === this.password;
+};
 
 const UserModel = mongoose.model('User', UserSchema);
 

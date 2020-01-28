@@ -1,5 +1,5 @@
 const data = [
-    {
+    /*{
         title: 'Game of Thrones',
         tv_station: 'HBO',
         duration: 57,
@@ -208,7 +208,49 @@ const data = [
         likes: 0,
         startYear: 2017,
         endYear: null
+    },*/
+    {
+        title: 'The Witcher',
+        tv_station: 'Netflix',
+        duration: 60,
+        image: 'the-witcher.jpg',
+        actors: ['Henry Cavill', 'Freya Allan', 'Anya Chalotra', 'Joey Batey'],
+        type: ['Action', 'Adventure', 'Drama'],
+        plot: 'Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.',
+        episodes: 8,
+        tags: ['toss', 'a', 'coin', 'cintra', 'niilfgard'],
+        likes: 0,
+        startYear: 2019,
+        endYear: null
+    },
+    {
+        title: 'Mindhunter',
+        tv_station: 'Netflix',
+        duration: 60,
+        image: 'mindhunter.jpg',
+        actors: ['Jonathan Groff', 'Holt McCallany', 'Anna Torv', 'Sonny Valinacenti', 'Joe Tuttle'],
+        type: ['crime', 'drama', 'thriller'],
+        plot: 'Set in the late 1970s, two FBI agents are tasked with interviewing serial killers to solve open cases.',
+        episodes: 19,
+        tags: ['police', 'investigation', 'serial', 'killers', 'occult'],
+        likes: 0,
+        startYear: 2017,
+        endYear: null
+    },
+    {
+        title: 'Gotham',
+        tv_station: 'FOX',
+        duration: 42,
+        image: 'mindhunter.jpg',
+        actors: ['Ben McKenzie', 'Donal Logue', 'David Mazouz', 'Sean Pertwee', 'Cory Michael Smith', 'Chris Chalk'],
+        type: ['action', 'crime', 'drama'],
+        plot: 'The story behind Detective James Gordon\'s rise to prominence in Gotham City in the years before Batmans arrival. ',
+        episodes: 100,
+        tags: ['gotham', 'city', 'batman', 'dc', 'joker', 'penguin'],
+        likes: 0,
+        startYear: 2014,
+        endYear: 2019
     }
-]
+];
 
 module.exports = data;

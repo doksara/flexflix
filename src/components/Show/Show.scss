@@ -1,7 +1,7 @@
 @import '../variables.scss';
 
 .show {
-  height: 33vh;
+  height: 32rem;
   overflow: hidden;
   position: relative;
 
@@ -19,7 +19,7 @@
 
   &__station {
     color: $color-secondary-text;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 300;
   }
 
@@ -29,5 +29,11 @@
     position: absolute;
     bottom: 5px;
     right: 5px;
+  }
+}
+
+@media only screen and (max-height: 720px){
+  .show__like {
+    transform: none;
   }
 }

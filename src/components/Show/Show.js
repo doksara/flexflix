@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
-import './Show.scss';
 import Heart from '../../assets/icons/heart.svg';
 import HeartActive from '../../assets/icons/heart_active.svg';
 import {RootStoreContext} from "../../store/rootStore";
+import { withRouter, NavLink } from "react-router-dom";
+import './Show.scss';
 
 const Show = (props) => {
     const rootStore = useContext(RootStoreContext);
@@ -12,7 +13,9 @@ const Show = (props) => {
 
     return (
         <figure className="show">
-            <img className="show__image" alt='show-poser' src={require(`../../assets/images/${props.image}`)} />
+            <NavLink to={`/show/${props.id}`}>
+                <img className="show__image" alt='show-poser' src={require(`../../assets/images/${props.image}`)} />
+            </NavLink>
             <figcaption className="show__name">{props.title}</figcaption>
             <span className="show__station">{props.station}</span>
             {!isHidden &&
@@ -21,4 +24,4 @@ const Show = (props) => {
     );
 };
 
-export default Show;
+export default withRouter(Show);

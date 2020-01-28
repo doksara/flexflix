@@ -17,3 +17,9 @@ body {
 
   box-sizing: border-box;
 }
+
+@media only screen and (max-height: 720px) {
+  html {
+    font-size: 50%;
+  }
+}

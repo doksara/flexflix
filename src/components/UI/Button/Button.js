@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import './Button.scss';
 
-const button = (props) => {
+const Button = (props) => {
 
     let classes = ['btn'];
     let buttonJSX = null;
@@ -32,4 +32,4 @@ const button = (props) => {
     );
 }
 
-export default button;
+export default Button;

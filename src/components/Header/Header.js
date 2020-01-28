@@ -16,7 +16,7 @@ const Header = (props) => {
                         <li><NavLink activeClassName="" to="/discover">Home</NavLink></li>
                         <li><NavLink activeClassName="" to="/about">About</NavLink></li>
                         <li><NavLink activeClassName="" to="https://github.com/doksara/flexflix">Github</NavLink></li>
-                        <li><button onClick={ logout }>Odjava</button></li>
+                        <li><NavLink to="/logout">Odjava</NavLink></li>
                     </ul>
                 </nav>
             </div>

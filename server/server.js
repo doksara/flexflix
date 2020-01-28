@@ -4,10 +4,32 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const withAuth = require('./middleware');
+const data = require('./data');
 
 const app = express();
 
 const User = require('./models/user.js');
+const Show = require('./models/tvshow');
+
+data.forEach((show) => {
+   let f = new Show({
+       _id: new mongoose.Types.ObjectId(),
+       title: show.title,
+       tv_station: show.tv_station,
+       duration: show.duration,
+       image: show.image,
+       actors: show.actors,
+       type: show.type,
+       plot: show.plot,
+       episodes: show.episodes,
+       tags: show.tags,
+       likes: show.likes,
+       startYear: show.startYear,
+       endYear: show.endYear
+   });
+
+    f.save();
+});
 
 // Import routes 
 const showsRouter = require('./routes/tvshows.js');
