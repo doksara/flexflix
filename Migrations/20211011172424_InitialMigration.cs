@@ -168,16 +168,14 @@ namespace flexflix.Migrations
                 name: "EpisodeActor",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Character = table.Column<string>(type: "text", nullable: true),
-                    Department = table.Column<string>(type: "text", nullable: true),
-                    EpisodeId = table.Column<int>(type: "int", nullable: true),
-                    ActorId = table.Column<int>(type: "int", nullable: true)
+                    EpisodeId = table.Column<int>(type: "int", nullable: false),
+                    ActorId = table.Column<int>(type: "int", nullable: false),
+                    Character = table.Column<string>(type: "text", nullable: false),
+                    Department = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EpisodeActor", x => x.Id);
+                    table.PrimaryKey("PK_EpisodeActor", x => new { x.ActorId, x.EpisodeId });
                     table.ForeignKey(
                         name: "FK_EpisodeActor_Actors_ActorId",
                         column: x => x.ActorId,
@@ -191,11 +189,6 @@ namespace flexflix.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EpisodeActor_ActorId",
-                table: "EpisodeActor",
-                column: "ActorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EpisodeActor_EpisodeId",

@@ -23,7 +23,9 @@ namespace flexflix.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
 
+            builder.ApplyConfigurationsFromAssembly(typeof(FlexflixContext).Assembly);
         }
     }
 }

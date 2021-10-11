@@ -9,7 +9,7 @@ using flexflix.Data;
 namespace flexflix.Migrations
 {
     [DbContext(typeof(FlexflixContext))]
-    [Migration("20211010150610_InitialMigration")]
+    [Migration("20211011172424_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,25 +102,20 @@ namespace flexflix.Migrations
 
             modelBuilder.Entity("flexflix.Models.EpisodeActor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ActorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ActorId")
+                    b.Property<int>("EpisodeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Character")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Department")
                         .HasColumnType("text");
 
-                    b.Property<int?>("EpisodeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActorId");
+                    b.HasKey("ActorId", "EpisodeId");
 
                     b.HasIndex("EpisodeId");
 
@@ -285,11 +280,15 @@ namespace flexflix.Migrations
                 {
                     b.HasOne("flexflix.Models.Actor", "Actor")
                         .WithMany("Episodes")
-                        .HasForeignKey("ActorId");
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("flexflix.Models.Episode", "Episode")
                         .WithMany("Actors")
-                        .HasForeignKey("EpisodeId");
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Actor");
 

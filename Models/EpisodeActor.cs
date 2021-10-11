@@ -9,12 +9,13 @@ namespace flexflix.Models
 {
     public class EpisodeActor
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        
+        public int EpisodeId { get; set; }
+        public virtual Episode Episode { get; set; }
+
+        public int ActorId { get; set; }
+        public virtual Actor Actor { get; set; }
+
         public string Character { get; set; }
         public string Department { get; set; }
-        public virtual Episode Episode { get; set; }
-        public virtual Actor Actor { get; set; }
     }
 }

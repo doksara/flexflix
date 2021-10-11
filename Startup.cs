@@ -22,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using flexflix.Services.Authentication;
+using flexflix.Middleware;
 
 namespace flexflix
 {
@@ -38,23 +39,8 @@ namespace flexflix
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup));
-            services.AddHttpClient();
-
-            // Repositories
-            services.AddScoped<ITvShowRepository, TvShowRepository>();
-            services.AddScoped<IGenreRepository, GenreRepository>();
-            services.AddScoped<IActorRepository, ActorRepository>();
-            services.AddScoped<IEpisodeActorRepository, EpisodeActorRepository>();
-            services.AddScoped<IFileStorageService, CloudinaryStorageService>();
-            services.AddScoped<ITmdbApiService, TmdbApiService>();
-            services.AddScoped<IAuthService, JwtAuthService>();
-
-            services.AddDbContext<FlexflixContext>(options =>
-                options.EnableSensitiveDataLogging()
-                       .UseMySQL(Configuration.GetConnectionString("Default")
-            )); 
-
+            // Core
+            services.AddControllers();
             services.AddMvcCore()
                     .AddApiExplorer()
                     .AddJsonOptions(options =>
@@ -62,6 +48,33 @@ namespace flexflix
                         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                     });
 
+            // Http
+            services.AddHttpClient();
+
+            // AutoMapper
+            services.AddAutoMapper(typeof(Startup));
+
+            // Repositories
+            services.AddScoped<ITvShowRepository, TvShowRepository>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IActorRepository, ActorRepository>();
+            services.AddScoped<IEpisodeActorRepository, EpisodeActorRepository>();
+            
+            // Services
+            services.AddScoped<IFileStorageService, CloudinaryStorageService>();
+            services.AddScoped<ITmdbApiService, TmdbApiService>();
+            services.AddScoped<IAuthService, JwtAuthService>();
+
+            // Vue middleware
+            services.AddSpaStaticFiles(options => options.RootPath = "client/dist");
+
+            // Database context
+            services.AddDbContext<FlexflixContext>(options =>
+                options.EnableSensitiveDataLogging()
+                       .UseMySQL(Configuration.GetConnectionString("Default")
+            ));
+
+            // Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -74,6 +87,7 @@ namespace flexflix
                 };
             });
 
+            // Swagger
             services.AddSwaggerGen();
         }
 
@@ -95,6 +109,8 @@ namespace flexflix
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -104,6 +120,17 @@ namespace flexflix
                     await context.Response.WriteAsync("Hello World!");
                 });
                 endpoints.MapControllers();
+            });
+
+            // use middleware and launch server for Vue  
+            app.UseSpaStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "client";
+                if (env.IsDevelopment())
+                {
+                    spa.UseVueDevelopmentServer();
+                }
             });
         }
     }
