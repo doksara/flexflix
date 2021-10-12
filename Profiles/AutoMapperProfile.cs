@@ -94,6 +94,10 @@ namespace flexflix.Profiles
                                                     opt => opt.MapFrom(src => DateTime.Now))
                                             .ForMember(dst => dst.Discriminator,
                                                     opt => opt.MapFrom(src => "Default"));
+            CreateMap<TvShow, TvShowCardDTO>().ForMember(dst => dst.ImageUrl,
+                                                    opt => opt.MapFrom(src => src.PosterImage))
+                                              .ForMember(dst => dst.SeasonCount,
+                                                    opt => opt.MapFrom(src => src.NumberOfSeasons));
         }
     }
 }

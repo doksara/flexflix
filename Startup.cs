@@ -28,6 +28,8 @@ namespace flexflix
 {
     public class Startup
     {
+        private readonly string developmentPolicy = "developmentPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,6 +41,16 @@ namespace flexflix
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // CORS policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: developmentPolicy,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:8080");
+                                  });
+            });
+
             // Core
             services.AddControllers();
             services.AddMvcCore()
@@ -112,6 +124,8 @@ namespace flexflix
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(developmentPolicy);
 
             app.UseEndpoints(endpoints =>
             {

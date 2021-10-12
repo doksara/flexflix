@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using flexflix.Data;
 using flexflix.Data.Repositories.TvShowRepo;
 using flexflix.DTOs;
 using flexflix.Models;
@@ -27,29 +28,28 @@ namespace flexflix.Controllers
             _tvShowRepository = tvShowRepository;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateUserDTO tvShowToCreate)
-        {
-            var newTvShow = _mapper.Map<TvShow>(tvShowToCreate);
-
-            _tvShowRepository.Add(newTvShow);
-            await _tvShowRepository.SaveChangesAsync();
-
-            return Ok();
-        }
-
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            var tvShows = _tvShowRepository.GetAll();
+            var tvShowModels = _tvShowRepository.GetAll().ToList();
+            var tvShowViewModels = _mapper.Map<List<TvShow>, List<TvShowCardDTO>>(tvShowModels);
 
-            return Ok(tvShows);
+            return Ok(tvShowViewModels);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSingle(string id)
+        public IActionResult GetSingle(string id)
         {
-            return Ok();
+            var tvShowModel = _tvShowRepository.Get(id);
+
+            if (tvShowModel != null)
+            {
+                var tvShowViewModel = _mapper.Map<TvShow, TvShowCardDTO>(tvShowModel);
+
+                return Ok(tvShowViewModel);
+            }
+
+            return NotFound();
         }
     }
 }

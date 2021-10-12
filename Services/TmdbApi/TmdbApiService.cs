@@ -51,7 +51,7 @@ namespace flexflix.Services.TmdbApi
             var queryParams = new Dictionary<string, string>()
             {
                 { "api_key", _configuration.GetSection("Tmdb:Key").Value },
-                { "language", "en-US"  },
+                { "language", "en-US" },
                 { "page", "1" }
             };
 
@@ -73,7 +73,7 @@ namespace flexflix.Services.TmdbApi
             var queryParams = new Dictionary<string, string>()
             {
                 { "api_key", _configuration.GetSection("Tmdb:Key").Value },
-                { "language", "en-US"  }
+                { "language", "en-US" }
             };
 
             var url = QueryHelpers.AddQueryString($"{baseUrl}/{tmdbTvShowId}/season/{seasonNumber}", queryParams);
@@ -123,6 +123,29 @@ namespace flexflix.Services.TmdbApi
             var response = await httpClient.SendAsync(request);
             using var content = await response.Content.ReadAsStreamAsync();
             var deserializedContent = await JsonSerializer.DeserializeAsync<TmdbConfiguration>(content);
+
+            return deserializedContent;
+        }
+
+        public async Task<TmdbResponse<TmdbTvShow>> SearchTvShowsByKeyword(string keyword)
+        {
+            string baseUrl = "https://api.themoviedb.org/3/search/tv";
+
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "api_key", _configuration.GetSection("Tmdb:Key").Value },
+                { "language", "en-US" },
+                { "page", "1" },
+                { "query", keyword }
+            };
+
+            var url = QueryHelpers.AddQueryString($"{baseUrl}", queryParams);
+            var httpClient = _clientFactory.CreateClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            var response = await httpClient.SendAsync(request);
+            using var content = await response.Content.ReadAsStreamAsync();
+            var deserializedContent = await JsonSerializer.DeserializeAsync<TmdbResponse<TmdbTvShow>>(content);
 
             return deserializedContent;
         }

@@ -72,5 +72,13 @@ namespace flexflix.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("/search/tv")]
+        public async Task<IActionResult> GetConfiguration([FromQuery] string keyword)
+        {
+            var response = await _tmdbApiService.SearchTvShowsByKeyword(keyword);
+
+            return Ok(response);
+        }
     }
 }

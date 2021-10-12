@@ -15,5 +15,6 @@ namespace flexflix.Services.TmdbApi
         Task<TmdbSeason> GetSeasonDetails(int tmdbTvShowId, int seasonNumber);
         Task<TmdbTvShowDetails> GetTvShowDetails(int tmdbTvShowId);
         Task<TmdbConfiguration> GetConfiguration();
+        Task<TmdbResponse<TmdbTvShow>> SearchTvShowsByKeyword(string keyword);
     }
 }
