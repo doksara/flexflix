@@ -22,7 +22,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using flexflix.Services.Authentication;
-using flexflix.Middleware;
 
 namespace flexflix
 {
@@ -47,7 +46,7 @@ namespace flexflix
                 options.AddPolicy(name: developmentPolicy,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:8080");
+                                      builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>());
                                   });
             });
 
@@ -76,9 +75,6 @@ namespace flexflix
             services.AddScoped<IFileStorageService, CloudinaryStorageService>();
             services.AddScoped<ITmdbApiService, TmdbApiService>();
             services.AddScoped<IAuthService, JwtAuthService>();
-
-            // Vue middleware
-            services.AddSpaStaticFiles(options => options.RootPath = "client/dist");
 
             // Database context
             services.AddDbContext<FlexflixContext>(options =>
@@ -134,17 +130,6 @@ namespace flexflix
                     await context.Response.WriteAsync("Hello World!");
                 });
                 endpoints.MapControllers();
-            });
-
-            // use middleware and launch server for Vue  
-            app.UseSpaStaticFiles();
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "client";
-                if (env.IsDevelopment())
-                {
-                    spa.UseVueDevelopmentServer();
-                }
             });
         }
     }
