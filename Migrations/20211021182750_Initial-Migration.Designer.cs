@@ -9,7 +9,7 @@ using flexflix.Data;
 namespace flexflix.Migrations
 {
     [DbContext(typeof(FlexflixContext))]
-    [Migration("20211011172424_InitialMigration")]
+    [Migration("20211021182750_Initial-Migration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

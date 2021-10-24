@@ -46,7 +46,8 @@ namespace flexflix
                 options.AddPolicy(name: developmentPolicy,
                                   builder =>
                                   {
-                                      builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>());
+                                      builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>())
+                                             .WithHeaders("Content-Type");
                                   });
             });
 

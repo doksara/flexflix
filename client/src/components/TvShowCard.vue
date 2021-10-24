@@ -1,6 +1,6 @@
 <template>
   <article class="c-tvshowcard">
-    <div class="c-tvshowcard__image-container">
+    <div class="c-tvshowcard__header">
       <img class="c-tvshowcard__image" :src="tvshow.image" :alt="tvshow.name">
     </div>
     <div class="c-tvshowcard__info">
@@ -43,15 +43,15 @@ export default defineComponent({
   padding: 4px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 
+  &__header {
+    overflow: hidden;
+    max-height: 14rem;
+    border-radius: 8px;
+  }
+
   &__image {
     display: block;
     width: 100%;
-
-    &-container {
-      overflow: hidden;
-      max-height: 14rem;
-      border-radius: 8px;
-    }
   }
 
   &__info {

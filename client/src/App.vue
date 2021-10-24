@@ -1,16 +1,19 @@
 <template>
   <div id="nav">
-    <router-link to="/">Yolo</router-link> |
+    <router-link to="/login">Login</router-link>
   </div>
   <router-view />
 </template>
 
 <style lang="scss">
 #app {
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
   font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--cool-grey-050);
+  height: 100vh;
 }
 </style>
