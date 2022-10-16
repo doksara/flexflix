@@ -1,6 +1,7 @@
 import { Card, Container, Grid, Col, Text } from '@nextui-org/react'
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { ApiResponse, TvListResultObject } from '../interface'
 import styles from '../styles/Home.module.css'
 
@@ -40,6 +41,8 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ shows }) => {
+  const router = useRouter()
+
   return (
     <div className={styles.container}>
       <Head>
@@ -53,7 +56,7 @@ const Home: NextPage<HomeProps> = ({ shows }) => {
           <Grid.Container gap={2} justify="center">
             {shows.map(show => (
               <Grid key={show.id} xs={6} md={3} lg={2}>
-                <Card isHoverable>
+                <Card isHoverable isPressable onPress={() => router.push(`/show/${show.id}`)}>
                   <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
                     <Col>
                       <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
