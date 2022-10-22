@@ -63,7 +63,7 @@ export type ProductionCountry = {
 
 export interface Season {
   air_date: string
-  episode_count: number
+  episode_count?: number
   id: number
   name: string
   overview: string
@@ -108,4 +108,46 @@ export interface TvShowDetails {
   type: string
   vote_average: number
   vote_count: number
+}
+
+export interface SeasonDetails extends Season {
+  _id: number
+  episodes: Episode[]
+}
+
+export interface Episode {
+  air_date: string
+  episode_number: number
+  crew: CrewMember[]
+  guest_stars: GuestStarMember[]
+  id: number
+  name: string
+  overview: string
+  production_code: string
+  season_number: number
+  still_path?: string
+  vote_average: number
+  vote_count: number
+}
+
+export interface Member {
+  credit_id: string
+  adult: boolean | null
+  gender: number
+  id: number
+  known_for_department: string
+  name: string
+  original_name: string
+  popularity: number
+  profile_path: string | null
+}
+
+export interface CrewMember extends Member {
+  department: string
+  job: string
+}
+
+export interface GuestStarMember extends Member {
+  order: number
+  character: string
 }
