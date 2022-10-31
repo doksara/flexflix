@@ -112,7 +112,7 @@ export interface TvShowDetails {
 
 export interface SeasonDetails extends Season {
   _id: number
-  episodes: Episode[]
+  episodes?: Episode[]
 }
 
 export interface Episode {

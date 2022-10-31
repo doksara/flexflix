@@ -1,7 +1,9 @@
+import Head from "next/head"
 import { GetServerSideProps, NextPage } from "next"
 import { getJson } from ".."
 import { SeasonDetails, TvShowDetails } from '../../interface'
 import { EpisodeOverview } from "../../modules/EpisodeOverview/EpisodeOverview"
+import { Container, Text } from "@nextui-org/react"
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params!
@@ -28,8 +30,18 @@ interface TvShowDetailsProps {
 }
 
 const TvShowDetails: NextPage<TvShowDetailsProps> = ({ show, season }) => {
+  console.log(show)
   return (
-    <EpisodeOverview season={season} />
+    <>
+      <Head>
+        <title>{show.name} :: flexflix</title>
+      </Head>
+      <Container md>
+        <Text h1>{show.name}</Text>
+        <Text>{show.overview}</Text>
+        <EpisodeOverview season={season} />
+      </Container>
+    </>
   )
 }
 

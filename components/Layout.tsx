@@ -1,6 +1,7 @@
-import { Avatar, Dropdown, Input, Navbar, Text } from '@nextui-org/react'
+import { Navbar } from '@nextui-org/react'
 import React from 'react'
 import { SearchIcon } from './icons/SearchIcon'
+import { Link } from './Link/Link'
 
 interface LayoutProps {
   children?: React.ReactNode
@@ -9,13 +10,15 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <>
-      <Navbar isBordered variant="sticky">
+      <Navbar maxWidth="md" isBordered variant="sticky">
         <Navbar.Brand css={{ mr: "$4" }}>
           <Navbar.Content hideIn="xs" variant="highlight">
-            <Navbar.Link isActive href="/">
+            <Link href="/" css={{ marginRight: '10px' }}>
               Trending
-            </Navbar.Link>
-            <Navbar.Link href="/login">Login</Navbar.Link>
+            </Link>
+            <Link href="/login">
+              Login
+            </Link>
           </Navbar.Content>
         </Navbar.Brand>
       </Navbar>
