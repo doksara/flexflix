@@ -30,14 +30,13 @@ export const reducer = (state: State, action: ReducerAction) => {
       return {
         ...state,
         watchedShows: [
-          ...state.watchedShows.filter(ws => ws === payload as string),
+          ...state.watchedShows.filter(ws => ws !== payload as string),
         ]
       }
     case ReducerActionType.SET_BATCH:      
       return {
         ...state,
         watchedShows: [
-          ...state.watchedShows,
           ...payload as string[]
         ]
       }

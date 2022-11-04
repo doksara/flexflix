@@ -36,7 +36,7 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
           if (episodes.data && episodes.data[0]) {
             dispatch({
               type: ReducerActionType.SET_BATCH,
-              payload: episodes.data[0].watched_episodes!.map(t => t.toString())
+              payload: episodes.data[0].watched_episodes!
             })
           }
         })
@@ -44,7 +44,6 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
   }, [id, supabaseClient, user])
 
   const seasonProgress = useMemo(() => {
-    console.log(season.episodes?.length)
     if (season.episodes) {
       return state.watchedShows.length / season.episodes.length * 100
     }
@@ -52,14 +51,10 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
     return 0
   }, [state.watchedShows, season.episodes])
 
-  useEffect(() => {
-    // set default state here
-  }, [])
-
-  const onChange = (checked: boolean, id: number) => {
+  const onChange = (checked: boolean, id: string) => {
     dispatch({ 
       type: checked ? ReducerActionType.MARK_WATCHED : ReducerActionType.MARK_NOT_WATCHED, 
-      payload: id.toString()
+      payload: id
     })
   }
 
@@ -67,7 +62,7 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
     setIsLoading(true)
 
     const { id } = router.query
-    const watchedShowIds = state.watchedShows.map(s => Number(s))
+    const watchedShowIds = state.watchedShows
 
     const existingRowId = await supabaseClient
       .from('user_tvshow')
@@ -111,7 +106,7 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
                   <Checkbox
                     aria-label={episode.name}
                     value={episode.id.toString()}
-                    onChange={(e) => onChange(e, episode.id)} 
+                    onChange={(e) => onChange(e, episode.id.toString())} 
                     size="xl" 
                     color="secondary"
                   />

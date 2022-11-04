@@ -14,7 +14,7 @@ export interface Database {
           id: number
           has_liked: boolean | null
           has_started_watching: boolean | null
-          watched_episodes: number[] | null
+          watched_episodes: string[]
           user: string | null
           show_id: number | null
         }
@@ -22,7 +22,7 @@ export interface Database {
           id?: number
           has_liked?: boolean | null
           has_started_watching?: boolean | null
-          watched_episodes?: number[] | null
+          watched_episodes: string[]
           user?: string | null
           show_id?: number | null
         }
@@ -30,7 +30,7 @@ export interface Database {
           id?: number
           has_liked?: boolean | null
           has_started_watching?: boolean | null
-          watched_episodes?: number[] | null
+          watched_episodes?: string[]
           user?: string | null
           show_id?: number | null
         }
