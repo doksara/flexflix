@@ -7,6 +7,7 @@ import { Container, Text } from "@nextui-org/react"
 import { useEffect } from "react"
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
 import { Database } from "../../lib/supabase/database.types"
+import { useRouter } from "next/router"
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params!
@@ -33,19 +34,6 @@ interface TvShowDetailsProps {
 }
 
 const TvShowDetails: NextPage<TvShowDetailsProps> = ({ show, season }) => {
-  const supabaseClient = useSupabaseClient<Database>()
-  const user = useUser()
-
-  useEffect(() => {
-    if (user) {
-      supabaseClient
-        .from('user_tvshow')
-        .select('watched_episodes')
-        .eq('user', user.id)
-        .then(episodes => console.log(episodes))
-    }
-  })
-
   return (
     <>
       <Head>

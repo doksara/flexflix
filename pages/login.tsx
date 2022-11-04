@@ -23,7 +23,6 @@ const Login: NextPage<LoginProps> = () => {
       })
 
     setIsLoading(false)
-    console.log(data)
   }
 
   return (

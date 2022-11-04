@@ -1,71 +1,19 @@
-import { Collapse, Checkbox, Progress, Text, styled, Button, Loading } from '@nextui-org/react'
+import { Collapse, Checkbox, Progress, Text, Button, Loading } from '@nextui-org/react'
 import { SeasonDetails } from '../../interface'
 import { useEffect, useMemo, useReducer, useState } from 'react'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '../../lib/supabase/database.types'
 import { useRouter } from 'next/router'
+import { reducer, ReducerActionType, State } from './reducer'
 
-const EpisodeItem = styled('div', {
-  display: "flex",
-  justifyContent: 'flex-start',
-  margin: 0
-})
-
-const EpisodeTitle = styled('h3', {
-
-})
+import * as S from './styles'
 
 interface EpisodeOverviewProps {
   season: SeasonDetails
 }
 
-interface State {
-  watchedShows: Record<number, boolean>
-}
-
-enum ReducerActionType {
-  MARK_WATCHED = 'MARK_WATCHED',
-  MARK_NOT_WATCHED = 'MARK_NOT_WATCHED',
-  SET_DEFAULT = 'SET_DEFAULT'
-}
-
-interface ReducerAction {
-  type: ReducerActionType;
-  payload: number;
-}
-
-const reducer = (state: State, action: ReducerAction) => {
-  const { type, payload } = action
-  
-  switch (type) {
-    case ReducerActionType.MARK_WATCHED:
-      return {
-        ...state,
-        watchedShows: {
-          ...state.watchedShows,
-          [payload]: true
-        }
-      }
-    case ReducerActionType.MARK_WATCHED:
-      return {
-        ...state,
-        watchedShows: {
-          ...state.watchedShows,
-          [payload]: false
-        }
-      }
-    case ReducerActionType.SET_DEFAULT: 
-      return {
-        ...state,
-        watchedShows: [] // TODO - fix this
-      }
-    default:
-      return state
-  }
-}
-
-const initialState = {
-  watchedShows: {}
+const initialState: State = {
+  watchedShows: []
 }
 
 export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
@@ -74,17 +22,31 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
 
   const supabaseClient = useSupabaseClient<Database>()
   const router = useRouter()
+  const user = useUser()
+  const { id } = router.query
+
+  useEffect(() => {
+    if (user) {
+      supabaseClient
+        .from('user_tvshow')
+        .select('watched_episodes')
+        .eq('user', user.id)
+        .eq('show_id', id)
+        .then(episodes => {
+          if (episodes.data && episodes.data[0]) {
+            dispatch({
+              type: ReducerActionType.SET_BATCH,
+              payload: episodes.data[0].watched_episodes!.map(t => t.toString())
+            })
+          }
+        })
+    }
+  }, [id, supabaseClient, user])
 
   const seasonProgress = useMemo(() => {
+    console.log(season.episodes?.length)
     if (season.episodes) {
-      Object
-        .keys(state.watchedShows)
-        .reduce((acc: number, item: string) => {
-          const numberKey = Number(item)
-
-          if (state.watchedShows[numberKey]) acc += 1
-          return acc
-      }, 0) / season.episodes.length * 100
+      return state.watchedShows.length / season.episodes.length * 100
     }
 
     return 0
@@ -97,7 +59,7 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
   const onChange = (checked: boolean, id: number) => {
     dispatch({ 
       type: checked ? ReducerActionType.MARK_WATCHED : ReducerActionType.MARK_NOT_WATCHED, 
-      payload: id 
+      payload: id.toString()
     })
   }
 
@@ -105,17 +67,23 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
     setIsLoading(true)
 
     const { id } = router.query
-    const watchedShowIds = Object
-      .keys(state.watchedShows)
-      .map(s => Number(s))
+    const watchedShowIds = state.watchedShows.map(s => Number(s))
 
-    const { data: { user } } = await supabaseClient
-      .auth
-      .getUser()
-
+    const existingRowId = await supabaseClient
+      .from('user_tvshow')
+      .select('id')
+      .eq("show_id", id)
+      .eq("user", user?.id)
+      .then(res => {
+        if (res.data && res.data.length) {
+          return res.data[0].id
+        }
+      })
+            
     await supabaseClient
       .from('user_tvshow')
-      .insert({ 
+      .upsert({ 
+        id: existingRowId,
         has_started_watching: true,
         watched_episodes: watchedShowIds,
         user: user?.id,
@@ -135,20 +103,22 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
       <Progress color="primary" value={seasonProgress} />
       <Collapse.Group>
         <Collapse title={`Season ${season.season_number + 1}: ${season.name}`}>
-          {season.episodes.map(episode => {
-            return (
-              <EpisodeItem key={episode.id}>
-                <p>{episode.name}</p>
-                <Checkbox
-                  aria-label={episode.name}
-                  defaultSelected={state.watchedShows[episode.id]}
-                  onChange={(e) => onChange(e, episode.id)} 
-                  size="xl" 
-                  color="secondary"
-                />
-              </EpisodeItem>
-            )
-          })}
+          <Checkbox.Group value={state.watchedShows} aria-label="Choose episodes">
+            {season.episodes.map(episode => {
+              return (
+                <S.EpisodeItem key={episode.id}>
+                  <p>{episode.name}</p>
+                  <Checkbox
+                    aria-label={episode.name}
+                    value={episode.id.toString()}
+                    onChange={(e) => onChange(e, episode.id)} 
+                    size="xl" 
+                    color="secondary"
+                  />
+                </S.EpisodeItem>
+              )
+            })}
+          </Checkbox.Group>
         </Collapse>
       </Collapse.Group>
       <Button disabled={isLoading} onPress={onSaveProgress} color="primary" css={{ px: "$13", w: "100%" }}>

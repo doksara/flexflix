@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, Input, Navbar, Text } from '@nextui-org/react'
+import { Avatar, Dropdown, Input, Navbar } from '@nextui-org/react'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import React, { Key } from 'react'
