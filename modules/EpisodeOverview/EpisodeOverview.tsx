@@ -9,14 +9,14 @@ import { reducer, ReducerActionType, State } from './reducer'
 import * as S from './styles'
 
 interface EpisodeOverviewProps {
-  season: SeasonDetails
+  seasons: SeasonDetails[]
 }
 
 const initialState: State = {
   watchedShows: []
 }
 
-export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
+export const EpisodeOverview = ({ seasons }: EpisodeOverviewProps) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -43,13 +43,11 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
     }
   }, [id, supabaseClient, user])
 
-  const seasonProgress = useMemo(() => {
-    if (season.episodes) {
-      return state.watchedShows.length / season.episodes.length * 100
-    }
-
-    return 0
-  }, [state.watchedShows, season.episodes])
+  const totalEpisodeCount = useMemo(() => {
+    return seasons.reduce((acc, item) => {  
+      return item.episodes?.length ? acc + item.episodes.length : acc
+    }, 0)
+  }, [seasons])
 
   const onChange = (checked: boolean, id: string) => {
     dispatch({ 
@@ -88,34 +86,41 @@ export const EpisodeOverview = ({ season }: EpisodeOverviewProps) => {
     setIsLoading(false)
   }
 
-  if (!season.episodes) {
-    // TODO - convert this to empty state component
-    return <Text>No season episode info.</Text>
-  }
+  if (!seasons) return <p>yolo</p>
 
   return (    
     <>
-      <Progress color="primary" value={seasonProgress} />
-      <Collapse.Group>
-        <Collapse title={`Season ${season.season_number + 1}: ${season.name}`}>
-          <Checkbox.Group value={state.watchedShows} aria-label="Choose episodes">
-            {season.episodes.map(episode => {
-              return (
-                <S.EpisodeItem key={episode.id}>
-                  <p>{episode.name}</p>
-                  <Checkbox
-                    aria-label={episode.name}
-                    value={episode.id.toString()}
-                    onChange={(e) => onChange(e, episode.id.toString())} 
-                    size="xl" 
-                    color="secondary"
-                  />
-                </S.EpisodeItem>
-              )
-            })}
-          </Checkbox.Group>
-        </Collapse>
-      </Collapse.Group>
+      <Text>Overall progress</Text>
+      <Progress color="gradient"  value={state.watchedShows.length / totalEpisodeCount * 100} css={{ marginBottom: '$20' }} />
+      {seasons.map(season => {
+        return !season.episodes
+        ? <Text>No season episode info.</Text>
+        : <>
+          <Progress striped color="primary" value={season.episodes.filter(e => state.watchedShows.includes(e.id.toString())).length / season.episodes.length * 100} />
+          <Collapse.Group key={season._id}>
+              <Collapse title={`Season ${season.season_number + 1}: ${season.name}`}>
+                <Checkbox.Group value={state.watchedShows} aria-label="Choose episodes">
+                  {season.episodes.map(episode => {
+                    return (
+                      <S.EpisodeItem key={episode.id}>
+                        <p>{episode.name}</p>
+                        <Checkbox
+                          aria-label={episode.name}
+                          value={episode.id.toString()}
+                          onChange={(e) => onChange(e, episode.id.toString())} 
+                          size="xl" 
+                          color="secondary"
+                        />
+                      </S.EpisodeItem>
+                    )
+                  })}
+                </Checkbox.Group>
+              </Collapse>
+            </Collapse.Group>
+          </>
+        })
+
+      }
       <Button disabled={isLoading} onPress={onSaveProgress} color="primary" css={{ px: "$13", w: "100%" }}>
         {isLoading 
           ? <Loading color="currentColor" size="sm" />

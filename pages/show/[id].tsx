@@ -4,10 +4,8 @@ import { getJson } from ".."
 import { SeasonDetails, TvShowDetails } from '../../interface'
 import { EpisodeOverview } from "../../modules/EpisodeOverview/EpisodeOverview"
 import { Container, Text } from "@nextui-org/react"
-import { useEffect } from "react"
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
-import { Database } from "../../lib/supabase/database.types"
-import { useRouter } from "next/router"
+import { promiseWhen } from "../../utils"
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params!
@@ -15,25 +13,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const URL = `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`
   const tvShow = await getJson<TvShowDetails>(URL)
 
-  const seasonNumber = 0 // TODO - fix this
-  const seasonUrl = `https://api.themoviedb.org/3/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}&language=en-US&page=1`
+  const promises = tvShow.seasons.map((num, index) => getJson<SeasonDetails>(`https://api.themoviedb.org/3/tv/${id}/season/${index}?api_key=${API_KEY}&language=en-US&page=1`))
 
-  const season = await getJson<SeasonDetails>(seasonUrl)
+  const seasons = await promiseWhen<SeasonDetails>(promises).then(o => {
+    const f = o.filter(o => o.response)
 
+    return f.map(i => i.response)
+  })
+console.log(seasons)
   return {
     props: {
       show: tvShow,
-      season: season
+      seasons: seasons
     }
   }
 }
 
 interface TvShowDetailsProps {
   show: TvShowDetails,
-  season: SeasonDetails
+  seasons: SeasonDetails[]
 }
 
-const TvShowDetails: NextPage<TvShowDetailsProps> = ({ show, season }) => {
+const TvShowDetails: NextPage<TvShowDetailsProps> = ({ show, seasons }) => {
+  console.log(seasons)
   return (
     <>
       <Head>
@@ -42,7 +44,7 @@ const TvShowDetails: NextPage<TvShowDetailsProps> = ({ show, season }) => {
       <Container md>
         <Text h1>{show.name}</Text>
         <Text>{show.overview}</Text>
-        <EpisodeOverview season={season} />
+        <EpisodeOverview seasons={seasons} />
       </Container>
     </>
   )
