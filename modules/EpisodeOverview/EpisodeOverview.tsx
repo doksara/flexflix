@@ -5,8 +5,7 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '../../lib/supabase/database.types'
 import { useRouter } from 'next/router'
 import { reducer, ReducerActionType, State } from './reducer'
-
-import * as S from './styles'
+import { SeasonProgress } from './components/SeasonProgress/SeasonProgress'
 
 interface EpisodeOverviewProps {
   seasons: SeasonDetails[]
@@ -92,35 +91,16 @@ export const EpisodeOverview = ({ seasons }: EpisodeOverviewProps) => {
     <>
       <Text>Overall progress</Text>
       <Progress color="gradient"  value={state.watchedShows.length / totalEpisodeCount * 100} css={{ marginBottom: '$20' }} />
-      {seasons.map(season => {
-        return !season.episodes
-        ? <Text>No season episode info.</Text>
-        : <>
-          <Progress striped color="primary" value={season.episodes.filter(e => state.watchedShows.includes(e.id.toString())).length / season.episodes.length * 100} />
-          <Collapse.Group key={season._id}>
-              <Collapse title={`Season ${season.season_number + 1}: ${season.name}`}>
-                <Checkbox.Group value={state.watchedShows} aria-label="Choose episodes">
-                  {season.episodes.map(episode => {
-                    return (
-                      <S.EpisodeItem key={episode.id}>
-                        <p>{episode.name}</p>
-                        <Checkbox
-                          aria-label={episode.name}
-                          value={episode.id.toString()}
-                          onChange={(e) => onChange(e, episode.id.toString())} 
-                          size="xl" 
-                          color="secondary"
-                        />
-                      </S.EpisodeItem>
-                    )
-                  })}
-                </Checkbox.Group>
-              </Collapse>
-            </Collapse.Group>
-          </>
-        })
-
-      }
+      
+      {seasons.map(season => 
+        <SeasonProgress 
+          key={season.id} 
+          season={season} 
+          watchedShows={state.watchedShows} 
+          onChange={onChange} 
+        /> 
+      )}
+      
       <Button disabled={isLoading} onPress={onSaveProgress} color="primary" css={{ px: "$13", w: "100%" }}>
         {isLoading 
           ? <Loading color="currentColor" size="sm" />
