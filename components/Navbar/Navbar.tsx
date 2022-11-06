@@ -1,6 +1,6 @@
-import { Navbar, Dropdown, Avatar, Input } from "@nextui-org/react"
+import { Navbar, Dropdown, Avatar, Input, Link as StyledLink } from "@nextui-org/react"
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
-import { Link } from '../Link/Link'
+import Link from 'next/link'
 import { useRouter } from "next/router"
 import { Key, useContext } from "react"
 import { SearchIcon } from '../icons/SearchIcon'
@@ -22,8 +22,10 @@ const NavigationBar = () => {
   return (
     <Navbar maxWidth="md" isBordered variant="sticky">
       <Navbar.Content hideIn="xs" variant="highlight">
-      <Link href="/" css={{ marginRight: '10px' }}>
-        Trending
+      <Link href="/" passHref>
+
+          Trending
+      
       </Link>
 
       {!user && <Link href="/login">Login</Link> }

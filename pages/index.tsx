@@ -52,29 +52,27 @@ const Home: NextPage<HomeProps> = ({ shows }) => {
           <Grid.Container gap={2} justify="center">
             {searchResults.map(show => (
               <Grid key={show.id} xs={6} md={3} lg={2}>
-                <Link passHref href={`/show/${encodeURIComponent(show.id)}`}>
-                  <a>
-                    <Card isHoverable>
-                      <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
-                        <Col>
-                          <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
-                            {show.first_air_date}
-                          </Text>
-                          <Text h4 color="white">
-                            {show.name}
-                          </Text>
-                        </Col>
-                      </Card.Header>
-                      <Card.Image
-                        src={getImagePath(show.poster_path!)}
-                        objectFit="cover"
-                        width="100%"
-                        height={340}
-                        alt="Card image background"
-                        showSkeleton
-                      />
-                    </Card>
-                  </a>
+                <Link passHref href={`/show/${encodeURIComponent(show.id)}`}>         
+                  <Card isHoverable>
+                    <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
+                      <Col>
+                        <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
+                          {show.first_air_date}
+                        </Text>
+                        <Text h4 color="white">
+                          {show.name}
+                        </Text>
+                      </Col>
+                    </Card.Header>
+                    <Card.Image
+                      src={getImagePath(show.poster_path!)}
+                      objectFit="cover"
+                      width="100%"
+                      height={340}
+                      alt="Card image background"
+                      showSkeleton
+                    />
+                  </Card>   
                 </Link>
               </Grid>
             ))}

@@ -10,7 +10,7 @@ interface NavLinkProps {
   css?: Stitches.CSS
 }
 
-const NavStyle = styled('a', {
+const NavStyle = styled('span', {
   display: 'flex',
   alignItems: 'center',
   lineHeight: 'inherit',
@@ -33,11 +33,9 @@ const NavLink = ({ href, children, css }: NavLinkProps) => {
   const router = useRouter();
 
   return (
-    <Link href={href}>
-      <NavStyle css={css} aria-current={router.pathname === href ? "page" : undefined}>
-        {children}
-      </NavStyle>
-    </Link>
+    <NavStyle css={css} aria-current={router.pathname === href ? "page" : undefined}>
+      {children}
+    </NavStyle>
   );
 };
 
