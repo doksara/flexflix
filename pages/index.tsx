@@ -2,9 +2,11 @@ import { Card, Container, Grid, Col, Text } from '@nextui-org/react'
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from 'react'
+import { SearchContext } from '../context/SearchContext'
 import { ApiResponse, TvListResultObject } from '../interface'
 import styles from '../styles/Home.module.css'
+import debounce from 'lodash/debounce'
 
 export async function getJson<T>(
   request: RequestInfo
@@ -42,7 +44,17 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ shows }) => {
-  const router = useRouter()
+  const [searchResults, setSearchResults] = useState<TvListResultObject[]>(shows)
+  const { query } = useContext(SearchContext)
+
+  useEffect(() => {
+    debounce(() => {
+      getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`)
+        .then(res => {
+          setSearchResults(res.results)
+        })
+    }, 3000)()
+  }, [query])
 
   return (
     <div className={styles.container}>
@@ -55,7 +67,7 @@ const Home: NextPage<HomeProps> = ({ shows }) => {
       <main>
         <Container>
           <Grid.Container gap={2} justify="center">
-            {shows.map(show => (
+            {searchResults.map(show => (
               <Grid key={show.id} xs={6} md={3} lg={2}>
                 <Link passHref href={`/show/${encodeURIComponent(show.id)}`}>
                   <a>

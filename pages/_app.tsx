@@ -6,6 +6,7 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { useState } from 'react';
 import { Database } from '../lib/supabase/database.types';
+import SearchContextProvider from '../context/SearchContext';
 
 function MyApp({ Component, pageProps }: AppProps<{initialSession: Session}>) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
@@ -16,9 +17,11 @@ function MyApp({ Component, pageProps }: AppProps<{initialSession: Session}>) {
       initialSession={pageProps.initialSession}
     >
       <NextUIProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <SearchContextProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SearchContextProvider>
       </NextUIProvider>
     </SessionContextProvider>
   )
