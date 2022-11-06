@@ -1,3 +1,21 @@
+export async function getJson<T>(
+  request: RequestInfo
+): Promise<T> {
+  const response = await fetch(request)
+  const body = await response.json()
+
+  return body
+}
+
+export const getImagePath = (
+  filePath: string
+) => {
+  const baseUrl = 'https://image.tmdb.org/t/p'
+  const fileSize = 'w500'
+
+  return `${baseUrl}/${fileSize}${filePath}`
+}
+
 export type ResponseObj<T> = { response?: T; error?: Error }
 
 export const promiseWhen = <T = Response>(promises: Promise<T>[]): Promise<ResponseObj<T>[]> => {

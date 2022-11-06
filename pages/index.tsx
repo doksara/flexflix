@@ -7,24 +7,7 @@ import { SearchContext } from '../context/SearchContext'
 import { ApiResponse, TvListResultObject } from '../interface'
 import styles from '../styles/Home.module.css'
 import debounce from 'lodash/debounce'
-
-export async function getJson<T>(
-  request: RequestInfo
-): Promise<T> {
-  const response = await fetch(request)
-  const body = await response.json()
-
-  return body
-}
-
-export const getImagePath = (
-  filePath: string
-) => {
-  const baseUrl = 'https://image.tmdb.org/t/p'
-  const fileSize = 'w500'
-
-  return `${baseUrl}/${fileSize}${filePath}`
-}
+import { getImagePath, getJson } from '../utils'
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const API_KEY = process.env.TMDB_API_KEY

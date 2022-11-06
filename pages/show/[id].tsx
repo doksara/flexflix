@@ -1,10 +1,9 @@
 import Head from "next/head"
 import { GetServerSideProps, NextPage } from "next"
-import { getJson } from ".."
 import { SeasonDetails, TvShowDetails } from '../../interface'
 import { EpisodeOverview } from "../../modules/EpisodeOverview/EpisodeOverview"
 import { Container, Text } from "@nextui-org/react"
-import { promiseWhen } from "../../utils"
+import { getJson, promiseWhen } from "../../utils"
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

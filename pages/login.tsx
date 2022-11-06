@@ -1,4 +1,3 @@
-import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { Button, Card, Container, Grid, Input, Loading } from "@nextui-org/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import type { NextPage } from "next";
