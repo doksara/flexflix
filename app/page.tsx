@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, Container, Grid, Col, Text } from '@nextui-org/react'
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
@@ -9,34 +11,31 @@ import styles from '../styles/Home.module.css'
 import debounce from 'lodash/debounce'
 import { getImagePath, getJson } from '../utils'
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const API_KEY = process.env.TMDB_API_KEY
-  const URL = `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
-
-  const data = await getJson<ApiResponse<TvListResultObject>>(URL)
-
-  return {
-    props: {
-      shows: data.results
-    }
-  }
-}
-
 interface HomeProps {
   shows: TvListResultObject[]
 }
 
-const Home: NextPage<HomeProps> = ({ shows }) => {
-  const [searchResults, setSearchResults] = useState<TvListResultObject[]>(shows)
+const Home: NextPage<HomeProps> = () => {
+  const [searchResults, setSearchResults] = useState<TvListResultObject[]>([])
   const { query } = useContext(SearchContext)
 
   useEffect(() => {
-    debounce(() => {
-      getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`)
-        .then(res => {
-          setSearchResults(res.results)
-        })
-    }, 3000)()
+    getJson<ApiResponse<TvListResultObject>>(`api/search/popular`)
+    .then(res => {
+      setSearchResults(res.results)
+    })
+    .catch(console.error)
+  }, [])
+
+  useEffect(() => {
+    if (query) {
+      debounce(() => {
+        getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`)
+          .then(res => {
+            setSearchResults(res.results)
+          })
+      }, 3000)()
+    }
   }, [query])
 
   return (
