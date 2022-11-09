@@ -6,7 +6,7 @@ const nextConfig = {
     domains: ['image.tmdb.org', 'via.placeholder.com']
   },
   experimental: {
-    appDir: true
+    appDir: true,
   }
 }
 
