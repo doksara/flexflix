@@ -5,7 +5,7 @@ import { SeasonDetails } from '../../interface'
 import { useEffect, useMemo, useReducer, useState } from 'react'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Database } from '../../lib/supabase/database.types'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { reducer, ReducerActionType, State } from './reducer'
 import { SeasonProgress } from './components/SeasonProgress/SeasonProgress'
 
@@ -22,9 +22,9 @@ export const EpisodeOverview = ({ seasons }: EpisodeOverviewProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const supabaseClient = useSupabaseClient<Database>()
-  const router = useRouter()
   const user = useUser()
-  const { id } = router.query
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
 
   useEffect(() => {
     if (user) {
@@ -60,7 +60,6 @@ export const EpisodeOverview = ({ seasons }: EpisodeOverviewProps) => {
   const onSaveProgress = async () => {
     setIsLoading(true)
 
-    const { id } = router.query
     const watchedShowIds = state.watchedShows
 
     const existingRowId = await supabaseClient

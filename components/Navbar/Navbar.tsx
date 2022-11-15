@@ -1,3 +1,5 @@
+'use client'
+
 import { Navbar, Dropdown, Avatar, Input, Link as StyledLink } from "@nextui-org/react"
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
 import Link from 'next/link'
