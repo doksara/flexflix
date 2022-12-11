@@ -37,4 +37,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ```
 supabase gen types typescript --linked > lib/supabase/database.types.ts
+
+supabase gen types typescript --project-id "oofsowgroyftkyvfuusb" --schema public > src/api/supabase.ts
 ```
