@@ -1,12 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { ApiResponse, TvListResultObject } from '../../../interface'
-import { getJson } from '../../../utils'
-
+import type { NextApiRequest, NextApiResponse } from "next"
+import { ApiResponse, TvListResultObject } from "../../../interface"
+import { getJson } from "../../../utils"
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<TvListResultObject>>
-) => {  
+) => {
   const API_KEY = process.env.TMDB_API_KEY
   const URL = `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
 

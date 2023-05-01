@@ -1,15 +1,15 @@
-'use client'
+"use client"
 
-import { Card, Container, Grid, Col, Text } from '@nextui-org/react'
-import type { GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useContext, useEffect, useState } from 'react'
-import { SearchContext } from '../context/SearchContext'
-import { ApiResponse, TvListResultObject } from '../interface'
-import styles from '../styles/Home.module.css'
-import debounce from 'lodash/debounce'
-import { getImagePath, getJson } from '../utils'
+import { Card, Container, Grid, Col, Text } from "@nextui-org/react"
+import type { GetStaticProps, NextPage } from "next"
+import Head from "next/head"
+import Link from "next/link"
+import { useContext, useEffect, useState } from "react"
+import { SearchContext } from "../context/SearchContext"
+import { ApiResponse, TvListResultObject } from "../interface"
+import styles from "../styles/Home.module.css"
+import debounce from "lodash/debounce"
+import { getImagePath, getJson } from "../utils"
 
 interface HomeProps {
   shows: TvListResultObject[]
@@ -21,19 +21,20 @@ const Home: NextPage<HomeProps> = () => {
 
   useEffect(() => {
     getJson<ApiResponse<TvListResultObject>>(`api/search/popular`)
-    .then(res => {
-      setSearchResults(res.results)
-    })
-    .catch(console.error)
+      .then((res) => {
+        setSearchResults(res.results)
+      })
+      .catch(console.error)
   }, [])
 
   useEffect(() => {
     if (query) {
       debounce(() => {
-        getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`)
-          .then(res => {
+        getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`).then(
+          (res) => {
             setSearchResults(res.results)
-          })
+          }
+        )
       }, 3000)()
     }
   }, [query])
@@ -49,13 +50,20 @@ const Home: NextPage<HomeProps> = () => {
       <main>
         <Container>
           <Grid.Container gap={2} justify="center">
-            {searchResults.map(show => (
+            {searchResults.map((show) => (
               <Grid key={show.id} xs={6} md={3} lg={2}>
-                <Link passHref href={`/show/${encodeURIComponent(show.id)}`}>         
+                <Link passHref href={`/show/${encodeURIComponent(show.id)}`}>
                   <Card isHoverable>
-                    <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
+                    <Card.Header
+                      css={{ position: "absolute", zIndex: 1, top: 5 }}
+                    >
                       <Col>
-                        <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
+                        <Text
+                          size={12}
+                          weight="bold"
+                          transform="uppercase"
+                          color="#ffffffAA"
+                        >
                           {show.first_air_date}
                         </Text>
                         <Text h4 color="white">
@@ -71,7 +79,7 @@ const Home: NextPage<HomeProps> = () => {
                       alt="Card image background"
                       showSkeleton
                     />
-                  </Card>   
+                  </Card>
                 </Link>
               </Grid>
             ))}
