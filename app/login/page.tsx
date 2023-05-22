@@ -8,13 +8,12 @@ import {
   Input,
   Loading,
 } from "@nextui-org/react"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import type { NextPage } from "next"
 import { IconUser } from "../../components/icons/IconUser"
 import { useState } from "react"
-import { useSupabase } from "../providers"
 import { IconUnlock } from "../../components/icons/IconUnlock"
 import { IconLock } from "../../components/icons/IconLock"
+import { useSupabase } from "../supabase-provider"
 
 interface LoginProps {}
 
@@ -23,12 +22,12 @@ const Login: NextPage<LoginProps> = () => {
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const supabase = useSupabase()
+  const { supabase } = useSupabase()
 
   const onLogin = async () => {
     setIsLoading(true)
 
-    const res = await supabase.client.auth.signInWithPassword({
+    const res = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     })
@@ -41,7 +40,7 @@ const Login: NextPage<LoginProps> = () => {
   const handleSignUp = async () => {
     setIsLoading(true)
 
-    const res = await supabase.client.auth.signUp({
+    const res = await supabase.auth.signUp({
       email: email,
       password: password,
     })

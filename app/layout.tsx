@@ -1,17 +1,34 @@
+import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { headers, cookies } from "next/headers"
 import { Navbar } from "../components/Navbar"
+import { GlobalStyle } from "./globalStyles"
 import { Providers } from "./providers"
+import SupabaseProvider from "./supabase-provider"
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const supabase = createServerComponentSupabaseClient({
+    headers,
+    cookies,
+  })
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
   return (
     <html>
-      <head></head>
       <body>
-        <Navbar />
-        <Providers>{children}</Providers>
+        <GlobalStyle />
+        <SupabaseProvider session={session}>
+          <Providers>
+            <Navbar />
+            {children}
+          </Providers>
+        </SupabaseProvider>
       </body>
     </html>
   )

@@ -1,5 +1,3 @@
-"use client"
-
 import {
   Navbar,
   Dropdown,
@@ -7,36 +5,37 @@ import {
   Input,
   Link as StyledLink,
 } from "@nextui-org/react"
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
+import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs"
+import { cookies, headers } from "next/headers"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Key, useContext } from "react"
-import { IconSearch } from "../icons/IconSearch"
-import { SearchContext } from "../../context/SearchContext"
+import { Key } from "react"
+import { useSupabase } from "../../app/supabase-provider"
+import { Search } from "./Search"
 
-const NavigationBar = () => {
-  const user = useUser()
-  console.log(user)
-  const router = useRouter()
-  const supabaseClient = useSupabaseClient()
-  const { query, searchHandler } = useContext(SearchContext)
+export default async function NavigationBar() {
+  const supabase = createServerComponentSupabaseClient({
+    headers,
+    cookies,
+  })
+
+  const { data } = await supabase.auth.getUser()
+  console.log(data.user)
 
   const handleAction = async (key: Key) => {
-    console.log(user)
     if (key === "logout") {
-      await supabaseClient.auth.signOut()
-      router.push("/login")
+      await supabase.auth.signOut()
     }
   }
 
-  return (
+  /* return (
     <Navbar maxWidth="md" isBordered variant="sticky">
       <Navbar.Content hideIn="xs" gap={8} variant="highlight">
         <Link href="/" passHref>
           Trending
         </Link>
 
-        {!user && <Link href="/login">Login</Link>}
+        {!data.user && <Link href="/login">Login</Link>}
       </Navbar.Content>
       <Navbar.Content
         css={{
@@ -54,30 +53,9 @@ const NavigationBar = () => {
             },
           }}
         >
-          <Input
-            value={query}
-            onChange={(e) => searchHandler(e.target.value)}
-            aria-label="Search for TV Shows"
-            clearable
-            contentLeft={
-              <IconSearch fill="var(--nextui-colors-accents6)" size={16} />
-            }
-            contentLeftStyling={false}
-            css={{
-              w: "100%",
-              "@xsMax": {
-                mw: "300px",
-              },
-              "& .nextui-input-content--left": {
-                h: "100%",
-                ml: "$4",
-                dflex: "center",
-              },
-            }}
-            placeholder="Search..."
-          />
+          <Search />
         </Navbar.Item>
-        {user && (
+        {data.user && (
           <Dropdown placement="bottom-right">
             <Navbar.Item>
               <Dropdown.Trigger>
@@ -95,7 +73,7 @@ const NavigationBar = () => {
               onAction={handleAction}
               variant="shadow"
             >
-              <Dropdown.Item key="profile">{user.email}</Dropdown.Item>
+              <Dropdown.Item key="profile">{data.user.email}</Dropdown.Item>
               <Dropdown.Item key="logout" withDivider color="error">
                 Logout
               </Dropdown.Item>
@@ -103,8 +81,12 @@ const NavigationBar = () => {
           </Dropdown>
         )}
       </Navbar.Content>
-    </Navbar>
+    </Navbar> 
+  ) */
+
+  return (
+    <>
+      <p>{data.user.email}</p>
+    </>
   )
 }
-
-export default NavigationBar
