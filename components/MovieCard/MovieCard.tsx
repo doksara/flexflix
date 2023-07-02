@@ -1,5 +1,4 @@
 import { getImagePath } from "../../utils"
-import { Box } from "../ui/Box"
 import * as S from "./styles"
 import Image from "next/image"
 
@@ -14,16 +13,17 @@ export const MovieCard = ({
 }) => {
   return (
     <S.MovieCard>
-      <S.MovieCardHeader>
+      <S.MovieCardPocket>
         <S.MovieCardTitle>{title}</S.MovieCardTitle>
         <S.MovieCardSubtitle>{subtitle}</S.MovieCardSubtitle>
-      </S.MovieCardHeader>
-      <S.MovieCardImageWrapper height={340}>
+      </S.MovieCardPocket>
+      <S.MovieCardImageWrapper>
         <Image
+          width={300}
+          height={342}
           src={imgSrc ? getImagePath(imgSrc) : ""}
           alt={title}
-          fill
-          style={{ borderRadius: "16px", objectFit: "cover" }}
+          style={{ borderRadius: "16px", objectFit: "cover", display: "block" }}
         />
       </S.MovieCardImageWrapper>
     </S.MovieCard>

@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, Container, Grid, Col, Text } from "@nextui-org/react"
+import { Grid } from "@nextui-org/react"
 import type { GetStaticProps, NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
@@ -11,6 +11,7 @@ import styles from "../styles/Home.module.css"
 import debounce from "lodash/debounce"
 import { getImagePath, getJson } from "../utils"
 import { MovieCard } from "../components/MovieCard/MovieCard"
+import * as S from "./styles"
 
 interface HomeProps {
   shows: TvListResultObject[]
@@ -49,10 +50,10 @@ const Home: NextPage<HomeProps> = () => {
       </Head>
 
       <main>
-        <Container>
-          <Grid.Container gap={2} justify="center">
+        <S.MainContainer>
+          <S.MainGrid>
             {searchResults.map((show) => (
-              <Grid key={show.id} xs={6} md={3} lg={2}>
+              <S.MainGridItem key={show.id}>
                 <Link
                   passHref
                   href={`/show/${encodeURIComponent(show.id)}`}
@@ -64,10 +65,10 @@ const Home: NextPage<HomeProps> = () => {
                     imgSrc={show.poster_path}
                   />
                 </Link>
-              </Grid>
+              </S.MainGridItem>
             ))}
-          </Grid.Container>
-        </Container>
+          </S.MainGrid>
+        </S.MainContainer>
       </main>
     </div>
   )

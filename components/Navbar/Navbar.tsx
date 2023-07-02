@@ -13,14 +13,11 @@ import { Key } from "react"
 import { useSupabase } from "../../app/supabase-provider"
 import { Search } from "./Search"
 
-export default async function NavigationBar() {
+export default function NavigationBar() {
   const supabase = createServerComponentSupabaseClient({
     headers,
     cookies,
   })
-
-  const { data } = await supabase.auth.getUser()
-  console.log(data.user)
 
   const handleAction = async (key: Key) => {
     if (key === "logout") {
@@ -86,7 +83,7 @@ export default async function NavigationBar() {
 
   return (
     <>
-      <p>{data.user.email}</p>
+      <p>lala</p>
     </>
   )
 }

@@ -1,11 +1,7 @@
 import styled from "styled-components"
-
-type Props = {
-  height: number
-}
-
 export const MovieCard = styled.div`
   position: relative;
+  overflow: hidden;
   border-radius: 12px;
 `
 
@@ -22,20 +18,19 @@ export const MovieCardSubtitle = styled.h4`
   letter-spacing: -0.05em;
   font-size: 1.25rem;
   font-weight: 600;
+  margin-top: 4px;
 `
 
-export const MovieCardHeader = styled.div`
+export const MovieCardPocket = styled.div`
   position: absolute;
   width: 100%;
-  padding: 8px;
+  padding: 12px;
   z-index: 1;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  background: #000000aa;
 `
 
-export const MovieCardImageWrapper = styled.div<Props>`
+export const MovieCardImageWrapper = styled.div`
   width: 100%;
-  height: ${(p) => p.height}px;
   border-radius: 12px;
 `
