@@ -5,7 +5,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ["image.tmdb.org", "via.placeholder.com"],
+    domains: ["image.tmdb.org", "via.placeholder.com", "placehold.co"],
   },
   experimental: {
     appDir: true,

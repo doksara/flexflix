@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import { Grid } from "@nextui-org/react"
 import type { GetStaticProps, NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
-import { useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { SearchContext } from "../context/SearchContext"
 import { ApiResponse, TvListResultObject } from "../interface"
 import styles from "../styles/Home.module.css"
@@ -21,6 +22,19 @@ const Home: NextPage<HomeProps> = () => {
   const [searchResults, setSearchResults] = useState<TvListResultObject[]>([])
   const { query } = useContext(SearchContext)
 
+  const applySearchResults = useCallback(
+    debounce((query) => {
+      if (query) {
+        getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`).then(
+          (res) => {
+            setSearchResults(res.results)
+          }
+        )
+      }
+    }, 3000),
+    []
+  )
+
   useEffect(() => {
     getJson<ApiResponse<TvListResultObject>>(`api/search/popular`)
       .then((res) => {
@@ -30,15 +44,7 @@ const Home: NextPage<HomeProps> = () => {
   }, [])
 
   useEffect(() => {
-    if (query) {
-      debounce(() => {
-        getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`).then(
-          (res) => {
-            setSearchResults(res.results)
-          }
-        )
-      }, 3000)()
-    }
+    applySearchResults(query)
   }, [query])
 
   return (

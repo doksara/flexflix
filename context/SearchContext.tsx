@@ -1,17 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, Dispatch, SetStateAction } from "react"
 
 interface SearchContextState {
   query: string
-  searchHandler: (s: string) => void
-}
-
-const searchContextState: SearchContextState = {
-  query: "",
-  searchHandler: () => {},
+  setQuery: Dispatch<SetStateAction<string>>
 }
 
 export const SearchContext =
-  React.createContext<SearchContextState>(searchContextState)
+  React.createContext<SearchContextState>({} as SearchContextState)
 
 interface SearchContextProviderProps {
   children: React.ReactNode
@@ -20,13 +15,9 @@ interface SearchContextProviderProps {
 const SearchContextProvider = (props: SearchContextProviderProps) => {
   const [query, setQuery] = useState("")
 
-  const searchHandler = (query: string) => {
-    setQuery(query)
-  }
-
   return (
     <SearchContext.Provider
-      value={{ query: query, searchHandler: searchHandler }}
+      value={{ query: query, setQuery: setQuery }}
     >
       {props.children}
     </SearchContext.Provider>

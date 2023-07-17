@@ -1,9 +1,4 @@
 import styled from "styled-components"
-export const MovieCard = styled.div`
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-`
 
 export const MovieCardTitle = styled.p`
   color: rgba(255, 255, 255, 0.667);

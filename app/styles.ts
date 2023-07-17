@@ -18,7 +18,7 @@ export const MainGrid = styled.ul`
   justify-content: center;
   flex-wrap: wrap;
 
-  margin: calc(-1 * 0.75rem);
+  margin: 0 calc(-1 * 0.75rem);
   width: calc(100% + 0.75rem * 2);
 `
 

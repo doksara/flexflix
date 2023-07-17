@@ -26,13 +26,7 @@ const getData = async (id: number) => {
   }
 }
 
-type TvShowDetailsProps = {
-  show: TvShowDetails
-  seasons: SeasonDetails[]
-}
-
-// @ts-ignore
-const TvShowDetails = async ({
+const TvShowDetailsPage = async ({
   show,
   seasons,
   params,
@@ -54,4 +48,4 @@ const TvShowDetails = async ({
   )
 }
 
-export default TvShowDetails
+export default TvShowDetailsPage

@@ -23,6 +23,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 13.4px;
     font-feature-settings: "kern" 1;
     font-kerning: normal;
+    background-color: #edf1f6;
   }
 
   html, body, div, span, applet, object, iframe,
