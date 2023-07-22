@@ -1,16 +1,5 @@
 import styled from "styled-components"
 
-export const MainContainer = styled.div`
-  max-width: 90rem;
-  display: block;
-
-  margin-left: auto;
-  margin-right: auto;
-
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-`
-
 export const MainGrid = styled.ul`
   all: unset;
   display: flex;

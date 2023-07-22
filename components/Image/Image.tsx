@@ -1,8 +1,10 @@
 import { SyntheticEvent, useEffect, useState } from "react"
 import NextImage, { ImageProps } from "next/image"
+import { JsxStyleProps } from "../../styled-system/types"
 
 interface ImageWithFallbackProps extends ImageProps {
   fallback?: string
+  _groupHover?: JsxStyleProps["_groupHover"]
 }
 
 export const Image = ({

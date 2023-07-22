@@ -1,13 +1,6 @@
 "use client"
 
-import {
-  Collapse,
-  Checkbox,
-  Progress,
-  Text,
-  Button,
-  Loading,
-} from "@nextui-org/react"
+import { Progress, Text, Button, Loading } from "@nextui-org/react"
 import { SeasonDetails } from "../../interface"
 import { useEffect, useMemo, useReducer, useState } from "react"
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"

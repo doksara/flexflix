@@ -3,9 +3,9 @@ import { headers, cookies } from "next/headers"
 import { ThemeProvider } from "styled-components"
 import { Navbar } from "../components/Navbar"
 import StyledComponentsRegistry from "../lib/registry"
-import { GlobalStyle } from "./globalStyles"
 import { Providers } from "./providers"
 import SupabaseProvider from "./supabase-provider"
+import "./global.css"
 
 export default async function RootLayout({
   children,
@@ -25,7 +25,6 @@ export default async function RootLayout({
     <html>
       <body>
         <StyledComponentsRegistry>
-          <GlobalStyle />
           <SupabaseProvider session={session}>
             <Providers>
               <Navbar />
