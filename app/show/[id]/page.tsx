@@ -2,8 +2,9 @@ import Head from "next/head"
 import { NextPage } from "next"
 import { SeasonDetails, TvShowDetails } from "../../../interface"
 import { getJson, promiseWhen } from "../../../utils"
-import { Test } from "./test"
 import { useSearchParams } from "next/navigation"
+import { Container, Text } from "../../../styled-system/jsx"
+import { EpisodeOverview } from "../../../modules/EpisodeOverview/EpisodeOverview"
 
 const getData = async (id: number) => {
   const API_KEY = process.env.TMDB_API_KEY
@@ -43,7 +44,11 @@ const TvShowDetailsPage = async ({
       <Head>
         <title>Test :: flexflix</title>
       </Head>
-      <Test seasons={data.seasons} show={data.show} />
+      <Container maxW="3xl">
+        <Text>{data.show.name}</Text>
+        <Text>{data.show.overview}</Text>
+        <EpisodeOverview seasons={data.seasons} showId={data.show.id} />
+      </Container>
     </>
   )
 }

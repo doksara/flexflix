@@ -17,8 +17,8 @@ export const IconSearch = ({
   return (
     <svg
       fill="none"
-      height={size || height}
       viewBox="0 0 24 24"
+      height={size || height}
       width={size || width}
       {...props}
     >

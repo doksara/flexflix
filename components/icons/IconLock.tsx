@@ -9,7 +9,6 @@ export const IconLock = ({
 }: IconProps) => {
   return (
     <svg
-      data-name="Iconly/Curved/Lock"
       xmlns="http://www.w3.org/2000/svg"
       width={size || width || 24}
       height={size || height || 24}
