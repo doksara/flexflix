@@ -3,12 +3,13 @@
 import { Progress, Text, Button, Loading } from "@nextui-org/react"
 import { SeasonDetails } from "../../interface"
 import { useEffect, useMemo, useReducer, useState } from "react"
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
+import { useUser } from "@supabase/auth-helpers-react"
 import { Database } from "../../lib/supabase/database.types"
 import { useSearchParams } from "next/navigation"
 import { reducer, ReducerActionType, State } from "./reducer"
 import { SeasonProgress } from "./components/SeasonProgress/SeasonProgress"
 import useWatchProgress from "./hooks/useWatchProgress"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 const initialState: State = {
   watchedShows: [],
@@ -24,8 +25,7 @@ export const EpisodeOverview = ({
   const [state, dispatch] = useReducer(reducer, initialState)
   const [isLoading, setIsLoading] = useState(false)
 
-  const supabaseClient = useSupabaseClient<Database>()
-  const user = useUser()
+  const supabaseClient = createClientComponentClient<Database>()
 
   const { watchedEpisodes, error } = useWatchProgress(showId)
 
@@ -57,7 +57,8 @@ export const EpisodeOverview = ({
     setIsLoading(true)
 
     const watchedShowIds = state.watchedShows
-
+    const user = await supabaseClient.auth.getSession()
+    console.log(user)
     const existingRowId = await supabaseClient
       .from("user_tvshow")
       .select("id")
@@ -85,6 +86,7 @@ export const EpisodeOverview = ({
   return (
     <>
       <Text>Overall progress</Text>
+
       <Progress
         color="gradient"
         value={(state.watchedShows.length / totalEpisodeCount) * 100}

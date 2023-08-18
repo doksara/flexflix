@@ -91,7 +91,7 @@ export interface TvShowDetails {
   name: string
   next_episode_to_air: null
   networks: Network[]
-  number_of_episodes:number
+  number_of_episodes: number
   number_of_seasons: number
   origin_country: string
   original_language: string

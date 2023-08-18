@@ -1,49 +1,22 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-"use client"
-
-import type { NextPage } from "next"
 import Head from "next/head"
-import Link from "next/link"
-import { useCallback, useContext, useEffect, useState } from "react"
-import { SearchContext } from "../context/SearchContext"
-import { ApiResponse, TvListResultObject } from "../interface"
-import debounce from "lodash/debounce"
-import { getJson } from "../utils"
-import { MovieCard } from "../components/MovieCard/MovieCard"
-import { Container, Grid, GridItem } from "../styled-system/jsx"
+import { Container } from "../styled-system/jsx"
+import { MovieList } from "modules/MovieList"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Database } from "lib/supabase/database.types"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
-interface HomeProps {
-  shows: TvListResultObject[]
-}
+interface HomeProps {}
 
-const Home: NextPage<HomeProps> = () => {
-  const [searchResults, setSearchResults] = useState<TvListResultObject[]>([])
-  const { query } = useContext(SearchContext)
+export default async function Home() {
+  const supabase = createServerComponentClient<Database>({ cookies })
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
-  const applySearchResults = useCallback(
-    debounce((query) => {
-      if (query) {
-        getJson<ApiResponse<TvListResultObject>>(`api/search/${query}`).then(
-          (res) => {
-            setSearchResults(res.results)
-          }
-        )
-      }
-    }, 3000),
-    []
-  )
-
-  useEffect(() => {
-    getJson<ApiResponse<TvListResultObject>>(`api/search/popular`)
-      .then((res) => {
-        setSearchResults(res.results)
-      })
-      .catch(console.error)
-  }, [])
-
-  useEffect(() => {
-    applySearchResults(query)
-  }, [query])
+  if (!session) {
+    redirect("/login")
+  }
 
   return (
     <div>
@@ -55,27 +28,9 @@ const Home: NextPage<HomeProps> = () => {
 
       <main>
         <Container>
-          <Grid columns={6} gap={3}>
-            {searchResults.map((show) => (
-              <GridItem key={show.id} colSpan={1} rowSpan={1} height="300px">
-                <Link
-                  passHref
-                  href={`/show/${encodeURIComponent(show.id)}`}
-                  style={{ display: "flex", height: "100%" }}
-                >
-                  <MovieCard
-                    title={show.first_air_date}
-                    subtitle={show.name}
-                    imgSrc={show.poster_path}
-                  />
-                </Link>
-              </GridItem>
-            ))}
-          </Grid>
+          <MovieList />
         </Container>
       </main>
     </div>
   )
 }
-
-export default Home

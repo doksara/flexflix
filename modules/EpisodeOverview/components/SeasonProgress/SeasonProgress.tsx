@@ -1,7 +1,6 @@
-import { Text, Progress, Badge } from "@nextui-org/react"
+import { Text, Badge } from "@nextui-org/react"
 import { Checkbox, CheckboxGroup } from "components/Checkbox"
 import { Collapse } from "components/Collapse"
-import { useMemo } from "react"
 import { SeasonDetails } from "../../../../interface"
 
 import * as S from "./styles"
@@ -17,7 +16,6 @@ export const SeasonProgress = ({
   watchedShows,
   onChange,
 }: SeasonProgressProps) => {
-  console.log("Rendering SeasonProgress")
   if (!season.episodes) {
     return <Text>No season episode info.</Text>
   }
@@ -41,7 +39,7 @@ export const SeasonProgress = ({
           </>
         }
       >
-        <CheckboxGroup>
+        <CheckboxGroup initialValues={watchedShows}>
           {season.episodes.map((episode) => {
             return (
               <S.EpisodeItem key={episode.id}>

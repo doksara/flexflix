@@ -1,7 +1,6 @@
-"use client"
-
 import Link from "next/link"
-import { Container } from "../../styled-system/jsx"
+import { Container } from "styled-system/jsx"
+import LogoutButton from "./LogoutButton"
 import { Search } from "./Search"
 
 import * as S from "./styles"
@@ -13,6 +12,7 @@ export default function NavigationBar() {
         <Link href="/">Trending</Link>
         <Link href="/watch-list">Watchlist</Link>
         <Search />
+        <LogoutButton />
       </Container>
     </S.Navbar>
   )

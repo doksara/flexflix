@@ -1,28 +1,20 @@
-import React, {
-  Children,
-  cloneElement,
-  isValidElement,
-  useCallback,
-  useMemo,
-} from "react"
+import React, { Children, cloneElement, isValidElement, useMemo } from "react"
 
 interface CheckboxGroupProps {
   children: React.ReactNode
+  initialValues: string[]
 }
 
-const CheckboxGroup = ({ children }: CheckboxGroupProps) => {
-  console.log("Rerendering checkboxGroup")
-  const handler = useCallback(() => (e: any) => console.log(e), [])
-
+const CheckboxGroup = ({ children, initialValues }: CheckboxGroupProps) => {
   const _children = useMemo(() => {
     return Children.map(children, (currentChild, currentIndex) => {
       if (isValidElement(currentChild)) {
         return cloneElement(currentChild as JSX.Element, {
-          onChange: handler,
+          checked: initialValues.includes(currentChild.props.value),
         })
       }
     })
-  }, [children, handler])
+  }, [children, initialValues])
 
   return <>{_children}</>
 }
