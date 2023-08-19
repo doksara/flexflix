@@ -27,7 +27,7 @@ export default async function Home() {
       </Head>
 
       <main>
-        <Container>
+        <Container mt={8}>
           <MovieList />
         </Container>
       </main>

@@ -7,14 +7,28 @@ interface InputProps {
   name: string
   value?: string
   type?: HTMLInputTypeAttribute
+  placeholder?: string
   onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-const Input = ({ label, name, value, type = "text", onChange }: InputProps) => {
+const Input = ({
+  label,
+  name,
+  value,
+  type = "text",
+  placeholder,
+  onChange,
+}: InputProps) => {
   return (
-    <Box>
+    <Box w="100%">
       <S.Label htmlFor={name}>{label}</S.Label>
-      <S.Field type={type} name={name} value={value} onChange={onChange} />
+      <S.Field
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
     </Box>
   )
 }

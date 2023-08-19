@@ -6,8 +6,6 @@ export const Button = styled("button", {
     paddingBottom: "0.625rem",
     paddingLeft: "1.25rem",
     paddingRight: "1.25rem",
-    marginRight: "0.5rem",
-    marginBottom: "0.5rem",
     borderRadius: "0.5rem",
     fontSize: "0.875rem",
     lineHeight: "1.25rem",

@@ -7,7 +7,7 @@ interface LoginProps {}
 
 const Login: NextPage<LoginProps> = () => {
   return (
-    <Container maxW="xl">
+    <Container maxW="md">
       <LoginForm />
       <Messages />
     </Container>

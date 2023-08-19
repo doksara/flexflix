@@ -1,15 +1,15 @@
-import React, { ReactNode } from "react"
+import React from "react"
 import * as S from "./styles"
+import { ButtonProps } from "./interface"
+import { Spinner } from "components/Spinner"
 
-type HtmlButtonType = "button" | "submit" | "reset" | undefined
-
-interface ButtonProps {
-  children: ReactNode
-  type?: HtmlButtonType
-}
-
-const Button = ({ children, type = "button" }: ButtonProps) => {
-  return <S.Button type={type}>{children}</S.Button>
+const Button = ({ children, loading, type = "button" }: ButtonProps) => {
+  return (
+    <S.Button type={type}>
+      {loading && <Spinner />}
+      {children}
+    </S.Button>
+  )
 }
 
 export default Button

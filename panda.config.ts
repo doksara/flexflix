@@ -25,25 +25,4 @@ export default defineConfig({
 
   // The output directory for your css system
   outdir: "styled-system",
-
-  patterns: {
-    extend: {
-      text: {
-        jsx: "Text",
-        jsxElement: "p",
-        description: "Component for text rendering",
-        properties: {
-          variant: {
-            type: "enum",
-            value: ["title", "subtitle", "body", "caption"],
-          },
-        },
-        transform(props: unknown) {
-          return {
-            color: undefined,
-          }
-        },
-      },
-    },
-  },
 })
