@@ -1,4 +1,4 @@
-import { Navbar } from "components/Navbar"
+import { Navbar } from "modules/Navbar"
 import StyledComponentsRegistry from "lib/registry"
 import { Providers } from "./providers"
 import "./global.css"

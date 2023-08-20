@@ -10,24 +10,26 @@ export interface IconProps {
 export const IconSearch = ({
   size,
   fill,
-  width = 24,
-  height = 24,
+  width,
+  height,
   ...props
 }: IconProps) => {
   return (
     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
       fill="none"
-      viewBox="0 0 24 24"
-      height={size || height}
-      width={size || width}
+      aria-hidden="true"
+      width={size || width || 20}
+      height={size || height || 20}
       {...props}
     >
       <path
-        d="M11.5 21a9.5 9.5 0 1 0 0-19 9.5 9.5 0 0 0 0 19ZM22 22l-2-2"
         stroke={fill}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={2}
+        strokeWidth="2"
+        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
       />
     </svg>
   )

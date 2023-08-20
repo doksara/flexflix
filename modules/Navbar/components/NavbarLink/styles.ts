@@ -1,5 +1,8 @@
 import Link from "next/link"
+import { css } from "styled-system/css"
 import { styled } from "styled-system/jsx"
+
+export const activeStyle = css({ background: "#C64855" })
 
 export const NavbarLink = styled(Link, {
   base: {
@@ -9,8 +12,9 @@ export const NavbarLink = styled(Link, {
     fontSize: "0.875rem",
     lineHeight: "1.25rem",
     fontWeight: 500,
-    color: "#D1D5DB",
+    color: "#ffffff",
+    transition: "background-color 0.1s linear",
 
-    _hover: { color: "#ffffff", backgroundColor: "#374151" },
+    _hover: { color: "#ffffff", backgroundColor: "#C64855" },
   },
 })

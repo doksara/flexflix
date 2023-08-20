@@ -1,10 +1,9 @@
 import Head from "next/head"
-import { NextPage } from "next"
-import { SeasonDetails, TvShowDetails } from "../../../interface"
+import { SeasonDetails, TvShowDetails } from "core/api/interface"
 import { getJson, promiseWhen } from "utils"
-import { useSearchParams } from "next/navigation"
-import { Container, Text } from "styled-system/jsx"
+import { Container } from "styled-system/jsx"
 import { EpisodeOverview } from "modules/EpisodeOverview/EpisodeOverview"
+import { Text } from "components/Text"
 
 const getData = async (id: number) => {
   const API_KEY = process.env.TMDB_API_KEY

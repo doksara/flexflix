@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 
 import * as S from "./styles"
-import { Box, Text } from "styled-system/jsx"
+import { Box } from "styled-system/jsx"
 import { IconChevronUp } from "components/icons/IconChevronUp"
 import { IconChevronDown } from "components/icons/IconChevronDown"
+import { Text } from "components/Text"
 
 interface Props {
   open?: boolean

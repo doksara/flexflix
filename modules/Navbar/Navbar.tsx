@@ -1,7 +1,6 @@
-import Link from "next/link"
 import { Container, HStack } from "styled-system/jsx"
 import LogoutButton from "./components/LogoutButton/LogoutButton"
-import { Search } from "./Search"
+import { Search } from "./components/Search/Search"
 
 import * as S from "./styles"
 import { NavbarLink } from "./components/NavbarLink"
@@ -9,10 +8,12 @@ import { NavbarLink } from "./components/NavbarLink"
 export default function Navbar() {
   return (
     <S.Navbar>
-      <Container paddingY={2}>
-        <HStack>
-          <NavbarLink href="/">Trending</NavbarLink>
-          <NavbarLink href="/my-library">My Library</NavbarLink>
+      <Container paddingY={3}>
+        <HStack justifyContent="space-between">
+          <HStack alignItems="center">
+            <NavbarLink href="/">Home</NavbarLink>
+            <NavbarLink href="/my-library">My Library</NavbarLink>
+          </HStack>
           <Search />
           <LogoutButton />
         </HStack>

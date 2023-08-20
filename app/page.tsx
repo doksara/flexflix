@@ -1,5 +1,5 @@
 import Head from "next/head"
-import { Container } from "../styled-system/jsx"
+import { Container } from "styled-system/jsx"
 import { MovieList } from "modules/MovieList"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "lib/supabase/database.types"

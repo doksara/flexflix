@@ -1,6 +1,5 @@
 "use client"
 
-import { ThemeProvider } from "styled-components"
 import SearchContextProvider from "../context/SearchContext"
 
 interface ProviderProps {
