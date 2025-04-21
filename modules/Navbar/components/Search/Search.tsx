@@ -1,5 +1,5 @@
-import { IconSearch } from "components/icons/IconSearch"
 import React from "react"
+import { IconSearch } from "@/shared/ui"
 import { Box } from "styled-system/jsx"
 import * as S from "./styles"
 

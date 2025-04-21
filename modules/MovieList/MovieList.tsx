@@ -7,7 +7,7 @@ import { SearchContext } from "context/SearchContext"
 import { ApiResponse, TvListResultObject } from "core/api/interface"
 import debounce from "lodash/debounce"
 import { getJson } from "utils"
-import { MovieCard } from "components/MovieCard/MovieCard"
+import { MovieCard } from "@/entities/TvShow"
 import { Grid, GridItem } from "styled-system/jsx"
 
 interface MovieListProps {}
