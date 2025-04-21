@@ -1,20 +1,17 @@
 import Head from "next/head"
 import { Container } from "styled-system/jsx"
 import { MovieList } from "modules/MovieList"
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Database } from "lib/supabase/database.types"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import { createServerClient } from "@/shared/lib"
 
 interface HomeProps {}
 
 export default async function Home() {
-  const supabase = createServerComponentClient<Database>({ cookies })
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  const supabase = await createServerClient()
 
-  if (!session) {
+  const { data, error } = await supabase.auth.getUser()
+
+  if (error || !data?.user) {
     redirect("/login")
   }
 

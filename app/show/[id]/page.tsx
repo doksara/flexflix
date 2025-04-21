@@ -26,15 +26,20 @@ const getData = async (id: number) => {
   }
 }
 
-const TvShowDetailsPage = async ({
-  show,
-  seasons,
-  params,
-}: {
-  show: TvShowDetails
-  seasons: SeasonDetails[]
-  params: { id: number }
-}) => {
+const TvShowDetailsPage = async (
+  props: {
+    show: TvShowDetails
+    seasons: SeasonDetails[]
+    params: Promise<{ id: number }>
+  }
+) => {
+  const params = await props.params;
+
+  const {
+    show,
+    seasons
+  } = props;
+
   const { id } = params
   const data = await getData(id)
 
