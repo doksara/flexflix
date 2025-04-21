@@ -1,28 +1,18 @@
 import { defineConfig } from "@pandacss/dev"
+import { createPreset } from "@park-ui/panda-preset"
+import amber from "@park-ui/panda-preset/colors/amber"
+import sand from "@park-ui/panda-preset/colors/sand"
 
 export default defineConfig({
-  // Choose framework
-  jsxFramework: "react",
-
-  // Whether to use css reset
   preflight: true,
 
-  // Where to look for your css declarations
-  include: [
-    "./app/**/*.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}",
-    "./modules/**/*.{js,jsx,ts,tsx}",
-    "./pages/**/*.{js,jsx,ts,tsx}",
+  presets: [
+    createPreset({ accentColor: amber, grayColor: sand, radius: "sm" }),
   ],
 
-  // Files to exclude
-  exclude: [],
+  include: ["./src/**/*.{js,jsx,ts,tsx,vue}", "./app/**/*.{js,jsx,ts,tsx,vue}"],
 
-  // Useful for theme customization
-  theme: {
-    extend: {},
-  },
+  jsxFramework: "react",
 
-  // The output directory for your css system
   outdir: "styled-system",
 })

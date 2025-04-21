@@ -36,7 +36,6 @@ export const MovieCard = ({
           src={imgSrc ? getImagePath(imgSrc) : ""}
           fallback="https://placehold.co/300x342.png"
           alt={title}
-          _groupHover={{ transform: "scale(1.05)" }}
         />
       </Box>
     </Box>

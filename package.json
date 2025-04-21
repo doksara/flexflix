@@ -10,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ark-ui/react": "^5.6.0",
     "@nextui-org/react": "^1.0.0-beta.12",
+    "@pandacss/dev": "^0.53.4",
     "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/auth-ui-react": "^0.4.2",
@@ -28,7 +30,7 @@
     "styled-system": "^5.1.5"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.7.0",
+    "@park-ui/panda-preset": "^0.43.1",
     "@types/node": "18.11.0",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.0",
