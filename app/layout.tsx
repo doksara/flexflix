@@ -1,5 +1,4 @@
-import { Navbar } from "modules/Navbar"
-import StyledComponentsRegistry from "lib/registry"
+import { Navbar } from "@/modules/Navbar"
 import { Providers } from "./providers"
 import "./global.css"
 
@@ -11,12 +10,10 @@ export default async function RootLayout({
   return (
     <html>
       <body>
-        <StyledComponentsRegistry>
-          <Providers>
-            <Navbar />
-            {children}
-          </Providers>
-        </StyledComponentsRegistry>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   )

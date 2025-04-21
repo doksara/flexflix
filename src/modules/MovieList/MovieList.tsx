@@ -3,8 +3,8 @@
 
 import Link from "next/link"
 import { useCallback, useContext, useEffect, useState } from "react"
-import { SearchContext } from "context/SearchContext"
-import { ApiResponse, TvListResultObject } from "core/api/interface"
+import { SearchContext } from "@/context/SearchContext"
+import { ApiResponse, TvListResultObject } from "@/core/api/interface"
 import debounce from "lodash/debounce"
 import { getJson } from "utils"
 import { MovieCard } from "@/entities/TvShow"

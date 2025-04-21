@@ -1,7 +1,7 @@
 "use client"
 
 import { Progress, Text, Button, Loading } from "@nextui-org/react"
-import { SeasonDetails } from "core/api/interface"
+import { SeasonDetails } from "@/core/api/interface"
 import { useEffect, useMemo, useReducer, useState } from "react"
 import { Database } from "../../lib/supabase/database.types"
 import { reducer, ReducerActionType, State } from "./reducer"

@@ -1,8 +1,8 @@
 import Head from "next/head"
-import { SeasonDetails, TvShowDetails } from "core/api/interface"
+import { SeasonDetails, TvShowDetails } from "@/core/api/interface"
 import { getJson, promiseWhen } from "utils"
 import { Container } from "styled-system/jsx"
-import { EpisodeOverview } from "modules/EpisodeOverview/EpisodeOverview"
+import { EpisodeOverview } from "@/modules/EpisodeOverview/EpisodeOverview"
 import { Text } from "components/Text"
 
 const getData = async (id: number) => {
@@ -26,19 +26,14 @@ const getData = async (id: number) => {
   }
 }
 
-const TvShowDetailsPage = async (
-  props: {
-    show: TvShowDetails
-    seasons: SeasonDetails[]
-    params: Promise<{ id: number }>
-  }
-) => {
-  const params = await props.params;
+const TvShowDetailsPage = async (props: {
+  show: TvShowDetails
+  seasons: SeasonDetails[]
+  params: Promise<{ id: number }>
+}) => {
+  const params = await props.params
 
-  const {
-    show,
-    seasons
-  } = props;
+  const { show, seasons } = props
 
   const { id } = params
   const data = await getData(id)

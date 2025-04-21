@@ -1,6 +1,6 @@
 import Head from "next/head"
 import { Container } from "styled-system/jsx"
-import { MovieList } from "modules/MovieList"
+import { MovieList } from "@/modules/MovieList"
 import { redirect } from "next/navigation"
 import { createServerClient } from "@/shared/lib"
 

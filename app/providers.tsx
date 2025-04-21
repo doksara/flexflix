@@ -1,6 +1,6 @@
 "use client"
 
-import SearchContextProvider from "../context/SearchContext"
+import SearchContextProvider from "../src/context/SearchContext"
 
 interface ProviderProps {
   children: React.ReactNode

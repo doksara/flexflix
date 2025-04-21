@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  compiler: {
-    styledComponents: true,
-  },
   images: {
-    domains: ["image.tmdb.org", "via.placeholder.com", "placehold.co"],
+    remotePatterns: [
+      { hostname: "image.tmdb.org" },
+      { hostname: "via.placeholder.com" },
+      { hostname: "placehold.co" },
+    ],
   },
 }
 

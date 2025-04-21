@@ -25,16 +25,13 @@
     "lodash": "^4.17.21",
     "next": "^15.3.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "styled-components": "^6.0.1",
-    "styled-system": "^5.1.5"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@park-ui/panda-preset": "^0.43.1",
     "@types/node": "18.11.0",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.0",
-    "babel-plugin-styled-components": "^2.1.4",
     "eslint": "8.25.0",
     "eslint-config-next": "^13.4.2",
     "typescript": "5.1.3",

@@ -1,7 +1,7 @@
 import { Text, Badge } from "@nextui-org/react"
 import { Checkbox, CheckboxGroup } from "components/Checkbox"
 import { Collapse } from "components/Collapse"
-import { SeasonDetails } from "core/api/interface"
+import { SeasonDetails } from "@/core/api/interface"
 
 import * as S from "./styles"
 

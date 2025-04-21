@@ -1,8 +1,7 @@
 import Link from "next/link"
 import { Input, Text } from "@/shared/ui"
-import { Box, VStack } from "styled-system/jsx"
 import { FormButton } from "./FormButton"
-import * as S from "./styles"
+import { Box, VStack, styled } from "styled-system/jsx"
 
 interface LoginFormProps {
   action: (formData: FormData) => Promise<void>
@@ -15,7 +14,7 @@ const LoginForm = ({ action }: LoginFormProps) => {
       <Text variant="caption">
         Not a member? <Link href="/register">Register here.</Link>
       </Text>
-      <S.Form action={action} mt={4}>
+      <styled.form action={action} mt={4}>
         <VStack gap={2} alignItems="stretch">
           <Input
             label="Email"
@@ -33,7 +32,7 @@ const LoginForm = ({ action }: LoginFormProps) => {
           </Box>
           <FormButton type="submit">Sign In</FormButton>
         </VStack>
-      </S.Form>
+      </styled.form>
     </VStack>
   )
 }
