@@ -1,9 +1,13 @@
 import Head from "next/head"
-import { SeasonDetails, TvShowDetails } from "@/core/api/interface"
+import {
+  MissingResource,
+  SeasonDetails,
+  TvShowDetails,
+} from "@/core/api/interface"
 import { getJson, promiseWhen } from "utils"
 import { Container } from "styled-system/jsx"
 import { EpisodeOverview } from "@/modules/EpisodeOverview/EpisodeOverview"
-import { Text } from "components/Text"
+import { Text } from "@/shared/ui"
 
 const getData = async (id: number) => {
   const API_KEY = process.env.TMDB_API_KEY
@@ -16,13 +20,17 @@ const getData = async (id: number) => {
     )
   )
 
-  const seasons = await promiseWhen<SeasonDetails>(promises).then((data) => {
+  const seasons = (await promiseWhen<SeasonDetails | MissingResource>(
+    promises
+  ).then((data) => {
     return data.filter((promise) => promise.response).map((i) => i.response)
-  })
+  })) as (SeasonDetails | MissingResource)[]
+
+  const properSeasons = seasons.filter((s) => !("success" in s))
 
   return {
     show: tvShow,
-    seasons: seasons as SeasonDetails[],
+    seasons: properSeasons as SeasonDetails[],
   }
 }
 

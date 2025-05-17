@@ -1,13 +1,13 @@
 "use client"
 
-import { Progress, Text, Button, Loading } from "@nextui-org/react"
 import { SeasonDetails } from "@/core/api/interface"
-import { useEffect, useMemo, useReducer, useState } from "react"
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react"
 import { Database } from "../../lib/supabase/database.types"
 import { reducer, ReducerActionType, State } from "./reducer"
 import { SeasonProgress } from "./components/SeasonProgress/SeasonProgress"
 import useWatchProgress from "./hooks/useWatchProgress"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Button, Heading, Progress } from "@/shared/ui"
 
 const initialState: State = {
   watchedShows: [],
@@ -42,14 +42,17 @@ export const EpisodeOverview = ({
     }, 0)
   }, [seasons])
 
-  const onChange = (checked: boolean, id: string) => {
-    dispatch({
-      type: checked
-        ? ReducerActionType.MARK_WATCHED
-        : ReducerActionType.MARK_NOT_WATCHED,
-      payload: id,
-    })
-  }
+  const onChange = useCallback(
+    (checked: boolean, id: string) => {
+      dispatch({
+        type: checked
+          ? ReducerActionType.MARK_WATCHED
+          : ReducerActionType.MARK_NOT_WATCHED,
+        payload: id,
+      })
+    },
+    [dispatch]
+  )
 
   const onSaveProgress = async () => {
     setIsLoading(true)
@@ -80,37 +83,26 @@ export const EpisodeOverview = ({
   }
 
   if (!seasons) return <p>yolo</p>
-
+  console.log(seasons)
   return (
     <>
-      <Text>Overall progress</Text>
+      <Heading>Overall progress</Heading>
 
       <Progress
-        color="gradient"
         value={(state.watchedShows.length / totalEpisodeCount) * 100}
-        css={{ marginBottom: "$20" }}
+        min={0}
+        max={100}
+        my="4"
       />
 
-      {seasons.map((season) => (
-        <SeasonProgress
-          key={season.id}
-          season={season}
-          watchedShows={state.watchedShows}
-          onChange={onChange}
-        />
-      ))}
+      <SeasonProgress
+        seasons={seasons}
+        watchedShows={state.watchedShows}
+        onChange={onChange}
+      />
 
-      <Button
-        disabled={isLoading}
-        onPress={onSaveProgress}
-        color="primary"
-        css={{ px: "$13", w: "100%" }}
-      >
-        {isLoading ? (
-          <Loading color="currentColor" size="sm" />
-        ) : (
-          <span>Save progress</span>
-        )}
+      <Button loading={isLoading} onClick={onSaveProgress}>
+        Save progress
       </Button>
     </>
   )

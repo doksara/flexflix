@@ -1,60 +1,67 @@
-import { Text, Badge } from "@nextui-org/react"
-import { Checkbox, CheckboxGroup } from "components/Checkbox"
-import { Collapse } from "components/Collapse"
 import { SeasonDetails } from "@/core/api/interface"
+import { Checkbox, Text, Badge, Accordion } from "@/shared/ui"
 
 import * as S from "./styles"
 
 interface SeasonProgressProps {
-  season: SeasonDetails
+  seasons: SeasonDetails[]
   watchedShows: string[]
   onChange: (checked: boolean, id: string) => void
 }
 
+const formatSeasonProgress = (
+  season: SeasonDetails,
+  watchedShows: string[]
+) => {
+  if (!season.episodes) return ""
+
+  const currentEpisodeCount = season.episodes.filter((e) =>
+    watchedShows.includes(e.id.toString())
+  ).length
+
+  return `${currentEpisodeCount} / ${season.episodes.length}`
+}
+
 export const SeasonProgress = ({
-  season,
+  seasons,
   watchedShows,
   onChange,
 }: SeasonProgressProps) => {
-  if (!season.episodes) {
-    return <Text>No season episode info.</Text>
-  }
-
+  console.log("Rerendering season progress")
   return (
-    <>
-      <Collapse
-        title={
-          <>
+    <Accordion.Root collapsible>
+      {seasons.map((season) => (
+        <Accordion.Item key={season.id} value={season.id.toString()}>
+          <Accordion.ItemTrigger>
             <Text>
               Season {season.season_number + 1}: {season.name}
             </Text>
-            <Badge isSquared color="secondary" variant="flat">
-              {
-                season.episodes.filter((e) =>
-                  watchedShows.includes(e.id.toString())
-                ).length
-              }{" "}
-              / {season.episodes.length}
-            </Badge>
-          </>
-        }
-      >
-        <CheckboxGroup initialValues={watchedShows}>
-          {season.episodes.map((episode) => {
-            return (
-              <S.EpisodeItem key={episode.id}>
-                <Checkbox
-                  label={episode.name}
-                  value={episode.id.toString()}
-                  onChange={(e) =>
-                    onChange(e.target.checked, episode.id.toString())
-                  }
-                />
-              </S.EpisodeItem>
-            )
-          })}
-        </CheckboxGroup>
-      </Collapse>
-    </>
+            <Badge>{formatSeasonProgress(season, watchedShows)}</Badge>
+          </Accordion.ItemTrigger>
+
+          <Accordion.ItemContent>
+            {season.episodes ? (
+              season.episodes.map((episode) => {
+                return (
+                  <S.EpisodeItem key={episode.id}>
+                    <Checkbox
+                      value={episode.id.toString()}
+                      checked={watchedShows.includes(episode.id.toString())}
+                      onCheckedChange={(e) =>
+                        onChange(!!e.checked, episode.id.toString())
+                      }
+                    >
+                      {episode.name}
+                    </Checkbox>
+                  </S.EpisodeItem>
+                )
+              })
+            ) : (
+              <Text key={season.id}>No season episode info.</Text>
+            )}
+          </Accordion.ItemContent>
+        </Accordion.Item>
+      ))}
+    </Accordion.Root>
   )
 }

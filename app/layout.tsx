@@ -1,4 +1,4 @@
-import { Navbar } from "@/modules/Navbar"
+import { Header } from "@/modules/Header"
 import { Providers } from "./providers"
 import "./global.css"
 
@@ -11,7 +11,7 @@ export default async function RootLayout({
     <html>
       <body>
         <Providers>
-          <Navbar />
+          <Header />
           {children}
         </Providers>
       </body>

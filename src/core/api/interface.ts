@@ -110,6 +110,12 @@ export interface TvShowDetails {
   vote_count: number
 }
 
+export interface MissingResource {
+  status_code: number
+  status_message: string
+  success: boolean
+}
+
 export interface SeasonDetails extends Season {
   _id: number
   episodes?: Episode[]

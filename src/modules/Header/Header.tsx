@@ -1,13 +1,11 @@
-import { Container, HStack } from "styled-system/jsx"
+import { Container, HStack, styled } from "styled-system/jsx"
 import LogoutButton from "./components/LogoutButton/LogoutButton"
 import { Search } from "./components/Search/Search"
-
-import * as S from "./styles"
 import { NavbarLink } from "./components/NavbarLink"
 
-export default function Navbar() {
+export default function Header() {
   return (
-    <S.Navbar>
+    <styled.header bg="slack.2" borderBottom="1px solid {colors.gray.6}">
       <Container paddingY={3}>
         <HStack justifyContent="space-between">
           <HStack alignItems="center">
@@ -18,6 +16,6 @@ export default function Navbar() {
           <LogoutButton />
         </HStack>
       </Container>
-    </S.Navbar>
+    </styled.header>
   )
 }
