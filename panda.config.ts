@@ -1,6 +1,7 @@
 import { defineConfig } from "@pandacss/dev"
 import { createPreset } from "@park-ui/panda-preset"
 import { accent, gray } from "./colors"
+import { globalCss } from "globalCss"
 
 export default defineConfig({
   preflight: true,
@@ -14,4 +15,6 @@ export default defineConfig({
   jsxFramework: "react",
 
   outdir: "styled-system",
+
+  globalCss: globalCss,
 })

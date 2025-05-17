@@ -52,6 +52,19 @@ export const accent = {
       "11": { value: "#ee90f4" },
       "12": { value: "#ffcaff" },
 
+      a1: { value: "#d800f409" },
+      a2: { value: "#e400fa17" },
+      a3: { value: "#ea00fd35" },
+      a4: { value: "#e900fd4e" },
+      a5: { value: "#ec00fd5c" },
+      a6: { value: "#ef0ffd6b" },
+      a7: { value: "#f341ff81" },
+      a8: { value: "#f566ff9f" },
+      a9: { value: "#f66ffeaa" },
+      a10: { value: "#f461fe9b" },
+      a11: { value: "#f895fef4" },
+      a12: { value: "#ffcaff" },
+
       contrast: { value: "#fff" },
       surface: { value: "#370a3b80" },
       indicator: { value: "#aa50af" },
@@ -130,6 +143,79 @@ export const accent = {
       value: {
         _light: "{colors.slack.light.12}",
         _dark: "{colors.slack.dark.12}",
+      },
+    },
+
+    a1: {
+      value: {
+        _light: "{colors.slack.light.a1}",
+        _dark: "{colors.slack.dark.a1}",
+      },
+    },
+    a2: {
+      value: {
+        _light: "{colors.slack.light.a2}",
+        _dark: "{colors.slack.dark.a2}",
+      },
+    },
+    a3: {
+      value: {
+        _light: "{colors.slack.light.a3}",
+        _dark: "{colors.slack.dark.a3}",
+      },
+    },
+    a4: {
+      value: {
+        _light: "{colors.slack.light.a4}",
+        _dark: "{colors.slack.dark.a4}",
+      },
+    },
+    a5: {
+      value: {
+        _light: "{colors.slack.light.a5}",
+        _dark: "{colors.slack.dark.a5}",
+      },
+    },
+    a6: {
+      value: {
+        _light: "{colors.slack.light.a6}",
+        _dark: "{colors.slack.dark.a6}",
+      },
+    },
+    a7: {
+      value: {
+        _light: "{colors.slack.light.a7}",
+        _dark: "{colors.slack.dark.a7}",
+      },
+    },
+    a8: {
+      value: {
+        _light: "{colors.slack.light.a8}",
+        _dark: "{colors.slack.dark.a8}",
+      },
+    },
+    a9: {
+      value: {
+        _light: "{colors.slack.light.a9}",
+        _dark: "{colors.slack.dark.a9}",
+      },
+    },
+    a10: {
+      value: {
+        _light: "{colors.slack.light.a10}",
+        _dark: "{colors.slack.dark.a10}",
+      },
+    },
+    a11: {
+      value: {
+        _light: "{colors.slack.light.a11}",
+        _dark: "{colors.slack.dark.a11}",
+      },
+    },
+    a12: {
+      value: {
+        _light: "{colors.slack.light.a12}",
+        _dark: "{colors.slack.dark.a12}",
       },
     },
 
@@ -301,6 +387,79 @@ export const gray = {
       value: {
         _light: "{colors.gray.light.12}",
         _dark: "{colors.gray.dark.12}",
+      },
+    },
+
+    a1: {
+      value: {
+        _light: "{colors.gray.light.a1}",
+        _dark: "{colors.gray.dark.a1}",
+      },
+    },
+    a2: {
+      value: {
+        _light: "{colors.gray.light.a2}",
+        _dark: "{colors.gray.dark.a2}",
+      },
+    },
+    a3: {
+      value: {
+        _light: "{colors.gray.light.a3}",
+        _dark: "{colors.gray.dark.a3}",
+      },
+    },
+    a4: {
+      value: {
+        _light: "{colors.gray.light.a4}",
+        _dark: "{colors.gray.dark.a4}",
+      },
+    },
+    a5: {
+      value: {
+        _light: "{colors.gray.light.a5}",
+        _dark: "{colors.gray.dark.a5}",
+      },
+    },
+    a6: {
+      value: {
+        _light: "{colors.gray.light.a6}",
+        _dark: "{colors.gray.dark.a6}",
+      },
+    },
+    a7: {
+      value: {
+        _light: "{colors.gray.light.a7}",
+        _dark: "{colors.gray.dark.a7}",
+      },
+    },
+    a8: {
+      value: {
+        _light: "{colors.gray.light.a8}",
+        _dark: "{colors.gray.dark.a8}",
+      },
+    },
+    a9: {
+      value: {
+        _light: "{colors.gray.light.a9}",
+        _dark: "{colors.gray.dark.a9}",
+      },
+    },
+    a10: {
+      value: {
+        _light: "{colors.gray.light.a10}",
+        _dark: "{colors.gray.dark.a10}",
+      },
+    },
+    a11: {
+      value: {
+        _light: "{colors.gray.light.a11}",
+        _dark: "{colors.gray.dark.a11}",
+      },
+    },
+    a12: {
+      value: {
+        _light: "{colors.gray.light.a12}",
+        _dark: "{colors.gray.dark.a12}",
       },
     },
 

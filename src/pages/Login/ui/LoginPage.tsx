@@ -8,7 +8,14 @@ interface LoginPageProps {
 
 export const LoginPage = ({ action }: LoginPageProps) => {
   return (
-    <Container maxW="md">
+    <Container
+      maxW="md"
+      h="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       <LoginForm action={action} />
       <Messages />
     </Container>

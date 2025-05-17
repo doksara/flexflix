@@ -1,6 +1,5 @@
 export * from "./IconChevronDown"
 export * from "./IconChevronUp"
 export * from "./IconLock"
-export * from "./IconSearch"
 export * from "./IconUnlock"
 export * from "./IconUser"

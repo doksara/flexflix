@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { createServerClient } from "@/shared/lib"
 import { Metadata } from "next"
 import { tvRepository } from "@/entities/TvShow"
+import { Header } from "@/modules/Header"
 
 export const metadata: Metadata = {
   title: "Discover :: flexflix",
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const tvShows = await tvRepository.getTrending()
   const supabase = await createServerClient()
-
+  console.log(tvShows)
   const { data, error } = await supabase.auth.getUser()
 
   if (error || !data?.user) {
@@ -21,10 +22,14 @@ export default async function Home() {
   }
 
   return (
-    <main>
-      <Container mt={8}>
-        <MovieList movies={tvShows.results} />
-      </Container>
-    </main>
+    <>
+      <Header />
+
+      <main>
+        <Container mt={8}>
+          <MovieList movies={tvShows.results} />
+        </Container>
+      </main>
+    </>
   )
 }

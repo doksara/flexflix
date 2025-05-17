@@ -9,7 +9,7 @@ interface LoginFormProps {
 
 const LoginForm = ({ action }: LoginFormProps) => {
   return (
-    <styled.form action={action} mt={4}>
+    <styled.form action={action} w="100%">
       <Card.Root>
         <Card.Header>
           <Card.Title>Sign in to your account</Card.Title>
@@ -21,7 +21,11 @@ const LoginForm = ({ action }: LoginFormProps) => {
           <VStack gap={2} alignItems="stretch">
             <Field.Root>
               <Field.Label>Email</Field.Label>
-              <Field.Input name="email" placeholder="john.doe@example.com" />
+              <Field.Input
+                name="email"
+                placeholder="john.doe@example.com"
+                autoComplete="email"
+              />
             </Field.Root>
             <Field.Root>
               <Field.Label>Password</Field.Label>
@@ -29,6 +33,7 @@ const LoginForm = ({ action }: LoginFormProps) => {
                 type="password"
                 name="password"
                 placeholder="••••••••"
+                autoComplete="current-password"
               />
             </Field.Root>
           </VStack>
