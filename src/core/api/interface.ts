@@ -5,6 +5,24 @@ export interface ApiResponse<T> {
   total_pages: number
 }
 
+export interface TVShow {
+  adult: boolean
+  backdrop_path: string | null
+  id: number
+  name: string
+  original_language: string
+  original_name: string
+  overview: string
+  genre_ids: number[]
+  poster_path: string | null
+  media_type: string
+  popularity: number
+  first_air_date: string
+  vote_average: number
+  vote_count: number
+  origin_country: string[]
+}
+
 export interface TvListResultObject {
   poster_path: string | null
   popularity: number

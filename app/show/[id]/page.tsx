@@ -10,14 +10,11 @@ import { EpisodeOverview } from "@/modules/EpisodeOverview/EpisodeOverview"
 import { Text } from "@/shared/ui"
 
 const getData = async (id: number) => {
-  const API_KEY = process.env.TMDB_API_KEY
-  const URL = `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`
+  const URL = `/tv/${id}&language=en-US`
   const tvShow = await getJson<TvShowDetails>(URL)
 
   const promises = tvShow.seasons.map((num, index) =>
-    getJson<SeasonDetails>(
-      `https://api.themoviedb.org/3/tv/${id}/season/${index}?api_key=${API_KEY}&language=en-US&page=1`
-    )
+    getJson<SeasonDetails>(`/tv/${id}/season/${index}&language=en-US&page=1`)
   )
 
   const seasons = (await promiseWhen<SeasonDetails | MissingResource>(

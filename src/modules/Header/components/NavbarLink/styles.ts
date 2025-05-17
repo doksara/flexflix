@@ -3,7 +3,7 @@ import { css } from "styled-system/css"
 import { styled } from "styled-system/jsx"
 
 export const activeStyle = css({
-  color: "#ffffff",
+  color: "#ffffff !important",
   background: "slack.9",
 })
 

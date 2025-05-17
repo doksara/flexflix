@@ -12,7 +12,9 @@ export default function Header() {
             <NavbarLink href="/">Home</NavbarLink>
             <NavbarLink href="/my-library">My Library</NavbarLink>
           </HStack>
+
           <Search />
+
           <LogoutButton />
         </HStack>
       </Container>

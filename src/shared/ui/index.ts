@@ -1,4 +1,4 @@
-export * from "./Input"
+export * from "./input"
 export * from "./icons"
 export * from "./Image"
 export * from "./button"
