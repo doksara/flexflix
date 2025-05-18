@@ -1,7 +1,7 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
 import { PostgrestSingleResponse } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
-import { Database } from "../../../lib/supabase/database.types"
+import { Database } from "../../../shared/lib/supabase/database.types"
 
 export default function useWatchProgress(showId: number) {
   const [watchedEpisodes, setWatchedEpisodes] = useState<string[]>()

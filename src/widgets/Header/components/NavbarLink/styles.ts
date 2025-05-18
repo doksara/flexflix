@@ -4,7 +4,7 @@ import { styled } from "styled-system/jsx"
 
 export const activeStyle = css({
   color: "#ffffff !important",
-  background: "slack.9",
+  background: "accent.9",
 })
 
 export const NavbarLink = styled(Link, {
@@ -18,6 +18,6 @@ export const NavbarLink = styled(Link, {
     color: "gray.12",
     transition: "all 0.15s linear",
 
-    _hover: { color: "#ffffff", backgroundColor: "slack.10" },
+    _hover: { color: "#ffffff", backgroundColor: "accent.10" },
   },
 })

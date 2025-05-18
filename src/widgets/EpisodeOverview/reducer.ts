@@ -1,5 +1,5 @@
 export interface State {
-  watchedShows: string[]
+  watchedShows: number[]
 }
 
 export enum ReducerActionType {
@@ -11,7 +11,7 @@ export enum ReducerActionType {
 
 interface ReducerAction {
   type: ReducerActionType
-  payload: string | string[]
+  payload: number | number[]
 }
 
 export const reducer = (state: State, action: ReducerAction) => {
@@ -21,19 +21,17 @@ export const reducer = (state: State, action: ReducerAction) => {
     case ReducerActionType.MARK_WATCHED:
       return {
         ...state,
-        watchedShows: [...state.watchedShows, payload as string],
+        watchedShows: [...state.watchedShows, +payload],
       }
     case ReducerActionType.MARK_NOT_WATCHED:
       return {
         ...state,
-        watchedShows: [
-          ...state.watchedShows.filter((ws) => ws !== (payload as string)),
-        ],
+        watchedShows: [...state.watchedShows.filter((ws) => ws !== +payload)],
       }
     case ReducerActionType.SET_BATCH:
       return {
         ...state,
-        watchedShows: [...(payload as string[])],
+        watchedShows: [...(payload as number[])],
       }
     case ReducerActionType.SET_DEFAULT:
       return {

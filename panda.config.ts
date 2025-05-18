@@ -17,4 +17,9 @@ export default defineConfig({
   outdir: "styled-system",
 
   globalCss: globalCss,
+
+  conditions: {
+    light: "[data-color-mode=light] &",
+    dark: "[data-color-mode=dark] &",
+  },
 })

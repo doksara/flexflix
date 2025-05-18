@@ -29,7 +29,7 @@ export const Search = () => {
   }
 
   return (
-    <Box position="relative" flexGrow={0.25} zIndex="100">
+    <Box position="relative" flexGrow={0.25} zIndex="100" bg="gray.1">
       <Input
         value={query}
         placeholder="Search TV shows, movies ..."

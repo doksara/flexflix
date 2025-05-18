@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "prepare": "panda codegen",
-    "dev": "rm -rf .next && next dev",
-    "build": "next build",
+    "dev": "rm -rf .next && next dev --turbopack",
+    "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint"
   },
@@ -14,9 +14,6 @@
     "@pandacss/dev": "^0.53.6",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
-    "@types/lodash": "^4.14.188",
-    "@types/styled-components": "^5.1.26",
-    "@types/styled-system": "^5.1.16",
     "encoding": "^0.1.13",
     "lodash": "^4.17.21",
     "next": "^15.3.0",
@@ -29,6 +26,7 @@
     "@types/node": "18.11.0",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.0",
+    "@types/lodash": "^4.14.188",
     "eslint": "8.25.0",
     "eslint-config-next": "^13.4.2",
     "typescript": "5.1.3",

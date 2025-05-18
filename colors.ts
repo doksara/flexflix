@@ -3,7 +3,7 @@ import { defineSemanticTokens } from "@pandacss/dev"
 import { defineTokens } from "@pandacss/dev"
 
 export const accent = {
-  name: "slack",
+  name: "colorPalette",
   tokens: defineTokens.colors({
     light: {
       "1": { value: "#fefcfe" },
@@ -32,10 +32,10 @@ export const accent = {
       a11: { value: "#5a005eb3" },
       a12: { value: "#3c003fe6" },
 
-      contrast: { value: "#fff" },
+      /*      contrast: { value: "#fff" },
       surface: { value: "#fdf5fdcc" },
       indicator: { value: "#37003b" },
-      track: { value: "#37003b" },
+      track: { value: "#37003b" }, */
     },
 
     dark: {
@@ -65,182 +65,182 @@ export const accent = {
       a11: { value: "#f895fef4" },
       a12: { value: "#ffcaff" },
 
-      contrast: { value: "#fff" },
+      /*      contrast: { value: "#fff" },
       surface: { value: "#370a3b80" },
       indicator: { value: "#aa50af" },
-      track: { value: "#aa50af" },
+      track: { value: "#aa50af" }, */
     },
   }),
 
   semanticTokens: defineSemanticTokens.colors({
     "1": {
       value: {
-        _light: "{colors.slack.light.1}",
-        _dark: "{colors.slack.dark.1}",
+        _light: "{colors.colorPalette.light.1}",
+        _dark: "{colors.colorPalette.dark.1}",
       },
     },
     "2": {
       value: {
-        _light: "{colors.slack.light.2}",
-        _dark: "{colors.slack.dark.2}",
+        _light: "{colors.colorPalette.light.2}",
+        _dark: "{colors.colorPalette.dark.2}",
       },
     },
     "3": {
       value: {
-        _light: "{colors.slack.light.3}",
-        _dark: "{colors.slack.dark.3}",
+        _light: "{colors.colorPalette.light.3}",
+        _dark: "{colors.colorPalette.dark.3}",
       },
     },
     "4": {
       value: {
-        _light: "{colors.slack.light.4}",
-        _dark: "{colors.slack.dark.4}",
+        _light: "{colors.colorPalette.light.4}",
+        _dark: "{colors.colorPalette.dark.4}",
       },
     },
     "5": {
       value: {
-        _light: "{colors.slack.light.5}",
-        _dark: "{colors.slack.dark.5}",
+        _light: "{colors.colorPalette.light.5}",
+        _dark: "{colors.colorPalette.dark.5}",
       },
     },
     "6": {
       value: {
-        _light: "{colors.slack.light.6}",
-        _dark: "{colors.slack.dark.6}",
+        _light: "{colors.colorPalette.light.6}",
+        _dark: "{colors.colorPalette.dark.6}",
       },
     },
     "7": {
       value: {
-        _light: "{colors.slack.light.7}",
-        _dark: "{colors.slack.dark.7}",
+        _light: "{colors.colorPalette.light.7}",
+        _dark: "{colors.colorPalette.dark.7}",
       },
     },
     "8": {
       value: {
-        _light: "{colors.slack.light.8}",
-        _dark: "{colors.slack.dark.8}",
+        _light: "{colors.colorPalette.light.8}",
+        _dark: "{colors.colorPalette.dark.8}",
       },
     },
     "9": {
       value: {
-        _light: "{colors.slack.light.9}",
-        _dark: "{colors.slack.dark.9}",
+        _light: "{colors.colorPalette.light.9}",
+        _dark: "{colors.colorPalette.dark.9}",
       },
     },
     "10": {
       value: {
-        _light: "{colors.slack.light.10}",
-        _dark: "{colors.slack.dark.10}",
+        _light: "{colors.colorPalette.light.10}",
+        _dark: "{colors.colorPalette.dark.10}",
       },
     },
     "11": {
       value: {
-        _light: "{colors.slack.light.11}",
-        _dark: "{colors.slack.dark.11}",
+        _light: "{colors.colorPalette.light.11}",
+        _dark: "{colors.colorPalette.dark.11}",
       },
     },
     "12": {
       value: {
-        _light: "{colors.slack.light.12}",
-        _dark: "{colors.slack.dark.12}",
+        _light: "{colors.colorPalette.light.12}",
+        _dark: "{colors.colorPalette.dark.12}",
       },
     },
 
     a1: {
       value: {
-        _light: "{colors.slack.light.a1}",
-        _dark: "{colors.slack.dark.a1}",
+        _light: "{colors.colorPalette.light.a1}",
+        _dark: "{colors.colorPalette.dark.a1}",
       },
     },
     a2: {
       value: {
-        _light: "{colors.slack.light.a2}",
-        _dark: "{colors.slack.dark.a2}",
+        _light: "{colors.colorPalette.light.a2}",
+        _dark: "{colors.colorPalette.dark.a2}",
       },
     },
     a3: {
       value: {
-        _light: "{colors.slack.light.a3}",
-        _dark: "{colors.slack.dark.a3}",
+        _light: "{colors.colorPalette.light.a3}",
+        _dark: "{colors.colorPalette.dark.a3}",
       },
     },
     a4: {
       value: {
-        _light: "{colors.slack.light.a4}",
-        _dark: "{colors.slack.dark.a4}",
+        _light: "{colors.colorPalette.light.a4}",
+        _dark: "{colors.colorPalette.dark.a4}",
       },
     },
     a5: {
       value: {
-        _light: "{colors.slack.light.a5}",
-        _dark: "{colors.slack.dark.a5}",
+        _light: "{colors.colorPalette.light.a5}",
+        _dark: "{colors.colorPalette.dark.a5}",
       },
     },
     a6: {
       value: {
-        _light: "{colors.slack.light.a6}",
-        _dark: "{colors.slack.dark.a6}",
+        _light: "{colors.colorPalette.light.a6}",
+        _dark: "{colors.colorPalette.dark.a6}",
       },
     },
     a7: {
       value: {
-        _light: "{colors.slack.light.a7}",
-        _dark: "{colors.slack.dark.a7}",
+        _light: "{colors.colorPalette.light.a7}",
+        _dark: "{colors.colorPalette.dark.a7}",
       },
     },
     a8: {
       value: {
-        _light: "{colors.slack.light.a8}",
-        _dark: "{colors.slack.dark.a8}",
+        _light: "{colors.colorPalette.light.a8}",
+        _dark: "{colors.colorPalette.dark.a8}",
       },
     },
     a9: {
       value: {
-        _light: "{colors.slack.light.a9}",
-        _dark: "{colors.slack.dark.a9}",
+        _light: "{colors.colorPalette.light.a9}",
+        _dark: "{colors.colorPalette.dark.a9}",
       },
     },
     a10: {
       value: {
-        _light: "{colors.slack.light.a10}",
-        _dark: "{colors.slack.dark.a10}",
+        _light: "{colors.colorPalette.light.a10}",
+        _dark: "{colors.colorPalette.dark.a10}",
       },
     },
     a11: {
       value: {
-        _light: "{colors.slack.light.a11}",
-        _dark: "{colors.slack.dark.a11}",
+        _light: "{colors.colorPalette.light.a11}",
+        _dark: "{colors.colorPalette.dark.a11}",
       },
     },
     a12: {
       value: {
-        _light: "{colors.slack.light.a12}",
-        _dark: "{colors.slack.dark.a12}",
+        _light: "{colors.colorPalette.light.a12}",
+        _dark: "{colors.colorPalette.dark.a12}",
       },
     },
 
-    contrast: {
+    default: {
       value: {
-        _light: "{colors.slack.light.contrast}",
-        _dark: "{colors.slack.dark.contrast}",
+        _light: "{colors.colorPalette.light.9}",
+        _dark: "{colors.colorPalette.dark.9}",
       },
     },
-    surface: {
+    emphasized: {
       value: {
-        _light: "{colors.slack.light.surface}",
-        _dark: "{colors.slack.dark.surface}",
+        _light: "{colors.colorPalette.light.10}",
+        _dark: "{colors.colorPalette.dark.10}",
       },
     },
-    indicator: {
+    fg: {
       value: {
-        _light: "{colors.slack.light.indicator}",
-        _dark: "{colors.slack.dark.indicator}",
+        _light: "white",
+        _dark: "white",
       },
     },
-    track: {
+    text: {
       value: {
-        _light: "{colors.slack.light.track}",
-        _dark: "{colors.slack.dark.track}",
+        _light: "{colors.colorPalette.light.11}",
+        _dark: "{colors.colorPalette.dark.11}",
       },
     },
   }),
@@ -276,10 +276,10 @@ export const gray = {
       a11: { value: "#0002119d" },
       a12: { value: "#000107e1" },
 
-      contrast: { value: "#fff" },
+      /*       contrast: { value: "#fff" },
       surface: { value: "#ffffffcc" },
       indicator: { value: "#8b8d98" },
-      track: { value: "#8b8d98" },
+      track: { value: "#8b8d98" }, */
     },
 
     dark: {
@@ -309,10 +309,10 @@ export const gray = {
       a11: { value: "#eff0feb9" },
       a12: { value: "#fdfdffef" },
 
-      contrast: { value: "#FFFFFF" },
+      /*       contrast: { value: "#FFFFFF" },
       surface: { value: "#111113cc" },
       indicator: { value: "#6c6e79" },
-      track: { value: "#6c6e79" },
+      track: { value: "#6c6e79" }, */
     },
   }),
 
@@ -463,7 +463,7 @@ export const gray = {
       },
     },
 
-    contrast: {
+    /*     contrast: {
       value: {
         _light: "{colors.gray.light.contrast}",
         _dark: "{colors.gray.dark.contrast}",
@@ -486,6 +486,6 @@ export const gray = {
         _light: "{colors.gray.light.track}",
         _dark: "{colors.gray.dark.track}",
       },
-    },
+    }, */
   }),
 }

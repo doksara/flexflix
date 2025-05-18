@@ -1,10 +1,10 @@
 import { Container } from "styled-system/jsx"
-import { MovieList } from "@/modules/MovieList"
+import { MovieList } from "@/widgets/MovieList"
 import { redirect } from "next/navigation"
 import { createServerClient } from "@/shared/lib"
 import { Metadata } from "next"
 import { tvRepository } from "@/entities/TvShow"
-import { Header } from "@/modules/Header"
+import { Header } from "@/widgets/Header"
 
 export const metadata: Metadata = {
   title: "Discover :: flexflix",

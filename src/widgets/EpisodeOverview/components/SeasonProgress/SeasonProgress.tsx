@@ -5,18 +5,18 @@ import * as S from "./styles"
 
 interface SeasonProgressProps {
   seasons: SeasonDetails[]
-  watchedShows: string[]
-  onChange: (checked: boolean, id: string) => void
+  watchedShows: number[]
+  onChange: (checked: boolean, id: number) => void
 }
 
 const formatSeasonProgress = (
   season: SeasonDetails,
-  watchedShows: string[]
+  watchedShows: number[]
 ) => {
   if (!season.episodes) return ""
 
   const currentEpisodeCount = season.episodes.filter((e) =>
-    watchedShows.includes(e.id.toString())
+    watchedShows.includes(e.id)
   ).length
 
   return `${currentEpisodeCount} / ${season.episodes.length}`
@@ -29,7 +29,7 @@ export const SeasonProgress = ({
 }: SeasonProgressProps) => {
   console.log("Rerendering season progress")
   return (
-    <Accordion.Root collapsible>
+    <Accordion.Root collapsible borderBottom="none">
       {seasons.map((season) => (
         <Accordion.Item key={season.id} value={season.id.toString()}>
           <Accordion.ItemTrigger>
@@ -46,10 +46,8 @@ export const SeasonProgress = ({
                   <S.EpisodeItem key={episode.id}>
                     <Checkbox
                       value={episode.id.toString()}
-                      checked={watchedShows.includes(episode.id.toString())}
-                      onCheckedChange={(e) =>
-                        onChange(!!e.checked, episode.id.toString())
-                      }
+                      checked={watchedShows.includes(episode.id)}
+                      onCheckedChange={(e) => onChange(!!e.checked, episode.id)}
                     >
                       {episode.name}
                     </Checkbox>

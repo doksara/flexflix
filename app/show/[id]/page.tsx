@@ -4,10 +4,13 @@ import {
   SeasonDetails,
   TvShowDetails,
 } from "@/core/api/interface"
-import { getJson, promiseWhen } from "utils"
-import { Container } from "styled-system/jsx"
-import { EpisodeOverview } from "@/modules/EpisodeOverview/EpisodeOverview"
-import { Text } from "@/shared/ui"
+
+import { Container, Flex } from "styled-system/jsx"
+import { EpisodeOverview } from "@/widgets/EpisodeOverview/EpisodeOverview"
+import { Badge, Heading, Text } from "@/shared/ui"
+import Image from "next/image"
+import { promiseWhen, getJson } from "@/shared/lib/http"
+import { createServerClient } from "@/shared/lib"
 
 const getData = async (id: number) => {
   const URL = `/tv/${id}&language=en-US`
@@ -32,26 +35,57 @@ const getData = async (id: number) => {
 }
 
 const TvShowDetailsPage = async (props: {
-  show: TvShowDetails
-  seasons: SeasonDetails[]
   params: Promise<{ id: number }>
 }) => {
+  const supabase = await createServerClient()
   const params = await props.params
 
-  const { show, seasons } = props
-
   const { id } = params
-  const data = await getData(id)
+  const { show, seasons } = await getData(id)
+
+  const { data, error } = await supabase
+    .from("user_progress")
+    .select("*")
+    .eq("show_id", id)
+    .single()
 
   return (
     <>
       <Head>
         <title>Test :: flexflix</title>
       </Head>
-      <Container maxW="3xl">
-        <Text>{data.show.name}</Text>
-        <Text>{data.show.overview}</Text>
-        <EpisodeOverview seasons={data.seasons} showId={data.show.id} />
+
+      <Container maxW="3xl" pt="20">
+        <Flex direction="row" gap="3">
+          <Flex direction="column" gap="3">
+            <Heading as="h1" size="2xl">
+              {show.name}
+            </Heading>
+
+            <Flex>
+              {show.genres.map((genre) => (
+                <Badge key={genre.id}>{genre.name}</Badge>
+              ))}
+            </Flex>
+
+            <Text>{show.overview}</Text>
+          </Flex>
+
+          {show.poster_path && (
+            <Image
+              src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
+              alt={show.name}
+              width={200}
+              height={300}
+            />
+          )}
+        </Flex>
+
+        <EpisodeOverview
+          seasons={seasons}
+          showId={show.id}
+          initialWatchedEpisodes={data ? data.watched_episodes || [] : []}
+        />
       </Container>
     </>
   )
