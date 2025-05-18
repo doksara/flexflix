@@ -3,8 +3,8 @@ import { css } from "styled-system/css"
 import { styled } from "styled-system/jsx"
 
 export const activeStyle = css({
-  color: "#ffffff !important",
-  background: "accent.9",
+  color: "#fff !important",
+  background: "colorPalette.10",
 })
 
 export const NavbarLink = styled(Link, {
@@ -18,6 +18,9 @@ export const NavbarLink = styled(Link, {
     color: "gray.12",
     transition: "all 0.15s linear",
 
-    _hover: { color: "#ffffff", backgroundColor: "accent.10" },
+    _hover: {
+      color: "#fff",
+      backgroundColor: "colorPalette.9",
+    },
   },
 })

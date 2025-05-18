@@ -8,15 +8,18 @@ import { SeasonProgress } from "./components/SeasonProgress/SeasonProgress"
 import { Button, Heading, Progress } from "@/shared/ui"
 import { createBrowserClient } from "@/shared/lib"
 import { User } from "@supabase/supabase-js"
-
-const initialState: State = {
-  watchedShows: [],
-}
+import { Toast } from "@/shared/ui"
 
 interface UserProgress {
   id: number | undefined
   watched_episodes: number[]
 }
+
+const toaster = Toast.createToaster({
+  placement: "bottom-end",
+  overlap: true,
+  gap: 24,
+})
 
 export const EpisodeOverview = ({
   seasons,
@@ -30,10 +33,14 @@ export const EpisodeOverview = ({
   userProgress: UserProgress
 }) => {
   const { id, watched_episodes } = userProgress
+
   const [isLoading, setIsLoading] = useState(false)
   const [state, dispatch] = useReducer(reducer, {
     watchedShows: watched_episodes,
+    hasChanges: false,
   })
+
+  const { hasChanges, watchedShows } = state
 
   const supabase = createBrowserClient()
 
@@ -63,6 +70,14 @@ export const EpisodeOverview = ({
     })
 
     setIsLoading(false)
+
+    toaster.create({
+      title: "Success",
+      description: "Progress saved successfully.",
+      type: "success",
+    })
+
+    dispatch({ type: ReducerActionType.RESET })
   }
 
   if (!seasons) return <p>yolo</p>
@@ -72,7 +87,7 @@ export const EpisodeOverview = ({
       <Heading as="h2">Overall progress</Heading>
 
       <Progress
-        value={(state.watchedShows.length / totalEpisodeCount) * 100}
+        value={(watchedShows.length / totalEpisodeCount) * 100}
         min={0}
         max={100}
         my="4"
@@ -80,13 +95,28 @@ export const EpisodeOverview = ({
 
       <SeasonProgress
         seasons={seasons}
-        watchedShows={state.watchedShows}
+        watchedShows={watchedShows}
         onChange={onChange}
       />
 
-      <Button loading={isLoading} onClick={onSaveProgress} mt="2">
+      <Button
+        loading={isLoading}
+        disabled={!hasChanges}
+        onClick={onSaveProgress}
+        mt="2"
+      >
         Save progress
       </Button>
+
+      <Toast.Toaster toaster={toaster}>
+        {(toast) => (
+          <Toast.Root key={toast.id}>
+            <Toast.Title>{toast.title}</Toast.Title>
+            <Toast.Description>{toast.description}</Toast.Description>
+            <Toast.CloseTrigger>x</Toast.CloseTrigger>
+          </Toast.Root>
+        )}
+      </Toast.Toaster>
     </>
   )
 }

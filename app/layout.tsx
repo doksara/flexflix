@@ -10,6 +10,7 @@ export default async function RootLayout({
     <html data-color-mode="light">
       <body>
         <Providers>{children}</Providers>
+        <div id="portals" />
       </body>
     </html>
   )

@@ -67,7 +67,7 @@ const TvShowDetailsPage = async (props: {
               {show.name}
             </Heading>
 
-            <Flex>
+            <Flex gap="1">
               {show.genres.map((genre) => (
                 <Badge key={genre.id}>{genre.name}</Badge>
               ))}
