@@ -43,10 +43,15 @@ const TvShowDetailsPage = async (props: {
   const { id } = params
   const { show, seasons } = await getData(id)
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   const { data, error } = await supabase
     .from("user_progress")
     .select("*")
     .eq("show_id", id)
+    .eq("user", user!.id)
     .single()
 
   return (
@@ -84,7 +89,11 @@ const TvShowDetailsPage = async (props: {
         <EpisodeOverview
           seasons={seasons}
           showId={show.id}
-          initialWatchedEpisodes={data ? data.watched_episodes || [] : []}
+          user={user!}
+          userProgress={{
+            id: data ? data.id : undefined,
+            watched_episodes: data ? data.watched_episodes || [] : [],
+          }}
         />
       </Container>
     </>

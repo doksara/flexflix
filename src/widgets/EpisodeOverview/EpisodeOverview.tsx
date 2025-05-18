@@ -6,24 +6,36 @@ import { reducer, ReducerActionType, State } from "./reducer"
 import { SeasonProgress } from "./components/SeasonProgress/SeasonProgress"
 
 import { Button, Heading, Progress } from "@/shared/ui"
+import { createBrowserClient } from "@/shared/lib"
+import { User } from "@supabase/supabase-js"
 
 const initialState: State = {
   watchedShows: [],
 }
 
+interface UserProgress {
+  id: number | undefined
+  watched_episodes: number[]
+}
+
 export const EpisodeOverview = ({
   seasons,
   showId,
-  initialWatchedEpisodes,
+  user,
+  userProgress,
 }: {
   seasons: SeasonDetails[]
   showId: number
-  initialWatchedEpisodes: number[]
+  user: User
+  userProgress: UserProgress
 }) => {
+  const { id, watched_episodes } = userProgress
   const [isLoading, setIsLoading] = useState(false)
   const [state, dispatch] = useReducer(reducer, {
-    watchedShows: initialWatchedEpisodes,
+    watchedShows: watched_episodes,
   })
+
+  const supabase = createBrowserClient()
 
   const totalEpisodeCount = useMemo(() => {
     return seasons.reduce((acc, item) => {
@@ -40,8 +52,17 @@ export const EpisodeOverview = ({
     })
   }
 
-  const onSaveProgress = () => {
-    console.log("yoyo")
+  const onSaveProgress = async () => {
+    setIsLoading(true)
+
+    await supabase.from("user_progress").upsert({
+      id,
+      show_id: showId,
+      watched_episodes: state.watchedShows,
+      user: user.id,
+    })
+
+    setIsLoading(false)
   }
 
   if (!seasons) return <p>yolo</p>
