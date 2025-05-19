@@ -27,14 +27,13 @@ export const SeasonProgress = ({
   watchedShows,
   onChange,
 }: SeasonProgressProps) => {
-  console.log("Rerendering season progress")
   return (
     <Accordion.Root collapsible borderBottom="none">
       {seasons.map((season) => (
-        <Accordion.Item key={season.id} value={season.id.toString()}>
+        <Accordion.Item key={season._id} value={season._id.toString()}>
           <Accordion.ItemTrigger>
             <Text>
-              Season {season.season_number + 1}: {season.name}
+              Season {season.season_number}: {season.name}
             </Text>
             <Badge>{formatSeasonProgress(season, watchedShows)}</Badge>
           </Accordion.ItemTrigger>
@@ -55,7 +54,7 @@ export const SeasonProgress = ({
                 )
               })
             ) : (
-              <Text key={season.id}>No season episode info.</Text>
+              <Text key={season._id}>No season episode info.</Text>
             )}
           </Accordion.ItemContent>
         </Accordion.Item>

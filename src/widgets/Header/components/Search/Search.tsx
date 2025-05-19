@@ -12,8 +12,6 @@ export const Search = () => {
 
   const { data, isLoading, error } = useSearchMulti(searchQuery)
 
-  console.log(data)
-
   const debouncedSearch = useMemo(
     () =>
       debounce((value: string) => {

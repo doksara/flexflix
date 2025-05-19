@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const tvShows = await tvRepository.getTrending()
   const supabase = await createServerClient()
-  console.log(tvShows)
+
   const { data, error } = await supabase.auth.getUser()
 
   if (error || !data?.user) {
