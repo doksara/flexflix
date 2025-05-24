@@ -1,9 +1,21 @@
-import { NextPage } from "next"
+import { createServerClient } from "@/shared/lib"
+import { MovieList } from "@/widgets/MovieList"
+import { Container } from "styled-system/jsx"
+import { Metadata } from "next"
 
-interface WatchListProps {}
-
-const WatchList: NextPage<WatchListProps> = () => {
-  return <p>a</p>
+export const metadata: Metadata = {
+  title: "My Library :: flexflix",
+  description: "Your library of watched TV shows and movies",
 }
 
-export default WatchList
+const MyLibraryPage = async () => {
+  const supabase = await createServerClient()
+
+  return (
+    <Container maxW="[768px]" pt="20">
+      {/*   <MovieList movies={tvShows.results} /> */}
+    </Container>
+  )
+}
+
+export default MyLibraryPage

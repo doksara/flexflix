@@ -1,14 +1,12 @@
-import Head from "next/head"
-import { SeasonDetails, TvShowDetails } from "@/core/api/interface"
+import Image from "next/image"
+import { SeasonDetails, TvShowDetails } from "@/shared/lib/tmdb/interface"
 import { Container, Flex } from "styled-system/jsx"
 import { EpisodeOverview } from "@/widgets/EpisodeOverview/EpisodeOverview"
 import { Badge, Heading, Text } from "@/shared/ui"
-import Image from "next/image"
 import { getJson } from "@/shared/lib/http"
 import { createServerClient } from "@/shared/lib"
 import { tvRoutes } from "@/entities/TvShow"
 import { cache } from "react"
-import { Metadata } from "next"
 
 const getTvWithSeasons = cache(async (id: number) => {
   const tvShow = await getJson<TvShowDetails>(tvRoutes.details(id))
@@ -31,7 +29,10 @@ const getTvWithSeasons = cache(async (id: number) => {
   }
 })
 
-export async function generateMetadata({ params }: { params: { id: number } }) {
+export async function generateMetadata(props: {
+  params: Promise<{ id: number }>
+}) {
+  const params = await props.params
   const tv = await getTvWithSeasons(params.id)
 
   return {
@@ -61,7 +62,7 @@ const TvShowDetailsPage = async (props: {
     .single()
 
   return (
-    <Container maxW="3xl" pt="20">
+    <Container maxW="[768px]" pt="20">
       <Flex direction="row" gap="3">
         <Flex direction="column" gap="3">
           <Heading as="h1" size="2xl">

@@ -1,6 +1,6 @@
 "use client"
 
-import { SeasonDetails } from "@/core/api/interface"
+import { SeasonDetails } from "@/shared/lib/tmdb/interface"
 import { useMemo, useReducer, useState } from "react"
 import { reducer, ReducerActionType, State } from "./reducer"
 import { SeasonProgress } from "./components/SeasonProgress/SeasonProgress"

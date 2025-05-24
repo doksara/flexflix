@@ -6,7 +6,7 @@ import { NavbarLink } from "./components/NavbarLink"
 export default function Header() {
   return (
     <styled.header bg="colorPalette.2" borderBottom="1px solid {colors.gray.6}">
-      <Container paddingY={3}>
+      <Container paddingY={3} maxW="[1344px]">
         <HStack justifyContent="space-between">
           <HStack alignItems="center">
             <NavbarLink href="/">Home</NavbarLink>

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { TvListResultObject } from "@/core/api/interface"
+import { TvListResultObject } from "@/shared/lib/tmdb/interface"
 import { MovieCard } from "@/entities/TvShow"
 import { Grid, GridItem } from "styled-system/jsx"
 

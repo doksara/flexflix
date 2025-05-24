@@ -26,7 +26,7 @@ export default async function Home() {
       <Header />
 
       <main>
-        <Container mt={8}>
+        <Container mt="sm" maxW="[1344px]">
           <MovieList movies={tvShows.results} />
         </Container>
       </main>

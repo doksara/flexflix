@@ -1,7 +1,8 @@
 import { defineConfig } from "@pandacss/dev"
 import { createPreset } from "@park-ui/panda-preset"
-import { accent, gray } from "./colors"
+import { accent, gray } from "./src/shared/ui/styled/tokens/colors"
 import { globalCss } from "globalCss"
+import { tokens } from "@/shared/ui/styled/tokens/tokens"
 
 export default defineConfig({
   preflight: true,
@@ -15,6 +16,12 @@ export default defineConfig({
   jsxFramework: "react",
 
   outdir: "styled-system",
+
+  theme: {
+    extend: {
+      tokens,
+    },
+  },
 
   globalCss: globalCss,
 

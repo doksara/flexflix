@@ -9,3 +9,7 @@ export const getImagePath = (filePath: string) => {
 
   return `${baseUrl}/${fileSize}${filePath}`
 }
+
+export const getReleaseYear = (releaseDate: string) => {
+  return new Date(releaseDate).getFullYear()
+}

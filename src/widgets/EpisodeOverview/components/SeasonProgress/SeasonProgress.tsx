@@ -1,4 +1,4 @@
-import { SeasonDetails } from "@/core/api/interface"
+import { SeasonDetails } from "@/shared/lib/tmdb/interface"
 import { Checkbox, Text, Badge, Accordion } from "@/shared/ui"
 
 import * as S from "./styles"
