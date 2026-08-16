@@ -48,6 +48,18 @@ export function discoverTvShows(params: { genreId?: number; page?: number } = {}
   });
 }
 
+export function getPopularMovies(page = 1) {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbMovieListItem>>("/movie/popular", {
+    params: { page },
+  });
+}
+
+export function getPopularTvShows(page = 1) {
+  return tmdbFetch<TmdbPaginatedResponse<TmdbTvListItem>>("/tv/popular", {
+    params: { page },
+  });
+}
+
 export function getMovieGenres() {
   return tmdbFetch<{ genres: TmdbGenre[] }>("/genre/movie/list");
 }

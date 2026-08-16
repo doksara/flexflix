@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 
 import { queryClient } from "@/shared/api";
 import { Toaster } from "@/shared/ui/sonner";
+import { TooltipProvider } from "@/shared/ui/tooltip";
 
 import { routeTree } from "./routeTree.gen";
 
@@ -19,8 +20,10 @@ export function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster />
+        <TooltipProvider>
+          <RouterProvider router={router} />
+          <Toaster />
+        </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );
