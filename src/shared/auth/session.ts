@@ -29,3 +29,15 @@ export const useSessionStore = create<SessionState>()(
     { name: "flexflix:session" },
   ),
 );
+
+export function waitForSessionHydration(): Promise<void> {
+  if (useSessionStore.persist.hasHydrated()) {
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    const unsubscribe = useSessionStore.persist.onFinishHydration(() => {
+      unsubscribe();
+      resolve();
+    });
+  });
+}

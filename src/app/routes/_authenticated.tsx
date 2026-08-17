@@ -1,9 +1,10 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
-import { useSessionStore } from "@/shared/auth";
+import { useSessionStore, waitForSessionHydration } from "@/shared/auth";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: () => {
+  beforeLoad: async () => {
+    await waitForSessionHydration();
     if (!useSessionStore.getState().isAuthenticated()) {
       throw redirect({ to: "/login" });
     }
