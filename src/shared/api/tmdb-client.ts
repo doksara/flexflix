@@ -22,6 +22,12 @@ export async function tmdbFetch<T>(
   path: string,
   options: TmdbRequestOptions = {},
 ): Promise<T> {
+  if (!TMDB_API_KEY) {
+    throw new Error(
+      "Missing VITE_TMDB_API_KEY. Set it in your .env file (see .env.example).",
+    );
+  }
+
   await acquireToken();
 
   const url = new URL(`${TMDB_API_BASE_URL}${path}`);

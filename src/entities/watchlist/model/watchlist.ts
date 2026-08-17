@@ -35,6 +35,7 @@ export interface WatchLaterEntry {
   mediaType: MediaType;
   title: string;
   posterPath: string | null;
+  genreIds: number[];
   addedAt: string;
 }
 
@@ -43,6 +44,7 @@ export type ActivityEventType =
   | "removed_from_watchlist"
   | "status_changed"
   | "rating_changed"
+  | "notes_changed"
   | "episode_watched"
   | "episode_unwatched"
   | "season_completed"

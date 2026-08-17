@@ -43,6 +43,7 @@ interface WatchlistState {
     mediaType: MediaType;
     title: string;
     posterPath: string | null;
+    genreIds: number[];
   }) => void;
   removeFromWatchLater: (mediaType: MediaType, tmdbId: number) => void;
   promoteToWatchlist: (mediaType: MediaType, tmdbId: number) => void;
@@ -66,6 +67,15 @@ function makeActivityEvent(
     timestamp: now(),
     metadata,
   };
+}
+
+let resolveWatchlistHydration: () => void;
+const watchlistHydrationPromise = new Promise<void>((resolve) => {
+  resolveWatchlistHydration = resolve;
+});
+
+export function waitForWatchlistHydration(): Promise<void> {
+  return watchlistHydrationPromise;
 }
 
 export const useWatchlistStore = create<WatchlistState>()(
@@ -155,6 +165,10 @@ export const useWatchlistStore = create<WatchlistState>()(
             ...state.entries,
             [key]: { ...entry, notes, updatedAt: now() },
           },
+          activityLog: [
+            ...state.activityLog,
+            makeActivityEvent("notes_changed", mediaType, tmdbId),
+          ],
         }));
       },
 
@@ -195,8 +209,13 @@ export const useWatchlistStore = create<WatchlistState>()(
       },
 
       markSeasonCompleted: (tmdbId, seasonNumber) => {
-        const progress = get().tvProgress[tmdbId];
-        if (!progress || progress.completedSeasons.includes(seasonNumber)) return;
+        const progress = get().tvProgress[tmdbId] ?? {
+          tmdbId,
+          watchedEpisodes: {},
+          completedSeasons: [],
+          updatedAt: now(),
+        };
+        if (progress.completedSeasons.includes(seasonNumber)) return;
         set((state) => ({
           tvProgress: {
             ...state.tvProgress,
@@ -215,12 +234,19 @@ export const useWatchlistStore = create<WatchlistState>()(
         }));
       },
 
-      addToWatchLater: ({ tmdbId, mediaType, title, posterPath }) => {
+      addToWatchLater: ({ tmdbId, mediaType, title, posterPath, genreIds }) => {
         const key = watchlistKey(mediaType, tmdbId);
         set((state) => ({
           watchLater: {
             ...state.watchLater,
-            [key]: { tmdbId, mediaType, title, posterPath, addedAt: now() },
+            [key]: {
+              tmdbId,
+              mediaType,
+              title,
+              posterPath,
+              genreIds,
+              addedAt: now(),
+            },
           },
           activityLog: [
             ...state.activityLog,
@@ -253,7 +279,7 @@ export const useWatchlistStore = create<WatchlistState>()(
           mediaType,
           title: watchLaterEntry.title,
           posterPath: watchLaterEntry.posterPath,
-          genreIds: [],
+          genreIds: watchLaterEntry.genreIds,
           status: WatchStatus.PlanToWatch,
           userRating: null,
           addedAt: timestamp,
@@ -273,6 +299,18 @@ export const useWatchlistStore = create<WatchlistState>()(
         });
       },
     }),
-    { name: "flexflix:store" },
+    {
+      name: "flexflix:store",
+      onRehydrateStorage: () => (_state, error) => {
+        if (error) {
+          console.error(
+            "Failed to hydrate watchlist from storage, clearing corrupted data.",
+            error,
+          );
+          queueMicrotask(() => useWatchlistStore.persist.clearStorage());
+        }
+        resolveWatchlistHydration();
+      },
+    },
   ),
 );

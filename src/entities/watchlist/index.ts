@@ -1,4 +1,7 @@
-export { useWatchlistStore } from "./model/watchlist-store";
+export {
+  useWatchlistStore,
+  waitForWatchlistHydration,
+} from "./model/watchlist-store";
 export { WatchStatus, watchlistKey } from "./model/watchlist";
 export type {
   ActivityEvent,
