@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { queryClient } from "@/shared/api";
+
 interface SessionState {
   sessionId: string | null;
   accountId: number | null;
@@ -14,6 +16,11 @@ interface SessionState {
   isAuthenticated: () => boolean;
 }
 
+let resolveSessionHydration: () => void;
+const sessionHydrationPromise = new Promise<void>((resolve) => {
+  resolveSessionHydration = resolve;
+});
+
 export const useSessionStore = create<SessionState>()(
   persist(
     (set, get) => ({
@@ -22,22 +29,28 @@ export const useSessionStore = create<SessionState>()(
       username: null,
       setSession: ({ sessionId, accountId, username }) =>
         set({ sessionId, accountId, username }),
-      clearSession: () =>
-        set({ sessionId: null, accountId: null, username: null }),
+      clearSession: () => {
+        set({ sessionId: null, accountId: null, username: null });
+        queryClient.clear();
+      },
       isAuthenticated: () => get().sessionId !== null,
     }),
-    { name: "flexflix:session" },
+    {
+      name: "flexflix:session",
+      onRehydrateStorage: () => (_state, error) => {
+        if (error) {
+          console.error(
+            "Failed to hydrate session from storage, clearing corrupted data.",
+            error,
+          );
+          queueMicrotask(() => useSessionStore.persist.clearStorage());
+        }
+        resolveSessionHydration();
+      },
+    },
   ),
 );
 
 export function waitForSessionHydration(): Promise<void> {
-  if (useSessionStore.persist.hasHydrated()) {
-    return Promise.resolve();
-  }
-  return new Promise((resolve) => {
-    const unsubscribe = useSessionStore.persist.onFinishHydration(() => {
-      unsubscribe();
-      resolve();
-    });
-  });
+  return sessionHydrationPromise;
 }
