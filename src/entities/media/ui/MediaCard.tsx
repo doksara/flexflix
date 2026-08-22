@@ -22,7 +22,7 @@ export function MediaCard({ media, className }: MediaCardProps) {
       to={to}
       params={{ id: String(media.id) }}
       className={cn(
-        "fx-card relative block w-full overflow-hidden rounded-xl bg-[var(--surface-container-highest)] text-on-surface hover:z-10",
+        "fx-card relative block w-full overflow-hidden rounded-xl bg-[var(--surface-container-highest)] text-foreground hover:z-10",
         className,
       )}
     >

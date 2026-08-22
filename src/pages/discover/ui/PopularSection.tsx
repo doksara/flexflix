@@ -6,7 +6,7 @@ export function PopularSection() {
   const popularTvQuery = usePopularTvShows();
 
   return (
-    <>
+    <div className="flex flex-col gap-6">
       <MediaRow
         title="Popular movies"
         media={popularMoviesQuery.data}
@@ -17,6 +17,6 @@ export function PopularSection() {
         media={popularTvQuery.data}
         isLoading={popularTvQuery.isLoading}
       />
-    </>
+    </div>
   );
 }

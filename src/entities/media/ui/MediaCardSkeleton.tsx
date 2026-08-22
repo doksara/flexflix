@@ -1,3 +1,4 @@
+import { cn } from "@/shared/lib/tailwind";
 import { Skeleton } from "@/shared/ui/skeleton";
 
 interface MediaCardSkeletonProps {
@@ -5,5 +6,5 @@ interface MediaCardSkeletonProps {
 }
 
 export function MediaCardSkeleton({ className }: MediaCardSkeletonProps) {
-  return <Skeleton className={`aspect-2/3 w-full rounded-xl ${className ?? ""}`} />;
+  return <Skeleton className={cn("aspect-2/3 w-full rounded-xl", className)} />;
 }

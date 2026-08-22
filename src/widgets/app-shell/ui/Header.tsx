@@ -28,18 +28,18 @@ export function Header() {
       </Link>
 
       <nav
-        role="tablist"
+        aria-label="Primary"
         className="absolute left-1/2 hidden -translate-x-1/2 items-stretch gap-1.5 md:flex"
       >
         {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
           <Link
             key={to}
             to={to}
-            role="tab"
             activeOptions={{ exact: to === "/" }}
             className="relative inline-flex items-center gap-2 px-3.5 pt-2.5 pb-4 font-heading text-sm font-semibold text-muted-foreground transition-colors hover:text-[var(--on-surface-variant)] [&_.tab-ind]:scale-x-0"
             activeProps={{
               className: cn("text-foreground [&_.tab-ind]:scale-x-100"),
+              "aria-current": "page",
             }}
           >
             <Icon className="size-[18px]" strokeWidth={2} />
@@ -51,7 +51,7 @@ export function Header() {
 
       <div className="ml-auto flex items-center gap-3.5">
         <Button variant="ghost" size="icon" asChild aria-label="Search">
-          <Link to="/">
+          <Link to="/" hash="discover-search">
             <Search className="size-4" />
           </Link>
         </Button>
