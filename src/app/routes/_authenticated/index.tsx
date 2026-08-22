@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated/")({
-  component: DiscoverRoute,
-});
+import { DiscoverPage } from "@/pages/discover";
 
-function DiscoverRoute() {
-  return <div>Discover placeholder</div>;
-}
+export const Route = createFileRoute("/_authenticated/")({
+  component: DiscoverPage,
+});
