@@ -9,15 +9,25 @@ export function DiscoverPage() {
   const isSearching = query.trim().length > 0;
 
   return (
-    <div className="flex flex-col gap-6">
-      <SearchBar value={query} onChange={setQuery} />
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-6 pt-4 sm:pt-8">
+        <div>
+          <span className="text-[0.75rem] font-semibold tracking-[0.05em] text-[var(--on-surface-muted)] uppercase">
+            Discovery, reimagined
+          </span>
+          <h1 className="mt-1.5 font-heading text-[2.75rem] leading-[1.1] font-bold tracking-[-0.018em] text-foreground sm:text-[3.5rem] sm:leading-[1.06] sm:font-extrabold sm:tracking-[-0.02em]">
+            What are you in the mood for?
+          </h1>
+        </div>
+        <SearchBar value={query} onChange={setQuery} />
+      </div>
       {isSearching ? (
         <SearchResults searchQuery={searchQuery} />
       ) : (
-        <>
+        <div className="flex flex-col gap-14">
           <TrendingSection />
           <PopularSection />
-        </>
+        </div>
       )}
     </div>
   );

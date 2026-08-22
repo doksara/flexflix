@@ -7,16 +7,19 @@ interface PosterImageProps {
   posterPath: string | null;
   title: string;
   className?: string;
+  /** Fill the parent's box instead of sizing its own aspect ratio (for compositing under a scrim/overlay). */
+  fill?: boolean;
 }
 
-export function PosterImage({ posterPath, title, className }: PosterImageProps) {
+export function PosterImage({ posterPath, title, className, fill = false }: PosterImageProps) {
   const src = posterUrl(posterPath);
 
   if (!src) {
     return (
       <div
         className={cn(
-          "flex aspect-2/3 w-full items-center justify-center rounded-lg bg-muted text-muted-foreground",
+          "flex items-center justify-center bg-muted text-muted-foreground",
+          fill ? "absolute inset-0" : "aspect-2/3 w-full rounded-lg",
           className,
         )}
       >
@@ -30,7 +33,11 @@ export function PosterImage({ posterPath, title, className }: PosterImageProps) 
       src={src}
       alt={title}
       loading="lazy"
-      className={cn("aspect-2/3 w-full rounded-lg object-cover", className)}
+      className={cn(
+        "object-cover",
+        fill ? "absolute inset-0 h-full w-full" : "aspect-2/3 w-full rounded-lg",
+        className,
+      )}
     />
   );
 }

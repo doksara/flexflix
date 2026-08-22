@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 
 import { Header } from "./Header";
 import { MobileNav } from "./MobileNav";
-import { Sidebar } from "./Sidebar";
 
 interface AppShellProps {
   children: ReactNode;
@@ -10,13 +9,12 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="flex min-h-svh">
-      <Sidebar />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Header />
-        <main className="flex-1 overflow-y-auto p-4">{children}</main>
-        <MobileNav />
-      </div>
+    <div className="flex min-h-svh flex-col bg-background">
+      <Header />
+      <main className="mx-auto w-full max-w-[var(--content-max)] flex-1 px-4 pb-24 pt-6 sm:px-6 md:px-10 md:pb-6">
+        {children}
+      </main>
+      <MobileNav />
     </div>
   );
 }

@@ -65,7 +65,7 @@ src/
     show-detail/   ui/ShowDetailPage.tsx
 
   widgets/
-    app-shell/         ui/AppShell.tsx, ui/Sidebar.tsx, ui/Header.tsx, ui/MobileNav.tsx
+    app-shell/         ui/AppShell.tsx, ui/Header.tsx, ui/MobileNav.tsx
     season-tracker/    ui/SeasonTracker.tsx, ui/SeasonAccordion.tsx,
                        ui/EpisodeRow.tsx, ui/SeasonProgressBar.tsx
 
@@ -78,7 +78,7 @@ src/
 
   entities/
     media/
-      ui/MediaCard.tsx, ui/MediaGrid.tsx, ui/MediaListItem.tsx,
+      ui/MediaCard.tsx, ui/MediaGrid.tsx, ui/MediaRow.tsx, ui/MediaListItem.tsx,
       ui/MediaCardSkeleton.tsx, ui/PosterImage.tsx
       model/media.ts                  # MediaType, WatchStatus enums
       api/media-queries.ts            # TanStack Query hooks
@@ -99,7 +99,6 @@ src/
       tmdb-auth.ts                    # 3-step auth API functions
     lib/
       image.ts                        # posterUrl(), backdropUrl()
-      theme.ts                        # Dark/light theme store
     config/
       tmdb.ts                         # Base URLs, image URLs
 ```
@@ -229,6 +228,30 @@ Images: `https://image.tmdb.org/t/p/{size}{path}` — use `w342` for posters, `w
 
 ---
 
+## Design System
+
+**Source:** Claude Design project ["FlexFlix Watchlist Manager"](https://claude.ai/design/p/bbf06337-ef19-4d76-a3fd-729bde977af1), design system **Midnight Cinematheque** ("Depth Through Darkness"). Token files: `ds/tokens/{colors,typography,spacing}.css`. Reference component implementations (Badge, Button, IconButton, Input, Tag, ProgressBar, Avatar, MediaCard, GlassRail, Tabs) live in the project's `midnight-cinematheque-design-system-*` bundle.
+
+> **Note:** This section was missing from the original plan — the design link was shared but never captured here, so Phase 3 was first implemented against bare shadcn defaults with no connection to it. Phase 3 has been redone against this spec (see below). The first redo was still based only on the token/component files, not the actual `FlexFlix.dc.html` canvas — that produced wrong guesses (icon-only nav instead of the `Tabs` component's icon+label, a generic centered card instead of the real two-column Login screen). A second pass read `FlexFlix.dc.html` itself plus `ds/ds_bundle.js`/`ds/styles.css`/`support.js` and corrected both. **Always read `FlexFlix.dc.html` directly, not just the token/component files** — it's the authoritative layout for every screen (login, browse, search, watchlist, history, profile, title detail).
+
+### Tokens (dark-only — no light variant is defined)
+
+- **Color:** deep-indigo/midnight surface ladder (`--surface: #060e20` … `--surface-container-highest`), primary = electric indigo (`--primary: #a3a6ff`), secondary = sunset orange (`--secondary: #fd933d`, accents/ratings/progress/active-state), tertiary = soft rose. Borders are "ghost" — low-alpha, never full-opacity lines. Elevation is tonal ("aura") + colored glow, never a plain drop shadow.
+- **Typography:** two families — **Manrope** (display/headline/title, weights 600–800, mapped to the `font-heading` Tailwind token) for the cinematic voice, **Inter** (body/label, mapped to `font-sans`) for reading/metadata. Full scale from `display-lg` (72px) down to `label-sm` (11px, uppercase, tracked).
+- **Spacing/shape/motion:** 4px spacing scale, `--radius-xl` (12px) for media cards, `--radius-3xl` (28px) for hero/panel containers, `--content-max: 1320px` content rail, soft/emphasis easing curves.
+
+### Component mapping
+
+| Design component | App implementation |
+|---|---|
+| `Tabs` (icon + label + underline) | `widgets/app-shell/ui/Header.tsx` — sticky glass topbar with centered nav (replaces the left `Sidebar`, which the design doesn't use) |
+| `MediaCard` | `entities/media/ui/MediaCard.tsx` — poster + bottom scrim, title bleeds over image, hover = scale + glow |
+| Row layout (`fx-row-scroller` / `fx-section-head`) | `entities/media/ui/MediaRow.tsx` — used by Discover's Trending/Popular sections |
+| Search hero (`fx-search-hero` / pill input) | `pages/discover/ui/SearchBar.tsx` |
+| `Badge`, `Button`, `Input` | `shared/ui/badge.tsx`, `button.tsx`, `input.tsx` — retheme shadcn's own variants to match rather than duplicating a parallel component set |
+
+---
+
 ## Implementation Phases
 
 ### Phase 0: Scaffold & Foundation
@@ -259,14 +282,16 @@ Images: `https://image.tmdb.org/t/p/{size}{path}` — use `w342` for posters, `w
 - `entities/watchlist/model/watchlist-store.ts` — full Zustand store with activity logging
 - **Verify:** Store actions work, activity log populates, data survives refresh.
 
-### Phase 3: App Shell + Media Cards + Discover
+### Phase 3: App Shell + Media Cards + Discover — built against the [Design System](#design-system)
+- Retheme `app/styles/globals.css` with Midnight Cinematheque tokens (colors, Manrope/Inter typography, spacing/radius/elevation) — this underpins every later phase, not just this one
+- Retheme `shared/ui/button.tsx`, `badge.tsx`, `input.tsx` variants to match the design's Button/Badge/Input specs (pill buttons, tonal badges, pill glass inputs)
 - shadcn: `command`, `card`, `badge`, `skeleton`, `scroll-area`, `sheet`, `navigation-menu`, `avatar`, `tooltip`
-- `widgets/app-shell/` — AppShell, Sidebar, Header, MobileNav
-- `entities/media/ui/` — MediaCard, MediaGrid, MediaCardSkeleton, PosterImage
+- `widgets/app-shell/` — AppShell, Header (glass topbar with centered nav, no sidebar), MobileNav
+- `entities/media/ui/` — MediaCard (poster + scrim + hover glow), MediaRow (horizontal scroll row), MediaGrid, MediaCardSkeleton, PosterImage
 - `features/search-media/` — debounced search hook
 - `features/browse-media/` — trending, discover, genre hooks
-- `pages/discover/` — DiscoverPage with inline SearchBar, TrendingSection, PopularSection
-- **Verify:** Login → Discover shows trending. Search works inline. Cards link to detail routes.
+- `pages/discover/` — DiscoverPage with hero-style SearchBar (pill input), TrendingSection/PopularSection as horizontal scroll rows, SearchResults as a grid
+- **Verify:** Login → Discover shows trending. Search works inline. Cards link to detail routes. Visually matches the Midnight Cinematheque design doc (topbar nav, card hover glow, dark cinematic palette).
 
 ### Phase 4: Detail Pages + Watchlist Actions
 - shadcn: `tabs`, `select`, `tooltip`, `dropdown-menu`, `dialog`, `textarea`
@@ -295,8 +320,9 @@ Images: `https://image.tmdb.org/t/p/{size}{path}` — use `w342` for posters, `w
 - **Verify:** Full flow: add show → watch episodes → see "Next: S01E04" on Continue Watching. Promote works.
 
 ### Phase 7: Profile Page
+> `pages/profile/ui/ProfilePage.tsx` already exists as a minimal shell (avatar, username, Log out) — the Phase 3 design-fidelity fix moved logout there because the design's topbar only has Search + Avatar, not a logout icon. Build the rest on top of that file instead of starting from a placeholder.
 - `pages/profile/model/profile-stats.ts` — stats computed from store + activity log
-- `pages/profile/` — ProfilePage with UserHeader, StatsOverview, StatusBreakdown, RecentActivity, GenreDistribution
+- `pages/profile/` — extend ProfilePage with StatsOverview, StatusBreakdown, RecentActivity, GenreDistribution
 - Stats: total items, episodes watched, avg rating, status breakdown, genre distribution, recent activity feed
 - **Verify:** Stats reflect actual data. Empty state shows zeros gracefully.
 
@@ -305,7 +331,7 @@ Images: `https://image.tmdb.org/t/p/{size}{path}` — use `w342` for posters, `w
 - ErrorBoundary + ApiError components
 - Toast notifications for all user actions
 - Responsive: mobile bottom nav, tablet collapsible sidebar, desktop persistent sidebar
-- Dark/light theme toggle (`shared/lib/theme.ts`)
+- ~~Dark/light theme toggle~~ — dropped: Midnight Cinematheque is a dark-only design system, no light variant is defined in the source
 - Page titles per route
 - Logout flow (delete TMDB session + clear store + redirect)
 - Session expiry handling (401 → clear + redirect)

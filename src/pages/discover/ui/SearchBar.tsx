@@ -9,13 +9,13 @@ interface SearchBarProps {
 
 export function SearchBar({ value, onChange }: SearchBarProps) {
   return (
-    <div className="relative">
-      <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+    <div className="relative w-full max-w-[720px]">
+      <Search className="pointer-events-none absolute top-1/2 left-4 size-[19px] -translate-y-1/2 text-muted-foreground" />
       <Input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Search movies and TV shows…"
-        className="pl-9"
+        className="h-13 pl-11 text-base"
       />
     </div>
   );

@@ -11,7 +11,7 @@ interface MediaGridProps {
 export function MediaGrid({ media, isLoading, skeletonCount = 12 }: MediaGridProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+      <div className="grid grid-cols-2 gap-[var(--card-gap)] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {Array.from({ length: skeletonCount }).map((_, index) => (
           <MediaCardSkeleton key={index} />
         ))}
@@ -26,7 +26,7 @@ export function MediaGrid({ media, isLoading, skeletonCount = 12 }: MediaGridPro
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+    <div className="grid grid-cols-2 gap-[var(--card-gap)] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
       {media.map((item) => (
         <MediaCard key={`${item.mediaType}:${item.id}`} media={item} />
       ))}
