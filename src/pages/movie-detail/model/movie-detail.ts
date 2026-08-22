@@ -1,11 +1,11 @@
 import { MediaType, useMovieDetails } from "@/entities/media";
 import type { MediaSummary } from "@/entities/media";
-import { backdropUrl, posterUrl } from "@/shared/lib/image";
+import { formatDate } from "@/shared/lib/date";
+import { backdropUrl } from "@/shared/lib/image";
 
 export interface MovieDetailViewModel {
   media: MediaSummary;
   backdropSrc: string | null;
-  posterSrc: string | null;
   year: string | null;
   runtimeLabel: string | null;
   rating: string | null;
@@ -25,15 +25,6 @@ function formatRuntime(minutes: number | null): string | null {
   return `${hours}h ${mins}m`;
 }
 
-function formatDate(dateStr: string | null | undefined): string | null {
-  if (!dateStr) return null;
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
 export function useMovieDetail(id: number) {
   const query = useMovieDetails(id);
   const movie = query.data;
@@ -51,7 +42,6 @@ export function useMovieDetail(id: number) {
         genreIds: movie.genres.map((genre) => genre.id),
       },
       backdropSrc: backdropUrl(movie.backdrop_path),
-      posterSrc: posterUrl(movie.poster_path),
       year: movie.release_date ? movie.release_date.slice(0, 4) : null,
       runtimeLabel: formatRuntime(movie.runtime),
       rating: movie.vote_average > 0 ? movie.vote_average.toFixed(1) : null,

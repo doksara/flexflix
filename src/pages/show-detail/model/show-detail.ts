@@ -1,6 +1,7 @@
 import { MediaType, useTvDetails } from "@/entities/media";
 import type { MediaSummary } from "@/entities/media";
-import { backdropUrl, posterUrl } from "@/shared/lib/image";
+import { formatDate } from "@/shared/lib/date";
+import { backdropUrl } from "@/shared/lib/image";
 
 export interface ShowSeasonViewModel {
   seasonNumber: number;
@@ -13,7 +14,6 @@ export interface ShowSeasonViewModel {
 export interface ShowDetailViewModel {
   media: MediaSummary;
   backdropSrc: string | null;
-  posterSrc: string | null;
   year: string | null;
   seasonsLabel: string | null;
   rating: string | null;
@@ -22,15 +22,6 @@ export interface ShowDetailViewModel {
   statusLabel: string | null;
   firstAiredLabel: string | null;
   seasons: ShowSeasonViewModel[];
-}
-
-function formatDate(dateStr: string | null | undefined): string | null {
-  if (!dateStr) return null;
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 }
 
 export function useShowDetail(id: number) {
@@ -50,7 +41,6 @@ export function useShowDetail(id: number) {
         genreIds: show.genres.map((genre) => genre.id),
       },
       backdropSrc: backdropUrl(show.backdrop_path),
-      posterSrc: posterUrl(show.poster_path),
       year: show.first_air_date ? show.first_air_date.slice(0, 4) : null,
       seasonsLabel: `${show.number_of_seasons} season${show.number_of_seasons === 1 ? "" : "s"} · ${show.number_of_episodes} episodes`,
       rating: show.vote_average > 0 ? show.vote_average.toFixed(1) : null,
