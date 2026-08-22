@@ -1,8 +1,8 @@
+import type { SeasonSummary } from "@/entities/media";
 import { PosterImage, useSeasonDetails } from "@/entities/media";
 import { useEpisodeProgress } from "@/features/toggle-episode";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/accordion";
 
-import type { SeasonSummary } from "../model/types";
 import { EpisodeRow } from "./EpisodeRow";
 import { SeasonProgressBar } from "./SeasonProgressBar";
 
@@ -13,7 +13,11 @@ interface SeasonAccordionProps {
 }
 
 export function SeasonAccordion({ tvId, season, isOpen }: SeasonAccordionProps) {
-  const { data: seasonDetails, isLoading } = useSeasonDetails(tvId, season.seasonNumber, isOpen);
+  const {
+    data: seasonDetails,
+    isLoading,
+    isError,
+  } = useSeasonDetails(tvId, season.seasonNumber, isOpen);
   const { watchedEpisodes, toggleEpisode } = useEpisodeProgress(tvId, season.seasonNumber);
 
   const totalEpisodes = seasonDetails?.episodes.length ?? season.episodeCount;
@@ -33,6 +37,11 @@ export function SeasonAccordion({ tvId, season, isOpen }: SeasonAccordionProps) 
             <div className="flex items-center justify-between gap-2">
               <span className="truncate font-heading text-sm font-bold text-foreground">
                 {season.name}
+                {season.airYear && (
+                  <span className="ml-2 font-sans text-[0.75rem] font-normal text-[var(--on-surface-variant)]">
+                    {season.airYear}
+                  </span>
+                )}
               </span>
               <span className="shrink-0 text-[0.75rem] text-[var(--on-surface-variant)]">
                 {watchedCount}/{totalEpisodes}
@@ -45,6 +54,11 @@ export function SeasonAccordion({ tvId, season, isOpen }: SeasonAccordionProps) 
       <AccordionContent>
         {isLoading && (
           <div className="py-4 text-sm text-muted-foreground">Loading episodes…</div>
+        )}
+        {isError && (
+          <div className="py-4 text-sm text-destructive">
+            Couldn't load episodes for this season.
+          </div>
         )}
         {seasonDetails && (
           <div className="flex flex-col divide-y divide-[var(--surface-variant)]">

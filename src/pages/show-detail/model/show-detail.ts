@@ -1,15 +1,7 @@
 import { MediaType, useTvDetails } from "@/entities/media";
-import type { MediaSummary } from "@/entities/media";
+import type { MediaSummary, SeasonSummary } from "@/entities/media";
 import { formatDate } from "@/shared/lib/date";
 import { backdropUrl } from "@/shared/lib/image";
-
-export interface ShowSeasonViewModel {
-  seasonNumber: number;
-  name: string;
-  episodeCount: number;
-  airYear: string | null;
-  posterPath: string | null;
-}
 
 export interface ShowDetailViewModel {
   media: MediaSummary;
@@ -21,7 +13,7 @@ export interface ShowDetailViewModel {
   overview: string;
   statusLabel: string | null;
   firstAiredLabel: string | null;
-  seasons: ShowSeasonViewModel[];
+  seasons: SeasonSummary[];
 }
 
 export function useShowDetail(id: number) {

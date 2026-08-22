@@ -37,6 +37,7 @@ interface WatchlistState {
     episodeNumber: number,
   ) => void;
   markSeasonCompleted: (tmdbId: number, seasonNumber: number) => void;
+  unmarkSeasonCompleted: (tmdbId: number, seasonNumber: number) => void;
 
   addToWatchLater: (entry: {
     tmdbId: number;
@@ -231,6 +232,21 @@ export const useWatchlistStore = create<WatchlistState>()(
               seasonNumber,
             }),
           ],
+        }));
+      },
+
+      unmarkSeasonCompleted: (tmdbId, seasonNumber) => {
+        const progress = get().tvProgress[tmdbId];
+        if (!progress || !progress.completedSeasons.includes(seasonNumber)) return;
+        set((state) => ({
+          tvProgress: {
+            ...state.tvProgress,
+            [tmdbId]: {
+              ...progress,
+              completedSeasons: progress.completedSeasons.filter((n) => n !== seasonNumber),
+              updatedAt: now(),
+            },
+          },
         }));
       },
 

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import type { SeasonSummary } from "@/entities/media";
 import { Accordion } from "@/shared/ui/accordion";
 
-import type { SeasonSummary } from "../model/types";
 import { SeasonAccordion } from "./SeasonAccordion";
 
 interface SeasonTrackerProps {
@@ -12,6 +12,10 @@ interface SeasonTrackerProps {
 
 export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
   const [openSeason, setOpenSeason] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    setOpenSeason(undefined);
+  }, [tvId]);
 
   if (seasons.length === 0) return null;
 
