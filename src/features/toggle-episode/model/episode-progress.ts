@@ -21,5 +21,9 @@ export function useEpisodeProgress(tmdbId: number, seasonNumber: number) {
     }
   }
 
-  return { watchedEpisodes, toggleEpisode };
+  function markAllWatched(episodeNumbers: number[]) {
+    useWatchlistStore.getState().markAllEpisodesWatched(tmdbId, seasonNumber, episodeNumbers);
+  }
+
+  return { watchedEpisodes, toggleEpisode, markAllWatched };
 }

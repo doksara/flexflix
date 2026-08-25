@@ -1,5 +1,6 @@
 import { RatingInput, StatusSelect, WatchlistButton } from "@/features/add-to-watchlist";
 import { WatchLaterButton } from "@/features/add-to-watch-later";
+import { ProgressBar } from "@/shared/ui/progress-bar";
 import { DetailBackLink, DetailHero, DetailInfoCard, DetailPageError, DetailPageLoading } from "@/widgets/media-detail";
 import { SeasonTracker } from "@/widgets/season-tracker";
 
@@ -37,6 +38,17 @@ export function ShowDetailPage({ id }: ShowDetailPageProps) {
         typeLabel="TV Series"
         metaItems={metaItems}
         overview={vm.overview}
+        progress={
+          vm.showProgress && (
+            <ProgressBar
+              value={vm.progressPct}
+              variant="secondary"
+              dot
+              label="Overall progress"
+              trailing={vm.progressTrailing}
+            />
+          )
+        }
         actions={
           <>
             <WatchlistButton media={vm.media} />

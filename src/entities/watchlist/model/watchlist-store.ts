@@ -36,6 +36,11 @@ interface WatchlistState {
     seasonNumber: number,
     episodeNumber: number,
   ) => void;
+  markAllEpisodesWatched: (
+    tmdbId: number,
+    seasonNumber: number,
+    episodeNumbers: number[],
+  ) => void;
   markSeasonCompleted: (tmdbId: number, seasonNumber: number) => void;
   unmarkSeasonCompleted: (tmdbId: number, seasonNumber: number) => void;
 
@@ -206,6 +211,44 @@ export const useWatchlistStore = create<WatchlistState>()(
               { seasonNumber, episodeNumber },
             ),
           ],
+        }));
+      },
+
+      markAllEpisodesWatched: (tmdbId, seasonNumber, episodeNumbers) => {
+        const progress = get().tvProgress[tmdbId] ?? {
+          tmdbId,
+          watchedEpisodes: {},
+          completedSeasons: [],
+          updatedAt: now(),
+        };
+        const nextWatchedInSeason = Array.from(
+          new Set([...(progress.watchedEpisodes[seasonNumber] ?? []), ...episodeNumbers]),
+        ).sort((a, b) => a - b);
+        const alreadyCompleted = progress.completedSeasons.includes(seasonNumber);
+
+        set((state) => ({
+          tvProgress: {
+            ...state.tvProgress,
+            [tmdbId]: {
+              ...progress,
+              watchedEpisodes: {
+                ...progress.watchedEpisodes,
+                [seasonNumber]: nextWatchedInSeason,
+              },
+              completedSeasons: alreadyCompleted
+                ? progress.completedSeasons
+                : [...progress.completedSeasons, seasonNumber],
+              updatedAt: now(),
+            },
+          },
+          activityLog: alreadyCompleted
+            ? state.activityLog
+            : [
+                ...state.activityLog,
+                makeActivityEvent("season_completed", MediaType.TvShow, tmdbId, {
+                  seasonNumber,
+                }),
+              ],
         }));
       },
 

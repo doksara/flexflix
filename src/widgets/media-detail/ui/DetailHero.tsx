@@ -10,9 +10,18 @@ interface DetailHeroProps {
   metaItems: string[];
   overview: string;
   actions: ReactNode;
+  progress?: ReactNode;
 }
 
-export function DetailHero({ media, backdropSrc, typeLabel, metaItems, overview, actions }: DetailHeroProps) {
+export function DetailHero({
+  media,
+  backdropSrc,
+  typeLabel,
+  metaItems,
+  overview,
+  actions,
+  progress,
+}: DetailHeroProps) {
   return (
     <div className="relative overflow-hidden rounded-3xl bg-[var(--surface-container)]">
       {backdropSrc && (
@@ -40,6 +49,7 @@ export function DetailHero({ media, backdropSrc, typeLabel, metaItems, overview,
               ))}
             </div>
           )}
+          {progress && <div className="my-0.5 max-w-[460px]">{progress}</div>}
           {overview && (
             <p className="max-w-[60ch] text-[0.9375rem] leading-relaxed text-foreground">{overview}</p>
           )}
