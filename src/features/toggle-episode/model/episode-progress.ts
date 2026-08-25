@@ -7,14 +7,15 @@ export function useEpisodeProgress(tmdbId: number, seasonNumber: number) {
     (state) => state.tvProgress[tmdbId]?.watchedEpisodes[seasonNumber] ?? EMPTY_EPISODES,
   );
 
-  function toggleEpisode(episodeNumber: number, totalEpisodesInSeason: number) {
+  function toggleEpisode(episodeNumber: number, seasonEpisodeNumbers: number[]) {
     useWatchlistStore.getState().toggleEpisodeWatched(tmdbId, seasonNumber, episodeNumber);
 
     const nextWatchedEpisodes =
       useWatchlistStore.getState().tvProgress[tmdbId]?.watchedEpisodes[seasonNumber] ??
       EMPTY_EPISODES;
+    const isComplete = seasonEpisodeNumbers.every((n) => nextWatchedEpisodes.includes(n));
 
-    if (nextWatchedEpisodes.length === totalEpisodesInSeason) {
+    if (isComplete) {
       useWatchlistStore.getState().markSeasonCompleted(tmdbId, seasonNumber);
     } else {
       useWatchlistStore.getState().unmarkSeasonCompleted(tmdbId, seasonNumber);

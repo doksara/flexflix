@@ -39,6 +39,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
   if (seasons.length === 0) return null;
 
   const episodes = seasonDetails?.episodes ?? [];
+  const episodeNumbers = episodes.map((ep) => ep.episode_number);
   const nextIndex = episodes.findIndex((ep) => !watchedEpisodes.includes(ep.episode_number));
 
   return (
@@ -64,7 +65,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
             variant="secondary"
             size="sm"
             disabled={episodes.length === 0}
-            onClick={() => markAllWatched(episodes.map((ep) => ep.episode_number))}
+            onClick={() => markAllWatched(episodeNumbers)}
           >
             Mark season watched
           </Button>
@@ -110,7 +111,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
               episode={episode}
               isWatched={watchedEpisodes.includes(episode.episode_number)}
               isNext={index === nextIndex}
-              onToggle={() => toggleEpisode(episode.episode_number, episodes.length)}
+              onToggle={() => toggleEpisode(episode.episode_number, episodeNumbers)}
             />
           ))}
         </div>
@@ -124,7 +125,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
               episode={episode}
               isWatched={watchedEpisodes.includes(episode.episode_number)}
               isNext={index === nextIndex}
-              onToggle={() => toggleEpisode(episode.episode_number, episodes.length)}
+              onToggle={() => toggleEpisode(episode.episode_number, episodeNumbers)}
             />
           ))}
         </div>

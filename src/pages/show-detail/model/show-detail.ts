@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { MediaType, useTvDetails } from "@/entities/media";
 import type { MediaSummary, SeasonSummary } from "@/entities/media";
 import { useWatchlistStore } from "@/entities/watchlist";
@@ -29,6 +31,20 @@ export function useShowDetail(id: number) {
     return Object.values(progress.watchedEpisodes).reduce((sum, eps) => sum + eps.length, 0);
   });
 
+  const seasons = useMemo<SeasonSummary[]>(
+    () =>
+      (show?.seasons ?? [])
+        .filter((season) => season.season_number !== 0 && season.episode_count > 0)
+        .map((season) => ({
+          seasonNumber: season.season_number,
+          name: season.name,
+          episodeCount: season.episode_count,
+          airYear: season.air_date ? season.air_date.slice(0, 4) : null,
+          posterPath: season.poster_path,
+        })),
+    [show?.seasons],
+  );
+
   let vm: ShowDetailViewModel | undefined;
   if (show) {
     vm = {
@@ -49,15 +65,7 @@ export function useShowDetail(id: number) {
       overview: show.overview,
       statusLabel: show.status || null,
       firstAiredLabel: formatDate(show.first_air_date),
-      seasons: show.seasons
-        .filter((season) => season.season_number !== 0 && season.episode_count > 0)
-        .map((season) => ({
-          seasonNumber: season.season_number,
-          name: season.name,
-          episodeCount: season.episode_count,
-          airYear: season.air_date ? season.air_date.slice(0, 4) : null,
-          posterPath: season.poster_path,
-        })),
+      seasons,
       showProgress: watchedTotal > 0,
       progressPct: show.number_of_episodes
         ? Math.min(100, Math.round((watchedTotal / show.number_of_episodes) * 100))
