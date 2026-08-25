@@ -36,7 +36,13 @@ interface WatchlistState {
     seasonNumber: number,
     episodeNumber: number,
   ) => void;
+  markAllEpisodesWatched: (
+    tmdbId: number,
+    seasonNumber: number,
+    episodeNumbers: number[],
+  ) => void;
   markSeasonCompleted: (tmdbId: number, seasonNumber: number) => void;
+  unmarkSeasonCompleted: (tmdbId: number, seasonNumber: number) => void;
 
   addToWatchLater: (entry: {
     tmdbId: number;
@@ -208,6 +214,44 @@ export const useWatchlistStore = create<WatchlistState>()(
         }));
       },
 
+      markAllEpisodesWatched: (tmdbId, seasonNumber, episodeNumbers) => {
+        const progress = get().tvProgress[tmdbId] ?? {
+          tmdbId,
+          watchedEpisodes: {},
+          completedSeasons: [],
+          updatedAt: now(),
+        };
+        const nextWatchedInSeason = Array.from(
+          new Set([...(progress.watchedEpisodes[seasonNumber] ?? []), ...episodeNumbers]),
+        ).sort((a, b) => a - b);
+        const alreadyCompleted = progress.completedSeasons.includes(seasonNumber);
+
+        set((state) => ({
+          tvProgress: {
+            ...state.tvProgress,
+            [tmdbId]: {
+              ...progress,
+              watchedEpisodes: {
+                ...progress.watchedEpisodes,
+                [seasonNumber]: nextWatchedInSeason,
+              },
+              completedSeasons: alreadyCompleted
+                ? progress.completedSeasons
+                : [...progress.completedSeasons, seasonNumber],
+              updatedAt: now(),
+            },
+          },
+          activityLog: alreadyCompleted
+            ? state.activityLog
+            : [
+                ...state.activityLog,
+                makeActivityEvent("season_completed", MediaType.TvShow, tmdbId, {
+                  seasonNumber,
+                }),
+              ],
+        }));
+      },
+
       markSeasonCompleted: (tmdbId, seasonNumber) => {
         const progress = get().tvProgress[tmdbId] ?? {
           tmdbId,
@@ -231,6 +275,21 @@ export const useWatchlistStore = create<WatchlistState>()(
               seasonNumber,
             }),
           ],
+        }));
+      },
+
+      unmarkSeasonCompleted: (tmdbId, seasonNumber) => {
+        const progress = get().tvProgress[tmdbId];
+        if (!progress || !progress.completedSeasons.includes(seasonNumber)) return;
+        set((state) => ({
+          tvProgress: {
+            ...state.tvProgress,
+            [tmdbId]: {
+              ...progress,
+              completedSeasons: progress.completedSeasons.filter((n) => n !== seasonNumber),
+              updatedAt: now(),
+            },
+          },
         }));
       },
 

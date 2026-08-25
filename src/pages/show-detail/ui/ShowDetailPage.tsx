@@ -1,7 +1,8 @@
-import { PosterImage } from "@/entities/media";
 import { RatingInput, StatusSelect, WatchlistButton } from "@/features/add-to-watchlist";
 import { WatchLaterButton } from "@/features/add-to-watch-later";
+import { ProgressBar } from "@/shared/ui/progress-bar";
 import { DetailBackLink, DetailHero, DetailInfoCard, DetailPageError, DetailPageLoading } from "@/widgets/media-detail";
+import { SeasonTracker } from "@/widgets/season-tracker";
 
 import { useShowDetail } from "../model/show-detail";
 
@@ -37,6 +38,17 @@ export function ShowDetailPage({ id }: ShowDetailPageProps) {
         typeLabel="TV Series"
         metaItems={metaItems}
         overview={vm.overview}
+        progress={
+          vm.showProgress && (
+            <ProgressBar
+              value={vm.progressPct}
+              variant="secondary"
+              dot
+              label="Overall progress"
+              trailing={vm.progressTrailing}
+            />
+          )
+        }
         actions={
           <>
             <WatchlistButton media={vm.media} />
@@ -48,25 +60,7 @@ export function ShowDetailPage({ id }: ShowDetailPageProps) {
       />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
-        {vm.seasons.length > 0 && (
-          <div>
-            <h2 className="mb-4 font-heading text-[1.375rem] font-bold text-foreground">Seasons</h2>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-              {vm.seasons.map((season) => (
-                <div key={season.seasonNumber} className="flex flex-col gap-2">
-                  <div className="relative aspect-2/3 overflow-hidden rounded-xl bg-[var(--surface-variant)]">
-                    <PosterImage posterPath={season.posterPath} title={season.name} fill />
-                  </div>
-                  <span className="font-heading text-sm font-bold text-foreground">{season.name}</span>
-                  <span className="text-[0.75rem] text-[var(--on-surface-variant)]">
-                    {season.episodeCount} episode{season.episodeCount === 1 ? "" : "s"}
-                    {season.airYear ? ` · ${season.airYear}` : ""}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <SeasonTracker tvId={vm.media.id} seasons={vm.seasons} />
 
         <DetailInfoCard
           className="h-fit"

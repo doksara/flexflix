@@ -11,6 +11,7 @@ const badgeVariants = cva(
       variant: {
         default: "bg-[rgba(163,166,255,0.16)] text-primary",
         secondary: "bg-[rgba(253,147,61,0.16)] text-secondary",
+        success: "bg-[rgba(74,222,128,0.15)] text-[var(--success)]",
         destructive: "bg-[rgba(255,90,118,0.16)] text-destructive focus-visible:ring-destructive/20",
         outline: "bg-muted text-muted-foreground [a]:hover:bg-accent",
         ghost: "bg-transparent text-muted-foreground hover:bg-muted",

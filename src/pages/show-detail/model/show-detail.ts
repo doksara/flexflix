@@ -1,15 +1,10 @@
+import { useMemo } from "react";
+
 import { MediaType, useTvDetails } from "@/entities/media";
-import type { MediaSummary } from "@/entities/media";
+import type { MediaSummary, SeasonSummary } from "@/entities/media";
+import { useWatchlistStore } from "@/entities/watchlist";
 import { formatDate } from "@/shared/lib/date";
 import { backdropUrl } from "@/shared/lib/image";
-
-export interface ShowSeasonViewModel {
-  seasonNumber: number;
-  name: string;
-  episodeCount: number;
-  airYear: string | null;
-  posterPath: string | null;
-}
 
 export interface ShowDetailViewModel {
   media: MediaSummary;
@@ -21,12 +16,34 @@ export interface ShowDetailViewModel {
   overview: string;
   statusLabel: string | null;
   firstAiredLabel: string | null;
-  seasons: ShowSeasonViewModel[];
+  seasons: SeasonSummary[];
+  showProgress: boolean;
+  progressPct: number;
+  progressTrailing: string;
 }
 
 export function useShowDetail(id: number) {
   const query = useTvDetails(id);
   const show = query.data;
+  const watchedTotal = useWatchlistStore((state) => {
+    const progress = state.tvProgress[id];
+    if (!progress) return 0;
+    return Object.values(progress.watchedEpisodes).reduce((sum, eps) => sum + eps.length, 0);
+  });
+
+  const seasons = useMemo<SeasonSummary[]>(
+    () =>
+      (show?.seasons ?? [])
+        .filter((season) => season.season_number !== 0 && season.episode_count > 0)
+        .map((season) => ({
+          seasonNumber: season.season_number,
+          name: season.name,
+          episodeCount: season.episode_count,
+          airYear: season.air_date ? season.air_date.slice(0, 4) : null,
+          posterPath: season.poster_path,
+        })),
+    [show?.seasons],
+  );
 
   let vm: ShowDetailViewModel | undefined;
   if (show) {
@@ -48,15 +65,12 @@ export function useShowDetail(id: number) {
       overview: show.overview,
       statusLabel: show.status || null,
       firstAiredLabel: formatDate(show.first_air_date),
-      seasons: show.seasons
-        .filter((season) => season.episode_count > 0)
-        .map((season) => ({
-          seasonNumber: season.season_number,
-          name: season.name,
-          episodeCount: season.episode_count,
-          airYear: season.air_date ? season.air_date.slice(0, 4) : null,
-          posterPath: season.poster_path,
-        })),
+      seasons,
+      showProgress: watchedTotal > 0,
+      progressPct: show.number_of_episodes
+        ? Math.min(100, Math.round((watchedTotal / show.number_of_episodes) * 100))
+        : 0,
+      progressTrailing: `${watchedTotal}/${show.number_of_episodes}`,
     };
   }
 

@@ -1,0 +1,30 @@
+import { useWatchlistStore } from "@/entities/watchlist";
+
+const EMPTY_EPISODES: number[] = [];
+
+export function useEpisodeProgress(tmdbId: number, seasonNumber: number) {
+  const watchedEpisodes = useWatchlistStore(
+    (state) => state.tvProgress[tmdbId]?.watchedEpisodes[seasonNumber] ?? EMPTY_EPISODES,
+  );
+
+  function toggleEpisode(episodeNumber: number, seasonEpisodeNumbers: number[]) {
+    useWatchlistStore.getState().toggleEpisodeWatched(tmdbId, seasonNumber, episodeNumber);
+
+    const nextWatchedEpisodes =
+      useWatchlistStore.getState().tvProgress[tmdbId]?.watchedEpisodes[seasonNumber] ??
+      EMPTY_EPISODES;
+    const isComplete = seasonEpisodeNumbers.every((n) => nextWatchedEpisodes.includes(n));
+
+    if (isComplete) {
+      useWatchlistStore.getState().markSeasonCompleted(tmdbId, seasonNumber);
+    } else {
+      useWatchlistStore.getState().unmarkSeasonCompleted(tmdbId, seasonNumber);
+    }
+  }
+
+  function markAllWatched(episodeNumbers: number[]) {
+    useWatchlistStore.getState().markAllEpisodesWatched(tmdbId, seasonNumber, episodeNumbers);
+  }
+
+  return { watchedEpisodes, toggleEpisode, markAllWatched };
+}
