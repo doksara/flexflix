@@ -16,6 +16,9 @@ dist-ssr
 # TanStack Router
 src/app/routeTree.gen.ts
 
+# Playwright MCP test artifacts
+.playwright-mcp
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

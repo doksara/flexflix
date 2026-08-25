@@ -65,7 +65,7 @@ export function LoginForm() {
         <button
           type="button"
           onClick={() => setPasswordVisible((visible) => !visible)}
-          className="-mt-1 self-end text-[0.6875rem] font-semibold tracking-[0.04em] text-[var(--on-surface-muted)] uppercase hover:text-secondary"
+          className="-mt-1 cursor-pointer self-end text-[0.6875rem] font-semibold tracking-[0.04em] text-[var(--on-surface-muted)] uppercase hover:text-secondary"
         >
           {passwordVisible ? "Hide" : "Show"}
         </button>
