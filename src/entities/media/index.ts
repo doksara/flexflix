@@ -7,4 +7,5 @@ export { MediaCard } from "./ui/MediaCard";
 export { MediaGrid } from "./ui/MediaGrid";
 export { MediaRow } from "./ui/MediaRow";
 export { MediaCardSkeleton } from "./ui/MediaCardSkeleton";
+export { MediaListItem } from "./ui/MediaListItem";
 export { PosterImage } from "./ui/PosterImage";

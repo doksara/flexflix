@@ -10,7 +10,7 @@ import {
 
 import { useWatchlistEntry } from "../model/watchlist-entry";
 
-const STATUS_LABELS: Record<WatchStatus, string> = {
+export const STATUS_LABELS: Record<WatchStatus, string> = {
   [WatchStatus.PlanToWatch]: "Plan to Watch",
   [WatchStatus.Watching]: "Watching",
   [WatchStatus.Completed]: "Completed",
