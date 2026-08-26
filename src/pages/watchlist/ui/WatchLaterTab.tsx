@@ -4,6 +4,7 @@ import type { WatchLaterEntry } from "@/entities/watchlist";
 import { useWatchlistStore } from "@/entities/watchlist";
 import { IconButton } from "@/shared/ui/icon-button";
 
+import { entryToMediaSummary } from "../model/watchlist-page";
 import { EmptyState } from "./EmptyState";
 import { WatchlistGridItem } from "./WatchlistGridItem";
 
@@ -23,15 +24,7 @@ export function WatchLaterTab({ entries }: WatchLaterTabProps) {
       {entries.map((entry) => (
         <WatchlistGridItem
           key={`${entry.mediaType}:${entry.tmdbId}`}
-          media={{
-            id: entry.tmdbId,
-            mediaType: entry.mediaType,
-            title: entry.title,
-            posterPath: entry.posterPath,
-            releaseDate: null,
-            voteAverage: 0,
-            genreIds: entry.genreIds,
-          }}
+          media={entryToMediaSummary(entry)}
           overlayAction={
             <IconButton
               icon={BookmarkPlus}

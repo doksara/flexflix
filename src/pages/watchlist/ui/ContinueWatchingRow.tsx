@@ -14,8 +14,22 @@ interface ContinueWatchingRowProps {
   entry: WatchlistEntry;
 }
 
+function subtitleFor(vm: NonNullable<ReturnType<typeof useContinueWatchingItem>["vm"]>): string {
+  if (!vm.hasEpisodeData) return "No episode data available yet";
+  if (vm.isDone) return `All ${vm.totalEpisodes} episodes watched`;
+  return `${vm.watchedTotal}/${vm.totalEpisodes} episodes · Next: ${vm.nextEpisodeLabel}`;
+}
+
 export function ContinueWatchingRow({ entry }: ContinueWatchingRowProps) {
-  const { vm, isLoading } = useContinueWatchingItem(entry);
+  const { vm, isLoading, isError } = useContinueWatchingItem(entry);
+
+  if (isError) {
+    return (
+      <div className="rounded-2xl bg-[var(--surface-container)] p-4 text-sm text-destructive">
+        Couldn't load {entry.title}.
+      </div>
+    );
+  }
 
   if (isLoading || !vm) {
     return <Skeleton className="h-[104px] w-full rounded-2xl" />;
@@ -37,11 +51,7 @@ export function ContinueWatchingRow({ entry }: ContinueWatchingRowProps) {
       }
       subtitle={
         <>
-          <span className="text-[0.8125rem] text-[var(--on-surface-variant)]">
-            {vm.isDone
-              ? `All ${vm.totalEpisodes} episodes watched`
-              : `${vm.watchedTotal}/${vm.totalEpisodes} episodes · Next: ${vm.nextEpisodeLabel}`}
-          </span>
+          <span className="text-[0.8125rem] text-[var(--on-surface-variant)]">{subtitleFor(vm)}</span>
           <div className="mt-1 max-w-[420px]">
             <ProgressBar value={vm.pct} variant="secondary" />
           </div>

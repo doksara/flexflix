@@ -9,6 +9,7 @@ import { IconButton } from "@/shared/ui/icon-button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 
 import {
+  entryToMediaSummary,
   filterAndSortEntries,
   SORT_OPTIONS,
   STATUS_FILTER_ALL,
@@ -82,15 +83,7 @@ export function AllTab({ entries }: AllTabProps) {
           {visible.map((entry) => (
             <WatchlistGridItem
               key={`${entry.mediaType}:${entry.tmdbId}`}
-              media={{
-                id: entry.tmdbId,
-                mediaType: entry.mediaType,
-                title: entry.title,
-                posterPath: entry.posterPath,
-                releaseDate: null,
-                voteAverage: 0,
-                genreIds: entry.genreIds,
-              }}
+              media={entryToMediaSummary(entry)}
               badge={<Badge variant="default">{STATUS_LABELS[entry.status]}</Badge>}
               overlayAction={
                 <IconButton

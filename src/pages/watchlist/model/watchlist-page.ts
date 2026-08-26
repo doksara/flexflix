@@ -1,8 +1,29 @@
 import { useShallow } from "zustand/react/shallow";
 
 import { MediaType } from "@/entities/media";
+import type { MediaSummary } from "@/entities/media";
 import type { WatchLaterEntry, WatchlistEntry } from "@/entities/watchlist";
 import { useWatchlistStore, WatchStatus } from "@/entities/watchlist";
+
+interface EntryLike {
+  tmdbId: number;
+  mediaType: MediaType;
+  title: string;
+  posterPath: string | null;
+  genreIds: number[];
+}
+
+export function entryToMediaSummary(entry: EntryLike): MediaSummary {
+  return {
+    id: entry.tmdbId,
+    mediaType: entry.mediaType,
+    title: entry.title,
+    posterPath: entry.posterPath,
+    releaseDate: null,
+    voteAverage: 0,
+    genreIds: entry.genreIds,
+  };
+}
 
 export function useWatchlistEntries(): WatchlistEntry[] {
   return useWatchlistStore(useShallow((state) => Object.values(state.entries)));

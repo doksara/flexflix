@@ -1,6 +1,7 @@
 export { MediaType } from "./model/media";
 export type { MediaSummary } from "./model/media";
 export type { SeasonSummary } from "./model/season";
+export { isTrackableSeason } from "./model/season";
 export { movieToSummary, tvToSummary, multiSearchToSummary } from "./model/normalize";
 export { useMovieDetails, useTvDetails, useSeasonDetails } from "./api/media-queries";
 export { MediaCard } from "./ui/MediaCard";

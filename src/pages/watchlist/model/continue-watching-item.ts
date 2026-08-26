@@ -1,14 +1,17 @@
-import { useTvDetails } from "@/entities/media";
+import { isTrackableSeason, useTvDetails } from "@/entities/media";
 import type { MediaSummary } from "@/entities/media";
 import type { WatchlistEntry } from "@/entities/watchlist";
 import { computeNextEpisode, computeWatchedTotal, useWatchlistStore } from "@/entities/watchlist";
 import { backdropUrl } from "@/shared/lib/image";
+
+import { entryToMediaSummary } from "./watchlist-page";
 
 const EMPTY_WATCHED_EPISODES: Record<number, number[]> = {};
 
 export interface ContinueWatchingItemViewModel {
   media: MediaSummary;
   backdropSrc: string | null;
+  hasEpisodeData: boolean;
   isDone: boolean;
   watchedTotal: number;
   totalEpisodes: number;
@@ -19,6 +22,7 @@ export interface ContinueWatchingItemViewModel {
 export function useContinueWatchingItem(entry: WatchlistEntry): {
   vm: ContinueWatchingItemViewModel | undefined;
   isLoading: boolean;
+  isError: boolean;
 } {
   const query = useTvDetails(entry.tmdbId);
   const watchedEpisodes = useWatchlistStore(
@@ -27,28 +31,21 @@ export function useContinueWatchingItem(entry: WatchlistEntry): {
   const show = query.data;
 
   if (!show) {
-    return { vm: undefined, isLoading: query.isLoading };
+    return { vm: undefined, isLoading: query.isLoading, isError: query.isError };
   }
 
   const seasons = show.seasons
-    .filter((season) => season.season_number !== 0 && season.episode_count > 0)
+    .filter(isTrackableSeason)
     .map((season) => ({ seasonNumber: season.season_number, episodeCount: season.episode_count }));
   const totalEpisodes = seasons.reduce((sum, season) => sum + season.episodeCount, 0);
   const watchedTotal = computeWatchedTotal(watchedEpisodes);
   const next = computeNextEpisode(seasons, watchedEpisodes);
 
   const vm: ContinueWatchingItemViewModel = {
-    media: {
-      id: entry.tmdbId,
-      mediaType: entry.mediaType,
-      title: entry.title,
-      posterPath: entry.posterPath,
-      releaseDate: null,
-      voteAverage: 0,
-      genreIds: entry.genreIds,
-    },
+    media: entryToMediaSummary(entry),
     backdropSrc: backdropUrl(show.backdrop_path, "w780"),
-    isDone: next === null,
+    hasEpisodeData: totalEpisodes > 0,
+    isDone: totalEpisodes > 0 && next === null,
     watchedTotal,
     totalEpisodes,
     pct: totalEpisodes ? Math.min(100, Math.round((watchedTotal / totalEpisodes) * 100)) : 0,
@@ -57,5 +54,5 @@ export function useContinueWatchingItem(entry: WatchlistEntry): {
       : null,
   };
 
-  return { vm, isLoading: false };
+  return { vm, isLoading: false, isError: false };
 }
