@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { MediaType, useTvDetails } from "@/entities/media";
+import { isTrackableSeason, MediaType, useTvDetails } from "@/entities/media";
 import type { MediaSummary, SeasonSummary } from "@/entities/media";
 import { useWatchlistStore } from "@/entities/watchlist";
 import { formatDate } from "@/shared/lib/date";
@@ -34,7 +34,7 @@ export function useShowDetail(id: number) {
   const seasons = useMemo<SeasonSummary[]>(
     () =>
       (show?.seasons ?? [])
-        .filter((season) => season.season_number !== 0 && season.episode_count > 0)
+        .filter(isTrackableSeason)
         .map((season) => ({
           seasonNumber: season.season_number,
           name: season.name,
