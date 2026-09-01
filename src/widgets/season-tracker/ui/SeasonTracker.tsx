@@ -1,9 +1,10 @@
 import { LayoutGrid, List } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { SeasonSummary } from "@/entities/media";
+import type { MediaSummary, SeasonSummary } from "@/entities/media";
 import { useSeasonDetails } from "@/entities/media";
 import { useEpisodeProgress } from "@/features/toggle-episode";
+import { useWatchlistStore, WatchStatus, watchlistKey } from "@/entities/watchlist";
 import { Button } from "@/shared/ui/button";
 import { Tag } from "@/shared/ui/tag";
 import { cn } from "@/shared/lib/tailwind";
@@ -14,11 +15,12 @@ import { EpisodeListRow } from "./EpisodeListRow";
 interface SeasonTrackerProps {
   tvId: number;
   seasons: SeasonSummary[];
+  media: MediaSummary;
 }
 
 type ViewMode = "list" | "grid";
 
-export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
+export function SeasonTracker({ tvId, seasons, media }: SeasonTrackerProps) {
   const [selectedSeason, setSelectedSeason] = useState<number | null>(seasons[0]?.seasonNumber ?? null);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
 
@@ -41,6 +43,24 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
   const episodes = seasonDetails?.episodes ?? [];
   const episodeNumbers = episodes.map((ep) => ep.episode_number);
   const nextIndex = episodes.findIndex((ep) => !watchedEpisodes.includes(ep.episode_number));
+
+  function handleMarkSeasonWatched() {
+    const key = watchlistKey(media.mediaType, media.id);
+    const entry = useWatchlistStore.getState().entries[key];
+    if (!entry) {
+      useWatchlistStore.getState().addToWatchlist({
+        tmdbId: media.id,
+        mediaType: media.mediaType,
+        title: media.title,
+        posterPath: media.posterPath,
+        genreIds: media.genreIds,
+        status: WatchStatus.Watching,
+      });
+    } else if (entry.status !== WatchStatus.Completed) {
+      useWatchlistStore.getState().setStatus(media.mediaType, media.id, WatchStatus.Watching);
+    }
+    markAllWatched(episodeNumbers);
+  }
 
   return (
     <div>
@@ -65,7 +85,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
             variant="secondary"
             size="sm"
             disabled={episodes.length === 0}
-            onClick={() => markAllWatched(episodeNumbers)}
+            onClick={handleMarkSeasonWatched}
           >
             Mark season watched
           </Button>
