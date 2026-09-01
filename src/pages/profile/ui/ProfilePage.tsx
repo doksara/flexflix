@@ -6,10 +6,9 @@ import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
 
 import { useProfileStats } from "../model/profile-stats";
-import { GenreDistribution } from "./GenreDistribution";
+import { ProgressBarList } from "./ProgressBarList";
 import { RecentActivity } from "./RecentActivity";
 import { StatsOverview } from "./StatsOverview";
-import { StatusBreakdown } from "./StatusBreakdown";
 
 export function ProfilePage() {
   const navigate = useNavigate();
@@ -56,8 +55,30 @@ export function ProfilePage() {
 
       {stats.hasEntries ? (
         <>
-          <StatusBreakdown statuses={stats.statusBreakdown} />
-          <GenreDistribution genres={stats.genreDistribution} />
+          <ProgressBarList
+            title="Status breakdown"
+            variant="secondary"
+            items={stats.statusBreakdown
+              .filter((status) => status.count > 0)
+              .map((status) => ({
+                key: status.status,
+                label: status.label,
+                count: status.count,
+                pct: status.pct,
+              }))}
+          />
+          <ProgressBarList
+            title="Genre breakdown"
+            variant="primary"
+            items={stats.genreDistribution.map((genre) => ({
+              key: genre.name,
+              label: genre.name,
+              count: genre.count,
+              pct: genre.pct,
+            }))}
+            isLoading={stats.genresLoading}
+            loadingLabel="Loading genres…"
+          />
         </>
       ) : (
         <p className="text-sm text-muted-foreground">
