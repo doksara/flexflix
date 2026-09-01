@@ -1,9 +1,10 @@
 import { LayoutGrid, List } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { SeasonSummary } from "@/entities/media";
+import type { MediaSummary, SeasonSummary } from "@/entities/media";
 import { useSeasonDetails } from "@/entities/media";
 import { useEpisodeProgress } from "@/features/toggle-episode";
+import { useWatchlistStore, WatchStatus, watchlistKey } from "@/entities/watchlist";
 import { Button } from "@/shared/ui/button";
 import { Tag } from "@/shared/ui/tag";
 import { cn } from "@/shared/lib/tailwind";
@@ -14,11 +15,12 @@ import { EpisodeListRow } from "./EpisodeListRow";
 interface SeasonTrackerProps {
   tvId: number;
   seasons: SeasonSummary[];
+  media: MediaSummary;
 }
 
 type ViewMode = "list" | "grid";
 
-export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
+export function SeasonTracker({ tvId, seasons, media }: SeasonTrackerProps) {
   const [selectedSeason, setSelectedSeason] = useState<number | null>(seasons[0]?.seasonNumber ?? null);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
 
@@ -41,6 +43,44 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
   const episodes = seasonDetails?.episodes ?? [];
   const episodeNumbers = episodes.map((ep) => ep.episode_number);
   const nextIndex = episodes.findIndex((ep) => !watchedEpisodes.includes(ep.episode_number));
+
+  function completeShowIfAllSeasonsWatched() {
+    const state = useWatchlistStore.getState();
+    const completedSeasons = state.tvProgress[media.id]?.completedSeasons ?? [];
+    const allSeasonsWatched = seasons.every((season) =>
+      completedSeasons.includes(season.seasonNumber),
+    );
+    if (!allSeasonsWatched) return;
+
+    const key = watchlistKey(media.mediaType, media.id);
+    const entry = state.entries[key];
+    if (entry && entry.status === WatchStatus.Completed) return;
+    state.setStatus(media.mediaType, media.id, WatchStatus.Completed);
+  }
+
+  function handleMarkSeasonWatched() {
+    const key = watchlistKey(media.mediaType, media.id);
+    const entry = useWatchlistStore.getState().entries[key];
+    if (!entry) {
+      useWatchlistStore.getState().addToWatchlist({
+        tmdbId: media.id,
+        mediaType: media.mediaType,
+        title: media.title,
+        posterPath: media.posterPath,
+        genreIds: media.genreIds,
+        status: WatchStatus.Watching,
+      });
+    } else if (entry.status !== WatchStatus.Completed) {
+      useWatchlistStore.getState().setStatus(media.mediaType, media.id, WatchStatus.Watching);
+    }
+    markAllWatched(episodeNumbers);
+    completeShowIfAllSeasonsWatched();
+  }
+
+  function handleToggleEpisode(episodeNumber: number) {
+    toggleEpisode(episodeNumber, episodeNumbers);
+    completeShowIfAllSeasonsWatched();
+  }
 
   return (
     <div>
@@ -65,7 +105,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
             variant="secondary"
             size="sm"
             disabled={episodes.length === 0}
-            onClick={() => markAllWatched(episodeNumbers)}
+            onClick={handleMarkSeasonWatched}
           >
             Mark season watched
           </Button>
@@ -111,7 +151,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
               episode={episode}
               isWatched={watchedEpisodes.includes(episode.episode_number)}
               isNext={index === nextIndex}
-              onToggle={() => toggleEpisode(episode.episode_number, episodeNumbers)}
+              onToggle={() => handleToggleEpisode(episode.episode_number)}
             />
           ))}
         </div>
@@ -125,7 +165,7 @@ export function SeasonTracker({ tvId, seasons }: SeasonTrackerProps) {
               episode={episode}
               isWatched={watchedEpisodes.includes(episode.episode_number)}
               isNext={index === nextIndex}
-              onToggle={() => toggleEpisode(episode.episode_number, episodeNumbers)}
+              onToggle={() => handleToggleEpisode(episode.episode_number)}
             />
           ))}
         </div>

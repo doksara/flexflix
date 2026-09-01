@@ -1,10 +1,7 @@
-import { useState } from "react";
-
 import { useSearchMedia } from "@/features/search-media";
 
-export function useDiscoverSearch() {
-  const [query, setQuery] = useState("");
+export function useDiscoverSearch(query: string) {
   const searchQuery = useSearchMedia(query);
 
-  return { query, setQuery, searchQuery };
+  return { searchQuery };
 }

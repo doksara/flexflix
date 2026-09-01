@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-import type { MediaType } from "@/entities/media";
+import { MediaType } from "@/entities/media";
 import { useWatchlistStore, WatchStatus } from "@/entities/watchlist";
 import {
   Select,
@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 
+import { markAllEpisodesWatchedForShow } from "../model/complete-tv-show";
 import { useWatchlistEntry } from "../model/watchlist-entry";
 
 export const STATUS_LABELS: Record<WatchStatus, string> = {
@@ -31,15 +32,22 @@ export function StatusSelect({ mediaType, tmdbId }: StatusSelectProps) {
 
   if (!isInWatchlist || !entry) return null;
 
+  async function handleStatusChange(value: string) {
+    const status = value as WatchStatus;
+    setStatus(mediaType, tmdbId, status);
+    toast.success(`Status set to ${STATUS_LABELS[status]}`);
+
+    if (mediaType !== MediaType.TvShow || status !== WatchStatus.Completed) return;
+
+    try {
+      await markAllEpisodesWatchedForShow(tmdbId);
+    } catch {
+      toast.error("Marked as Completed, but couldn't mark all episodes as watched");
+    }
+  }
+
   return (
-    <Select
-      value={entry.status}
-      onValueChange={(value) => {
-        const status = value as WatchStatus;
-        setStatus(mediaType, tmdbId, status);
-        toast.success(`Status set to ${STATUS_LABELS[status]}`);
-      }}
-    >
+    <Select value={entry.status} onValueChange={handleStatusChange}>
       <SelectTrigger aria-label="Watch status">
         <SelectValue />
       </SelectTrigger>

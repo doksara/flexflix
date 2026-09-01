@@ -63,7 +63,7 @@ export function ShowDetailPage({ id }: ShowDetailPageProps) {
       />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
-        <SeasonTracker tvId={vm.media.id} seasons={vm.seasons} />
+        <SeasonTracker tvId={vm.media.id} seasons={vm.seasons} media={vm.media} />
 
         <DetailInfoCard
           className="h-fit"
