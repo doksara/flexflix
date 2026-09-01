@@ -74,5 +74,5 @@ export function useShowDetail(id: number) {
     };
   }
 
-  return { vm, isLoading: query.isLoading, isError: query.isError };
+  return { vm, isLoading: query.isLoading, isError: query.isError, refetch: query.refetch };
 }

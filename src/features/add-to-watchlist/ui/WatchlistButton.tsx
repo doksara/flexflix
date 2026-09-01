@@ -1,4 +1,5 @@
 import { Bookmark, BookmarkCheck } from "lucide-react";
+import { toast } from "sonner";
 
 import type { MediaSummary } from "@/entities/media";
 import { useWatchlistStore } from "@/entities/watchlist";
@@ -20,7 +21,10 @@ export function WatchlistButton({ media }: WatchlistButtonProps) {
       <Button
         variant="default"
         size="lg"
-        onClick={() => removeFromWatchlist(media.mediaType, media.id)}
+        onClick={() => {
+          removeFromWatchlist(media.mediaType, media.id);
+          toast.success(`Removed "${media.title}" from your watchlist`);
+        }}
       >
         <BookmarkCheck />
         In Watchlist
@@ -32,15 +36,16 @@ export function WatchlistButton({ media }: WatchlistButtonProps) {
     <Button
       variant="secondary"
       size="lg"
-      onClick={() =>
+      onClick={() => {
         addToWatchlist({
           tmdbId: media.id,
           mediaType: media.mediaType,
           title: media.title,
           posterPath: media.posterPath,
           genreIds: media.genreIds,
-        })
-      }
+        });
+        toast.success(`Added "${media.title}" to your watchlist`);
+      }}
     >
       <Bookmark />
       Add to Watchlist

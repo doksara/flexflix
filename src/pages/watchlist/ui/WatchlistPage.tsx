@@ -1,6 +1,7 @@
 import { Clapperboard, ListVideo, LibraryBig } from "lucide-react";
 import { useState } from "react";
 
+import { useDocumentTitle } from "@/shared/lib/use-document-title";
 import { Tabs } from "@/shared/ui/tabs";
 
 import {
@@ -23,6 +24,7 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 export function WatchlistPage() {
+  useDocumentTitle("My Watchlist — Flexflix");
   const [tab, setTab] = useState<TabId>("continue-watching");
   const entries = useWatchlistEntries();
   const watchLaterEntries = useWatchLaterEntries();

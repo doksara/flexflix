@@ -1,4 +1,5 @@
 import { BookmarkPlus } from "lucide-react";
+import { toast } from "sonner";
 
 import type { WatchLaterEntry } from "@/entities/watchlist";
 import { useWatchlistStore } from "@/entities/watchlist";
@@ -35,6 +36,7 @@ export function WatchLaterTab({ entries }: WatchLaterTabProps) {
                 event.stopPropagation();
                 event.preventDefault();
                 promoteToWatchlist(entry.mediaType, entry.tmdbId);
+                toast.success(`Added "${entry.title}" to your watchlist`);
               }}
             />
           }

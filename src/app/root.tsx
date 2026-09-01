@@ -1,8 +1,12 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
+import { useEffect } from "react";
 
-import { queryClient } from "@/shared/api";
+import { queryClient, setUnauthorizedHandler } from "@/shared/api";
+import { useSessionStore } from "@/shared/auth";
+import { ApiError } from "@/shared/ui/api-error";
+import { ErrorBoundary } from "@/shared/ui/error-boundary";
 import { Toaster } from "@/shared/ui/sonner";
 import { TooltipProvider } from "@/shared/ui/tooltip";
 
@@ -17,11 +21,30 @@ declare module "@tanstack/react-router" {
 }
 
 export function App() {
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      const { isAuthenticated, clearSession } = useSessionStore.getState();
+      if (isAuthenticated()) {
+        clearSession();
+        // Use the router (not a hard reload) so callers awaiting the failed
+        // request - e.g. the profile page's logout flow - can still run
+        // their own error handling before the page navigates away.
+        void router.navigate({ to: "/login" });
+      }
+    });
+    return () => setUnauthorizedHandler(null);
+  }, []);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <RouterProvider router={router} />
+          {/* Catch-all for errors outside _authenticated's own errorComponent:
+              unauthenticated routes (e.g. /login) and anything thrown by the
+              router itself. */}
+          <ErrorBoundary fallback={(_, reset) => <ApiError onRetry={reset} />}>
+            <RouterProvider router={router} />
+          </ErrorBoundary>
           <Toaster />
         </TooltipProvider>
       </QueryClientProvider>

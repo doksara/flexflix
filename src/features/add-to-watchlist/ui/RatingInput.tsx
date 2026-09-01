@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { toast } from "sonner";
 
 import type { MediaType } from "@/entities/media";
 import { useWatchlistStore } from "@/entities/watchlist";
@@ -30,7 +31,11 @@ export function RatingInput({ mediaType, tmdbId }: RatingInputProps) {
             role="radio"
             aria-checked={rating === value}
             aria-label={`Rate ${value} of 10`}
-            onClick={() => setRating(mediaType, tmdbId, rating === value ? null : value)}
+            onClick={() => {
+              const next = rating === value ? null : value;
+              setRating(mediaType, tmdbId, next);
+              if (next !== null) toast.success(`Rated ${next}/10`);
+            }}
             className="cursor-pointer p-0.5 text-muted-foreground transition-colors hover:text-secondary"
           >
             <Star className={cn("size-4", filled && "fill-secondary text-secondary")} />
