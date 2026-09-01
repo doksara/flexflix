@@ -44,6 +44,20 @@ export function SeasonTracker({ tvId, seasons, media }: SeasonTrackerProps) {
   const episodeNumbers = episodes.map((ep) => ep.episode_number);
   const nextIndex = episodes.findIndex((ep) => !watchedEpisodes.includes(ep.episode_number));
 
+  function completeShowIfAllSeasonsWatched() {
+    const state = useWatchlistStore.getState();
+    const completedSeasons = state.tvProgress[media.id]?.completedSeasons ?? [];
+    const allSeasonsWatched = seasons.every((season) =>
+      completedSeasons.includes(season.seasonNumber),
+    );
+    if (!allSeasonsWatched) return;
+
+    const key = watchlistKey(media.mediaType, media.id);
+    const entry = state.entries[key];
+    if (entry && entry.status === WatchStatus.Completed) return;
+    state.setStatus(media.mediaType, media.id, WatchStatus.Completed);
+  }
+
   function handleMarkSeasonWatched() {
     const key = watchlistKey(media.mediaType, media.id);
     const entry = useWatchlistStore.getState().entries[key];
@@ -60,6 +74,12 @@ export function SeasonTracker({ tvId, seasons, media }: SeasonTrackerProps) {
       useWatchlistStore.getState().setStatus(media.mediaType, media.id, WatchStatus.Watching);
     }
     markAllWatched(episodeNumbers);
+    completeShowIfAllSeasonsWatched();
+  }
+
+  function handleToggleEpisode(episodeNumber: number) {
+    toggleEpisode(episodeNumber, episodeNumbers);
+    completeShowIfAllSeasonsWatched();
   }
 
   return (
@@ -131,7 +151,7 @@ export function SeasonTracker({ tvId, seasons, media }: SeasonTrackerProps) {
               episode={episode}
               isWatched={watchedEpisodes.includes(episode.episode_number)}
               isNext={index === nextIndex}
-              onToggle={() => toggleEpisode(episode.episode_number, episodeNumbers)}
+              onToggle={() => handleToggleEpisode(episode.episode_number)}
             />
           ))}
         </div>
@@ -145,7 +165,7 @@ export function SeasonTracker({ tvId, seasons, media }: SeasonTrackerProps) {
               episode={episode}
               isWatched={watchedEpisodes.includes(episode.episode_number)}
               isNext={index === nextIndex}
-              onToggle={() => toggleEpisode(episode.episode_number, episodeNumbers)}
+              onToggle={() => handleToggleEpisode(episode.episode_number)}
             />
           ))}
         </div>
