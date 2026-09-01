@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getMovieDetails, getSeasonDetails, getTvDetails } from "@/shared/api";
+import { getMovieDetails, getMovieGenres, getSeasonDetails, getTvDetails, getTvGenres } from "@/shared/api";
+
+const GENRES_STALE_TIME = 24 * 60 * 60 * 1000;
 
 export function useMovieDetails(id: number) {
   return useQuery({
@@ -21,5 +23,21 @@ export function useSeasonDetails(tvId: number, seasonNumber: number, enabled: bo
     queryKey: ["tv", tvId, "season", seasonNumber],
     queryFn: () => getSeasonDetails(tvId, seasonNumber),
     enabled,
+  });
+}
+
+export function useMovieGenres() {
+  return useQuery({
+    queryKey: ["genres", "movie"],
+    queryFn: getMovieGenres,
+    staleTime: GENRES_STALE_TIME,
+  });
+}
+
+export function useTvGenres() {
+  return useQuery({
+    queryKey: ["genres", "tv"],
+    queryFn: getTvGenres,
+    staleTime: GENRES_STALE_TIME,
   });
 }
