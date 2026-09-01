@@ -6,9 +6,14 @@ import { SearchBar } from "./SearchBar";
 import { SearchResults } from "./SearchResults";
 import { TrendingSection } from "./TrendingSection";
 
-export function DiscoverPage() {
+interface DiscoverPageProps {
+  query: string;
+  onQueryChange: (value: string) => void;
+}
+
+export function DiscoverPage({ query, onQueryChange }: DiscoverPageProps) {
   useDocumentTitle("Discover — Flexflix");
-  const { query, setQuery, searchQuery } = useDiscoverSearch();
+  const { searchQuery } = useDiscoverSearch(query);
   const isSearching = query.trim().length > 0;
 
   return (
@@ -22,7 +27,7 @@ export function DiscoverPage() {
             What are you in the mood for?
           </h1>
         </div>
-        <SearchBar value={query} onChange={setQuery} />
+        <SearchBar value={query} onChange={onQueryChange} />
       </div>
       {isSearching ? (
         <SearchResults searchQuery={searchQuery} />
