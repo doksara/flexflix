@@ -3,6 +3,7 @@ export {
   waitForWatchlistHydration,
 } from "./model/watchlist-store";
 export { WatchStatus, watchlistKey } from "./model/watchlist";
+export { ACTIVITY_ICONS, activityText } from "./model/activity-text";
 export type {
   ActivityEvent,
   ActivityEventType,

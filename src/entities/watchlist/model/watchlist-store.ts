@@ -120,8 +120,14 @@ export const useWatchlistStore = create<WatchlistState>()(
         const key = watchlistKey(mediaType, tmdbId);
         set((state) => {
           const { [key]: _removed, ...entries } = state.entries;
+          let tvProgress = state.tvProgress;
+          if (mediaType === MediaType.TvShow) {
+            const { [tmdbId]: _removedProgress, ...rest } = state.tvProgress;
+            tvProgress = rest;
+          }
           return {
             entries,
+            tvProgress,
             activityLog: [
               ...state.activityLog,
               makeActivityEvent("removed_from_watchlist", mediaType, tmdbId),
