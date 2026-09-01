@@ -1,8 +1,7 @@
 import { toast } from "sonner";
 
-import { isTrackableSeason, MediaType } from "@/entities/media";
+import { MediaType } from "@/entities/media";
 import { useWatchlistStore, WatchStatus } from "@/entities/watchlist";
-import { getSeasonDetails, getTvDetails } from "@/shared/api";
 import {
   Select,
   SelectContent,
@@ -11,6 +10,7 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 
+import { markAllEpisodesWatchedForShow } from "../model/complete-tv-show";
 import { useWatchlistEntry } from "../model/watchlist-entry";
 
 export const STATUS_LABELS: Record<WatchStatus, string> = {
@@ -29,7 +29,6 @@ interface StatusSelectProps {
 export function StatusSelect({ mediaType, tmdbId }: StatusSelectProps) {
   const { entry, isInWatchlist } = useWatchlistEntry(mediaType, tmdbId);
   const setStatus = useWatchlistStore((state) => state.setStatus);
-  const markShowCompleted = useWatchlistStore((state) => state.markShowCompleted);
 
   if (!isInWatchlist || !entry) return null;
 
@@ -41,16 +40,7 @@ export function StatusSelect({ mediaType, tmdbId }: StatusSelectProps) {
     if (mediaType !== MediaType.TvShow || status !== WatchStatus.Completed) return;
 
     try {
-      const show = await getTvDetails(tmdbId);
-      const seasonEpisodes = await Promise.all(
-        show.seasons.filter(isTrackableSeason).map(async (season) => ({
-          seasonNumber: season.season_number,
-          episodeNumbers: (await getSeasonDetails(tmdbId, season.season_number)).episodes.map(
-            (episode) => episode.episode_number,
-          ),
-        })),
-      );
-      markShowCompleted(tmdbId, seasonEpisodes);
+      await markAllEpisodesWatchedForShow(tmdbId);
     } catch {
       toast.error("Marked as Completed, but couldn't mark all episodes as watched");
     }
