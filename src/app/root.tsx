@@ -26,7 +26,10 @@ export function App() {
       const { isAuthenticated, clearSession } = useSessionStore.getState();
       if (isAuthenticated()) {
         clearSession();
-        window.location.assign("/login");
+        // Use the router (not a hard reload) so callers awaiting the failed
+        // request - e.g. the profile page's logout flow - can still run
+        // their own error handling before the page navigates away.
+        void router.navigate({ to: "/login" });
       }
     });
     return () => setUnauthorizedHandler(null);
@@ -36,6 +39,9 @@ export function App() {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
+          {/* Catch-all for errors outside _authenticated's own errorComponent:
+              unauthenticated routes (e.g. /login) and anything thrown by the
+              router itself. */}
           <ErrorBoundary fallback={(_, reset) => <ApiError onRetry={reset} />}>
             <RouterProvider router={router} />
           </ErrorBoundary>

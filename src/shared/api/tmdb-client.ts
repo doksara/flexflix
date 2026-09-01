@@ -4,13 +4,19 @@ import { acquireToken } from "./rate-limiter";
 
 export class TmdbApiError extends Error {
   status: number;
+  statusCode?: number;
 
-  constructor(status: number, message: string) {
+  constructor(status: number, message: string, statusCode?: number) {
     super(message);
     this.name = "TmdbApiError";
     this.status = status;
+    this.statusCode = statusCode;
   }
 }
+
+// TMDB status_code values for an invalid/suspended API key: the request never
+// carried a valid user session, so this isn't a "session expired" situation.
+const API_KEY_ERROR_CODES = new Set([7, 10]);
 
 type UnauthorizedHandler = () => void;
 let onUnauthorized: UnauthorizedHandler | null = null;
@@ -55,13 +61,15 @@ export async function tmdbFetch<T>(
   });
 
   if (!response.ok) {
-    const errorBody: { status_message?: string } | null = await response
-      .json()
-      .catch(() => null);
-    if (response.status === 401) onUnauthorized?.();
+    const errorBody: { status_code?: number; status_message?: string } | null =
+      await response.json().catch(() => null);
+    if (response.status === 401 && !API_KEY_ERROR_CODES.has(errorBody?.status_code ?? -1)) {
+      onUnauthorized?.();
+    }
     throw new TmdbApiError(
       response.status,
       errorBody?.status_message ?? response.statusText,
+      errorBody?.status_code,
     );
   }
 
