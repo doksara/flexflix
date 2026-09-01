@@ -1,3 +1,5 @@
+import { useDocumentTitle } from "@/shared/lib/use-document-title";
+
 import { useDiscoverSearch } from "../model/discover";
 import { PopularSection } from "./PopularSection";
 import { SearchBar } from "./SearchBar";
@@ -5,6 +7,7 @@ import { SearchResults } from "./SearchResults";
 import { TrendingSection } from "./TrendingSection";
 
 export function DiscoverPage() {
+  useDocumentTitle("Discover — Flexflix");
   const { query, setQuery, searchQuery } = useDiscoverSearch();
   const isSearching = query.trim().length > 0;
 

@@ -1,7 +1,9 @@
 import { useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 import { deleteSession, useSessionStore } from "@/shared/auth";
+import { useDocumentTitle } from "@/shared/lib/use-document-title";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
 
@@ -11,6 +13,7 @@ import { RecentActivity } from "./RecentActivity";
 import { StatsOverview } from "./StatsOverview";
 
 export function ProfilePage() {
+  useDocumentTitle("Profile — Flexflix");
   const navigate = useNavigate();
   const username = useSessionStore((state) => state.username);
   const sessionId = useSessionStore((state) => state.sessionId);
@@ -19,7 +22,9 @@ export function ProfilePage() {
 
   async function handleLogout() {
     if (sessionId) {
-      await deleteSession(sessionId).catch(() => {});
+      await deleteSession(sessionId).catch(() =>
+        toast.error("Couldn't sign out of TMDB, but you've been logged out here."),
+      );
     }
     clearSession();
     navigate({ to: "/login" });

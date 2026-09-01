@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 import type { MediaType } from "@/entities/media";
 import { useWatchlistStore, WatchStatus } from "@/entities/watchlist";
 import {
@@ -32,7 +34,11 @@ export function StatusSelect({ mediaType, tmdbId }: StatusSelectProps) {
   return (
     <Select
       value={entry.status}
-      onValueChange={(value) => setStatus(mediaType, tmdbId, value as WatchStatus)}
+      onValueChange={(value) => {
+        const status = value as WatchStatus;
+        setStatus(mediaType, tmdbId, status);
+        toast.success(`Status set to ${STATUS_LABELS[status]}`);
+      }}
     >
       <SelectTrigger aria-label="Watch status">
         <SelectValue />

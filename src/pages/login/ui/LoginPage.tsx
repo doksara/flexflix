@@ -1,3 +1,5 @@
+import { useDocumentTitle } from "@/shared/lib/use-document-title";
+
 import { LoginForm } from "./LoginForm";
 
 const COLLAGE_TILES = [
@@ -16,6 +18,8 @@ const COLLAGE_TILES = [
 ];
 
 export function LoginPage() {
+  useDocumentTitle("Log in — Flexflix");
+
   return (
     <div className="grid min-h-svh bg-background md:grid-cols-[1.15fr_1fr]">
       <div className="relative hidden overflow-hidden bg-[var(--surface-container-low)] md:block">

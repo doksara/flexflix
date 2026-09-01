@@ -1,5 +1,6 @@
 import { RatingInput, StatusSelect, WatchlistButton } from "@/features/add-to-watchlist";
 import { WatchLaterButton } from "@/features/add-to-watch-later";
+import { useDocumentTitle } from "@/shared/lib/use-document-title";
 import { DetailBackLink, DetailHero, DetailInfoCard, DetailPageError, DetailPageLoading } from "@/widgets/media-detail";
 
 import { useMovieDetail } from "../model/movie-detail";
@@ -9,14 +10,16 @@ interface MovieDetailPageProps {
 }
 
 export function MovieDetailPage({ id }: MovieDetailPageProps) {
-  const { vm, isLoading, isError } = useMovieDetail(id);
+  const { vm, isLoading, isError, refetch } = useMovieDetail(id);
+
+  useDocumentTitle(vm ? `${vm.media.title} — Flexflix` : "Flexflix");
 
   if (isLoading) {
     return <DetailPageLoading />;
   }
 
   if (isError || !vm) {
-    return <DetailPageError />;
+    return <DetailPageError onRetry={refetch} />;
   }
 
   const metaItems = [

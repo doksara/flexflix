@@ -1,4 +1,5 @@
 import { Clock } from "lucide-react";
+import { toast } from "sonner";
 
 import type { MediaSummary } from "@/entities/media";
 import { useWatchlistStore } from "@/entities/watchlist";
@@ -20,17 +21,21 @@ export function WatchLaterButton({ media }: WatchLaterButtonProps) {
       variant={isInWatchLater ? "secondary" : "ghost"}
       size="icon-lg"
       aria-label={isInWatchLater ? "Remove from watch later" : "Watch later"}
-      onClick={() =>
-        isInWatchLater
-          ? removeFromWatchLater(media.mediaType, media.id)
-          : addToWatchLater({
-              tmdbId: media.id,
-              mediaType: media.mediaType,
-              title: media.title,
-              posterPath: media.posterPath,
-              genreIds: media.genreIds,
-            })
-      }
+      onClick={() => {
+        if (isInWatchLater) {
+          removeFromWatchLater(media.mediaType, media.id);
+          toast.success(`Removed "${media.title}" from Watch Later`);
+        } else {
+          addToWatchLater({
+            tmdbId: media.id,
+            mediaType: media.mediaType,
+            title: media.title,
+            posterPath: media.posterPath,
+            genreIds: media.genreIds,
+          });
+          toast.success(`Added "${media.title}" to Watch Later`);
+        }
+      }}
     >
       <Clock />
     </Button>

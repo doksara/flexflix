@@ -53,5 +53,5 @@ export function useMovieDetail(id: number) {
     };
   }
 
-  return { vm, isLoading: query.isLoading, isError: query.isError };
+  return { vm, isLoading: query.isLoading, isError: query.isError, refetch: query.refetch };
 }

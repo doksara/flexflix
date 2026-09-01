@@ -12,6 +12,13 @@ export class TmdbApiError extends Error {
   }
 }
 
+type UnauthorizedHandler = () => void;
+let onUnauthorized: UnauthorizedHandler | null = null;
+
+export function setUnauthorizedHandler(handler: UnauthorizedHandler | null) {
+  onUnauthorized = handler;
+}
+
 interface TmdbRequestOptions {
   method?: "GET" | "POST" | "DELETE";
   params?: Record<string, string | number | boolean | undefined>;
@@ -51,6 +58,7 @@ export async function tmdbFetch<T>(
     const errorBody: { status_message?: string } | null = await response
       .json()
       .catch(() => null);
+    if (response.status === 401) onUnauthorized?.();
     throw new TmdbApiError(
       response.status,
       errorBody?.status_message ?? response.statusText,

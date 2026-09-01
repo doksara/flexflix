@@ -1,5 +1,6 @@
 import { RatingInput, StatusSelect, WatchlistButton } from "@/features/add-to-watchlist";
 import { WatchLaterButton } from "@/features/add-to-watch-later";
+import { useDocumentTitle } from "@/shared/lib/use-document-title";
 import { ProgressBar } from "@/shared/ui/progress-bar";
 import { DetailBackLink, DetailHero, DetailInfoCard, DetailPageError, DetailPageLoading } from "@/widgets/media-detail";
 import { SeasonTracker } from "@/widgets/season-tracker";
@@ -11,14 +12,16 @@ interface ShowDetailPageProps {
 }
 
 export function ShowDetailPage({ id }: ShowDetailPageProps) {
-  const { vm, isLoading, isError } = useShowDetail(id);
+  const { vm, isLoading, isError, refetch } = useShowDetail(id);
+
+  useDocumentTitle(vm ? `${vm.media.title} — Flexflix` : "Flexflix");
 
   if (isLoading) {
     return <DetailPageLoading />;
   }
 
   if (isError || !vm) {
-    return <DetailPageError />;
+    return <DetailPageError onRetry={refetch} />;
   }
 
   const metaItems = [

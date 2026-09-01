@@ -1,3 +1,4 @@
+import { ApiError } from "@/shared/ui/api-error";
 import { Skeleton } from "@/shared/ui/skeleton";
 
 export function DetailPageLoading() {
@@ -9,10 +10,10 @@ export function DetailPageLoading() {
   );
 }
 
-export function DetailPageError() {
-  return (
-    <div className="py-24 text-center text-muted-foreground">
-      Something went wrong loading this title.
-    </div>
-  );
+interface DetailPageErrorProps {
+  onRetry?: () => void;
+}
+
+export function DetailPageError({ onRetry }: DetailPageErrorProps) {
+  return <ApiError title="Couldn't load this title" onRetry={onRetry} />;
 }
