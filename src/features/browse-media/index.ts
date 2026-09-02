@@ -1,1 +1,6 @@
-export { useTrending, usePopularMovies, usePopularTvShows } from "./model/browse-media";
+export {
+  useTrending,
+  usePopularMovies,
+  usePopularTvShows,
+  useSuggestedForYou,
+} from "./model/browse-media";

@@ -4,6 +4,7 @@ import { useDiscoverSearch } from "../model/discover";
 import { PopularSection } from "./PopularSection";
 import { SearchBar } from "./SearchBar";
 import { SearchResults } from "./SearchResults";
+import { SuggestedForYouSection } from "./SuggestedForYouSection";
 import { TrendingSection } from "./TrendingSection";
 
 interface DiscoverPageProps {
@@ -33,6 +34,7 @@ export function DiscoverPage({ query, onQueryChange }: DiscoverPageProps) {
         <SearchResults searchQuery={searchQuery} />
       ) : (
         <div className="flex flex-col gap-14">
+          <SuggestedForYouSection />
           <TrendingSection />
           <PopularSection />
         </div>
