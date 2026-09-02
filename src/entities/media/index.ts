@@ -9,6 +9,7 @@ export {
   useSeasonDetails,
   useMovieGenres,
   useTvGenres,
+  useMoreLikeThis,
 } from "./api/media-queries";
 export { MediaCard } from "./ui/MediaCard";
 export { MediaGrid } from "./ui/MediaGrid";

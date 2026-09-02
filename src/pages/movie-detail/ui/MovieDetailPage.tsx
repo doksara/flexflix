@@ -1,7 +1,14 @@
 import { RatingInput, StatusSelect, WatchlistButton } from "@/features/add-to-watchlist";
 import { WatchLaterButton } from "@/features/add-to-watch-later";
 import { useDocumentTitle } from "@/shared/lib/use-document-title";
-import { DetailBackLink, DetailHero, DetailInfoCard, DetailPageError, DetailPageLoading } from "@/widgets/media-detail";
+import {
+  DetailBackLink,
+  DetailHero,
+  DetailInfoCard,
+  DetailPageError,
+  DetailPageLoading,
+  MoreLikeThisSection,
+} from "@/widgets/media-detail";
 
 import { useMovieDetail } from "../model/movie-detail";
 
@@ -56,6 +63,8 @@ export function MovieDetailPage({ id }: MovieDetailPageProps) {
           { label: "Released", value: vm.releaseDateLabel ?? "—" },
         ]}
       />
+
+      <MoreLikeThisSection mediaType={vm.media.mediaType} id={vm.media.id} />
     </div>
   );
 }

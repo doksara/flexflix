@@ -2,7 +2,14 @@ import { RatingInput, StatusSelect, WatchlistButton } from "@/features/add-to-wa
 import { WatchLaterButton } from "@/features/add-to-watch-later";
 import { useDocumentTitle } from "@/shared/lib/use-document-title";
 import { ProgressBar } from "@/shared/ui/progress-bar";
-import { DetailBackLink, DetailHero, DetailInfoCard, DetailPageError, DetailPageLoading } from "@/widgets/media-detail";
+import {
+  DetailBackLink,
+  DetailHero,
+  DetailInfoCard,
+  DetailPageError,
+  DetailPageLoading,
+  MoreLikeThisSection,
+} from "@/widgets/media-detail";
 import { SeasonTracker } from "@/widgets/season-tracker";
 
 import { useShowDetail } from "../model/show-detail";
@@ -74,6 +81,8 @@ export function ShowDetailPage({ id }: ShowDetailPageProps) {
           ]}
         />
       </div>
+
+      <MoreLikeThisSection mediaType={vm.media.mediaType} id={vm.media.id} />
     </div>
   );
 }

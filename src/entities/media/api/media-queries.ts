@@ -1,6 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getMovieDetails, getMovieGenres, getSeasonDetails, getTvDetails, getTvGenres } from "@/shared/api";
+import {
+  getMovieDetails,
+  getMovieGenres,
+  getMovieRecommendations,
+  getSeasonDetails,
+  getTvDetails,
+  getTvGenres,
+  getTvRecommendations,
+} from "@/shared/api";
+
+import { MediaType } from "../model/media";
+import { movieToSummary, tvToSummary } from "../model/normalize";
 
 const GENRES_STALE_TIME = 24 * 60 * 60 * 1000;
 
@@ -39,5 +50,19 @@ export function useTvGenres() {
     queryKey: ["genres", "tv"],
     queryFn: getTvGenres,
     staleTime: GENRES_STALE_TIME,
+  });
+}
+
+export function useMoreLikeThis(mediaType: MediaType, id: number) {
+  return useQuery({
+    queryKey: [mediaType, id, "recommendations"],
+    queryFn: async () => {
+      if (mediaType === MediaType.Movie) {
+        const data = await getMovieRecommendations(id);
+        return data.results.map(movieToSummary);
+      }
+      const data = await getTvRecommendations(id);
+      return data.results.map(tvToSummary);
+    },
   });
 }
